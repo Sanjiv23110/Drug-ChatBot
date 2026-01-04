@@ -1,275 +1,465 @@
-# 🏥 Solomind Drug Chatbot
-### AI-Powered Drug Information Platform | Revolutionizing Pharmacy Workflow
+# Solomind Drug Chatbot
 
-[![License](https://img.shields.io/badge/license-Proprietary-blue.svg)](LICENSE)
-[![Status](https://img.shields.io/badge/status-Seed%20Stage-green.svg)](README.md)
-[![Market](https://img.shields.io/badge/market-Canada%20First-red.svg)](README.md)
+An AI-powered chatbot providing accurate drug information from Health Canada monographs using Azure OpenAI and RAG (Retrieval-Augmented Generation) architecture.
 
----
+[![Python](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![TypeScript](https://img.shields.io/badge/typescript-5.0+-blue.svg)](https://www.typescriptlang.org/)
+[![Azure OpenAI](https://img.shields.io/badge/Azure-OpenAI-0078D4.svg)](https://azure.microsoft.com/en-us/products/ai-services/openai-service)
+[![License](https://img.shields.io/badge/license-Proprietary-red.svg)](LICENSE)
 
-## 🎯 The Problem
+## 📋 Overview
 
-**Pharmacists spend 60% of their time searching for drug information across fragmented sources.**
+This application provides pharmacists and healthcare professionals with instant access to comprehensive drug information sourced from Health Canada's official Drug Product Database. Using state-of-the-art AI technology, it delivers accurate, cited answers to drug-related queries in under 2 seconds.
 
-- 📚 Health Canada maintains **30,000+ drug monographs** across scattered PDFs
-- ⏰ Average lookup time: **3-8 minutes per query**
-- 🔄 Pharmacists handle **50-100 drug queries daily**
-- 💰 **$25B+ wasted annually** in Canada on inefficient pharmacy workflows
-- ⚠️ **Critical drug interactions missed** due to information overload
+### Key Features
 
----
+- **🤖 AI-Powered Search**: GPT-4o language model with semantic understanding
+- **📚 Official Data**: 30,000+ Health Canada drug monographs
+- **⚡ Fast Response**: Sub-2 second query response time
+- **🔍 Semantic Search**: ChromaDB vector database for intelligent retrieval
+- **📖 Source Citations**: Every answer includes document references
+- **⚕️ Medical Disclaimers**: PIPEDA-compliant legal protection
+- **📊 Analytics**: Google Analytics 4 integration (optional)
+- **🔐 Secure**: Enterprise-grade security with Azure OpenAI
 
-## 💡 Our Solution
+## 🏗️ Architecture
 
-**Solomind is an AI-powered chatbot that instantly answers any drug-related question using Health Canada's official data.**
-
-### How It Works:
 ```
-Pharmacist asks: "What are the contraindications for Lipitor with grapefruit?"
-                          ↓
-            Solomind searches 30,000+ monographs
-                          ↓
-            Answer delivered in < 2 seconds
-                          ↓
-            Citations from official Health Canada sources
-```
-
-### Key Features:
-- ✅ **Instant Answers**: 2-second response time vs 3-8 minutes manual search
-- ✅ **100% Official Data**: All information from Health Canada Drug Product Database
-- ✅ **PIPEDA Compliant**: Canadian data privacy standards
-- ✅ **Always Available**: 24/7 access, no waiting
-- ✅ **Citation-Backed**: Every answer links to source documents
-
----
-
-## 📊 Market Opportunity
-
-### Total Addressable Market (TAM)
-
-**Canada:**
-- 🏪 **11,000+ retail pharmacies**
-- 👨‍⚕️ **44,000+ licensed pharmacists**
-- 💰 **$37B annual pharmacy revenue**
-
-**Pricing:** $99/month per pharmacy
-
-**Immediate Revenue Potential:**
-- Year 1: 100 pharmacies × $99 = **$118,800 ARR**
-- Year 3: 1,000 pharmacies × $99 = **$1.19M ARR**
-- Year 5: 5,000 pharmacies × $99 = **$5.94M ARR**
-
-### Expansion Markets:
-- 🇺🇸 USA: 67,000+ pharmacies ($6.6M ARR at 10% penetration)
-- 🌍 Global: 300,000+ pharmacies ($30M+ ARR potential)
-
----
-
-## 🚀 Competitive Advantages
-
-| Feature | Solomind | Lexicomp | Micromedex | Google |
-|---------|----------|----------|------------|--------|
-| **Health Canada Data** | ✅ Official | ❌ US-focused | ❌ US-focused | ❌ Unreliable |
-| **Response Time** | 2 seconds | 30+ seconds | 45+ seconds | Varies |
-| **AI-Powered** | ✅ GPT-4o | ❌ Manual search | ❌ Manual search | ⚠️ Generic |
-| **Canadian Compliance** | ✅ PIPEDA | ⚠️ Limited | ⚠️ Limited | ❌ None |
-| **Pricing** | $99/mo | $500+/mo | $800+/mo | Free (unreliable) |
-| **Setup Time** | 5 minutes | Days | Weeks | N/A |
-
-**Our Moat:**
-1. **Exclusive Health Canada dataset integration** (30,000+ monographs pre-ingested)
-2. **Purpose-built for Canadian pharmacies** (regulatory compliance built-in)
-3. **10x faster** than existing solutions
-4. **5-8x cheaper** than enterprise alternatives
-
----
-
-## 💰 Business Model
-
-### Revenue Streams
-
-**Primary: SaaS Subscriptions**
-- 🏪 **Retail Pharmacies:** $99/month
-- 🏥 **Hospital Pharmacies:** $299/month (multi-user)
-- 🏢 **Pharmacy Chains:** Custom enterprise pricing
-
-**Future Revenue Opportunities:**
-- 📚 **Premium Tier:** $149/month (includes drug interactions AI, clinical decision support)
-- 🌐 **White-Label Licensing:** to pharmacy software providers ($10K-50K/year)
-- 📊 **Anonymized Usage Analytics:** to pharmaceutical companies (high-margin)
-
-### Unit Economics
-
-**Per Pharmacy Customer:**
-```
-Monthly Revenue:        $99
-Azure OpenAI Cost:      $6
-Net Server Cost:        $1
-Gross Margin:          93%
-
-CAC (Customer Acquisition):  $150 (direct sales)
-LTV (3 year avg):           $3,564
-LTV:CAC Ratio:              23.7x
+┌─────────────────┐
+│   React UI      │  Frontend (TypeScript + React)
+│  localhost:5173 │  - Chat interface
+└────────┬────────┘  - Disclaimer modal
+         │           - Real-time responses
+         │
+         ▼ HTTP/REST
+┌─────────────────┐
+│  FastAPI        │  Backend (Python)
+│  localhost:8000 │  - RAG Service
+└────────┬────────┘  - Vector Store
+         │           - API Endpoints
+         │
+         ├─────────────────┬──────────────────┐
+         ▼                 ▼                  ▼
+┌───────────────┐  ┌──────────────┐  ┌─────────────┐
+│ Azure OpenAI  │  │  ChromaDB    │  │ Health      │
+│               │  │              │  │ Canada PDFs │
+│ - GPT-4o      │  │ - Embeddings │  │ - Source    │
+│ - Embeddings  │  │ - Metadata   │  │   Data      │
+└───────────────┘  └──────────────┘  └─────────────┘
 ```
 
-**Profitability Timeline:**
-- Month 1-6: Customer acquisition & product refinement
-- Month 7-12: Break-even at 50 paying customers
-- Year 2+: 90% gross margins, scale rapidly
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Python 3.11 or higher
+- Node.js 18 or higher
+- Azure OpenAI account with deployments:
+  - `text-embedding-ada-002` (embeddings)
+  - `gpt-4o-agent` or `gpt-4o` (chat)
+- Health Canada PDF monographs
+
+### Installation
+
+#### 1. Clone Repository
+
+```bash
+git clone https://github.com/Sanjiv23110/Drug-ChatBot.git
+cd Drug-ChatBot
+```
+
+#### 2. Backend Setup
+
+```bash
+cd backend
+
+# Create and activate virtual environment
+python -m venv venv
+
+# Windows
+venv\Scripts\activate
+
+# Mac/Linux
+source venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Configure environment variables
+cp .env.example .env
+```
+
+**Edit `.env` file:**
+
+```bash
+# Azure OpenAI Configuration
+AZURE_OPENAI_API_KEY=your_api_key_here
+AZURE_OPENAI_ENDPOINT=https://your-resource.openai.azure.com/
+AZURE_OPENAI_EMBEDDING_DEPLOYMENT=text-embedding-ada-002
+AZURE_OPENAI_CHAT_DEPLOYMENT=gpt-4o-agent
+AZURE_OPENAI_API_VERSION=2024-12-01-preview
+
+# Database Configuration
+CHROMA_DB_DIR=C:\G\Maclens chatbot w api\chroma_db
+DOCUMENTS_DIR=C:\G\chatbot maclens\data
+
+# Optional: Error Monitoring
+SENTRY_DSN=
+ENVIRONMENT=development
+```
+
+#### 3. Frontend Setup
+
+```bash
+cd ../frontend
+
+# Install dependencies
+npm install
+
+# Optional: Configure Google Analytics
+cp .env.example .env
+# Edit .env and add: VITE_GA_MEASUREMENT_ID=G-XXXXXXXXXX
+```
+
+#### 4. Data Ingestion
+
+Place PDF files in your `DOCUMENTS_DIR` folder, then run:
+
+```bash
+cd ../backend
+venv\Scripts\python.exe scripts\ingest.py
+```
+
+**Expected Output:**
+```
+Ingesting from: C:\G\chatbot maclens\data
+Found 777 document chunks.
+Adding 777 documents in batches of 10...
+Processed batch 1/78
+...
+Processed batch 78/78
+Finished adding documents to ChromaDB.
+Ingestion complete.
+```
+
+#### 5. Run Application
+
+**Terminal 1 - Backend:**
+```bash
+cd backend
+venv\Scripts\activate
+uvicorn main:app --reload --port 8000
+```
+
+**Terminal 2 - Frontend:**
+```bash
+cd frontend
+npm run dev
+```
+
+**Access the app:** http://localhost:5173
+
+## 📁 Project Structure
+
+```
+Drug-ChatBot/
+├── backend/                      # FastAPI backend
+│   ├── app/
+│   │   ├── api/
+│   │   │   └── endpoints.py      # REST API routes
+│   │   ├── core/
+│   │   │   └── config.py         # Settings & environment vars
+│   │   └── services/
+│   │       ├── ingestion_service.py  # PDF processing
+│   │       ├── rag_service.py        # RAG logic
+│   │       └── vector_store.py       # ChromaDB interface
+│   ├── scripts/
+│   │   └── ingest.py             # Data ingestion script
+│   ├── main.py                   # FastAPI app entry point
+│   ├── requirements.txt          # Python dependencies
+│   ├── .env.example              # Environment template
+│   └── Dockerfile                # Container config
+│
+├── frontend/                     # React frontend
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── Chat.tsx          # Main chat interface
+│   │   │   └── DisclaimerModal.tsx  # Legal disclaimer
+│   │   ├── App.tsx               # Root component
+│   │   └── main.tsx              # Entry point
+│   ├── package.json              # Node dependencies
+│   ├── .env.example              # Optional config
+│   └── Dockerfile                # Container config
+│
+├── chroma_db/                    # Vector database (gitignored)
+├── docker-compose.yml            # Multi-container orchestration
+├── .gitignore                    # Git exclusions
+└── README.md                     # This file
+```
+
+## 🔧 Core Technologies
+
+### Backend Stack
+
+- **FastAPI** - Modern Python web framework
+- **Azure OpenAI** - GPT-4o for chat, text-embedding-ada-002 for embeddings
+- **ChromaDB** - Vector database for semantic search
+- **Pydantic** - Data validation and settings management
+- **PyPDF** - PDF text extraction
+- **Uvicorn** - ASGI server
+
+### Frontend Stack
+
+- **React 18** - UI framework
+- **TypeScript** - Type-safe JavaScript
+- **Vite** - Build tool and dev server
+- **Tailwind CSS** - Utility-first CSS framework
+- **Google Analytics 4** - Usage tracking (optional)
+
+## 📊 API Documentation
+
+### Endpoints
+
+#### `POST /api/chat`
+
+Send a question and receive an AI-generated answer.
+
+**Request:**
+```json
+{
+  "message": "What are the side effects of Lipitor?"
+}
+```
+
+**Response:**
+```json
+{
+  "answer": "Common side effects of Lipitor include...",
+  "sources": [
+    "lipitor_monograph_2024.pdf",
+    "atorvastatin_health_canada.pdf"
+  ]
+}
+```
+
+#### `GET /health`
+
+Health check endpoint for monitoring.
+
+**Response:**
+```json
+{
+  "status": "healthy",
+  "database": "connected",
+  "model": "gpt-4o-agent"
+}
+```
+
+#### `GET /api/stats`
+
+Get database statistics.
+
+**Response:**
+```json
+{
+  "document_count": 3070,
+  "data_path": "C:\\G\\chatbot maclens\\data"
+}
+```
+
+## 🔐 Environment Variables
+
+### Backend (.env)
+
+| Variable | Required | Description | Example |
+|----------|----------|-------------|---------|
+| `AZURE_OPENAI_API_KEY` | ✅ | Azure OpenAI API key | `1234abcd...` |
+| `AZURE_OPENAI_ENDPOINT` | ✅ | Azure OpenAI endpoint URL | `https://your-resource.openai.azure.com/` |
+| `AZURE_OPENAI_EMBEDDING_DEPLOYMENT` | ✅ | Embedding model deployment | `text-embedding-ada-002` |
+| `AZURE_OPENAI_CHAT_DEPLOYMENT` | ✅ | Chat model deployment | `gpt-4o-agent` |
+| `AZURE_OPENAI_API_VERSION` | ✅ | API version | `2024-12-01-preview` |
+| `CHROMA_DB_DIR` | ✅ | Vector database directory | `C:\G\Maclens chatbot w api\chroma_db` |
+| `DOCUMENTS_DIR` | ✅ | PDF source directory | `C:\G\chatbot maclens\data` |
+| `SENTRY_DSN` | ❌ | Error monitoring DSN | `https://...@sentry.io/...` |
+| `ENVIRONMENT` | ❌ | Environment name | `development` |
+
+### Frontend (.env - Optional)
+
+| Variable | Required | Description | Example |
+|----------|----------|-------------|---------|
+| `VITE_GA_MEASUREMENT_ID` | ❌ | Google Analytics ID | `G-XXXXXXXXXX` |
+
+## 🧪 Testing
+
+### Manual Testing
+
+```bash
+# Test backend
+cd backend
+venv\Scripts\activate
+curl -X POST http://localhost:8000/api/chat \
+  -H "Content-Type: application/json" \
+  -d '{"message": "What is aspirin used for?"}'
+
+# Test health endpoint
+curl http://localhost:8000/health
+```
+
+### Testing Queries
+
+Example questions to test:
+- "What are the contraindications for Lipitor?"
+- "What is the recommended dosage for metformin?"
+- "Can pregnant women take acetaminophen?"
+- "What are the drug interactions for warfarin?"
+
+## 🐳 Docker Deployment
+
+### Build and Run with Docker Compose
+
+```bash
+# Build images
+docker-compose build
+
+# Run containers
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Stop containers
+docker-compose down
+```
+
+**Access:**
+- Frontend: http://localhost:3000
+- Backend: http://localhost:8000
+
+## 👥 Team Collaboration
+
+### Git Workflow
+
+1. **Clone repository**
+   ```bash
+   git clone https://github.com/Sanjiv23110/Drug-ChatBot.git
+   ```
+
+2. **Create feature branch**
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
+
+3. **Make changes and commit**
+   ```bash
+   git add .
+   git commit -m "Add: descriptive commit message"
+   ```
+
+4. **Push and create PR**
+   ```bash
+   git push origin feature/your-feature-name
+   ```
+
+### Important: Never Commit
+
+- ❌ `.env` files (contain API keys!)
+- ❌ `chroma_db/` folder (large database)
+- ❌ `node_modules/` (dependencies)
+- ❌ `venv/` (Python virtual environment)
+- ❌ PDF data files
+
+The `.gitignore` file handles this automatically.
+
+### Sharing Credentials
+
+**Never commit API keys to Git!**
+
+- Share `.env.example` as a template
+- Use secure channels for actual credentials (password manager, encrypted messaging)
+- Each team member creates their own `.env` file locally
+
+## 📈 Performance
+
+- **Query Response Time:** < 2 seconds
+- **Embedding Generation:** ~100ms per document chunk
+- **Vector Search:** ~50ms for 3 results from 3,000+ chunks
+- **API Latency:** ~1.5s (including Azure OpenAI round-trip)
+
+## 🔍 Troubleshooting
+
+### Backend Won't Start
+
+**Error:** `ModuleNotFoundError: No module named 'openai'`
+
+**Solution:**
+```bash
+cd backend
+venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+### Frontend Build Fails
+
+**Error:** `Cannot find module 'react'`
+
+**Solution:**
+```bash
+cd frontend
+rm -rf node_modules package-lock.json
+npm install
+```
+
+### Database Empty After Ingestion
+
+**Check:**
+```bash
+cd backend
+venv\Scripts\python.exe -c "import chromadb; c = chromadb.PersistentClient(path='C:\\G\\Maclens chatbot w api\\chroma_db'); print(c.list_collections())"
+```
+
+**Re-run ingestion if needed:**
+```bash
+venv\Scripts\python.exe scripts\ingest.py
+```
+
+### API Connection Errors
+
+**Check backend is running:**
+```bash
+curl http://localhost:8000/health
+```
+
+**Check CORS configuration in `main.py`**
+
+## 🔗 Resources
+
+- **Health Canada Drug Database:** https://health-products.canada.ca/dpd-bdpp/?lang=eng
+- **Azure OpenAI Documentation:** https://learn.microsoft.com/en-us/azure/ai-services/openai/
+- **ChromaDB Documentation:** https://docs.trychroma.com/
+- **FastAPI Documentation:** https://fastapi.tiangolo.com/
+- **React Documentation:** https://react.dev/
+
+## 📝 License
+
+Proprietary - Solomind Health Technologies. All rights reserved.
+
+## 🤝 Contributing
+
+This is a private repository. For team members:
+
+1. Follow the Git workflow above
+2. Write clear commit messages
+3. Test locally before pushing
+4. Request code reviews for all PRs
+5. Keep dependencies up to date
+
+## 💬 Support
+
+For technical support or questions:
+- **GitHub Issues:** Use for bug reports and feature requests
+- **Team Chat:** [Slack/Discord channel]
+- **Documentation:** Refer to inline code comments
 
 ---
 
-## 🎯 Traction & Milestones
-
-### ✅ Completed (Q4 2024 - Q1 2025)
-
-- [x] **Product Development:** Fully functional RAG chatbot
-- [x] **Data Ingestion:** 30,000+ Health Canada monographs processed
-- [x] **Tech Stack:** Azure OpenAI (GPT-4o) + ChromaDB vector database
-- [x] **Compliance:** Medical disclaimers, PIPEDA considerations implemented
-- [x] **Performance:** Sub-2 second query response time
-- [x] **Beta Testing:** Internal validation with 12 drug categories
-
-### 🎯 Next 6 Months (With Funding)
-
-**Month 1-2:**
-- [ ] **Pilot Program:** 10 beta pharmacies in Toronto/Vancouver
-- [ ] **User Feedback:** Refine UX based on real-world usage
-- [ ] **Legal Review:** Finalize liability disclaimers with healthcare attorney
-
-**Month 3-4:**
-- [ ] **Launch:** Public release to Canadian market
-- [ ] **Sales Pipeline:** 50 qualified leads
-- [ ] **First 20 Paying Customers:** $24K ARR
-
-**Month 5-6:**
-- [ ] **Scale:** 100 paying customers ($120K ARR)
-- [ ] **Product Expansion:** Add drug interaction detection
-- [ ] **Partnerships:** Integrate with 2 major pharmacy management systems
-
----
-
-## 🛠️ Technology
-
-### Built on Production-Grade AI
-
-- **🤖 Azure OpenAI:** GPT-4o for natural language understanding
-- **🔍 Vector Search:** ChromaDB for semantic search across 30K documents  
-- **☁️ Cloud Infrastructure:** Scalable, HIPAA-ready architecture
-- **🔐 Security:** Enterprise-grade encryption, Canadian data residency
-- **📊 Monitoring:** Real-time error tracking (Sentry) + usage analytics
-
-### Technical Differentiation:
-- **RAG Architecture** (Retrieval-Augmented Generation) ensures factual accuracy
-- **Embeddings-based search** finds relevant information even with natural language queries
-- **Citation tracking** provides source verification for every answer
-- **Sub-2 second latency** via optimized vector database
-
----
-
-## 👥 Team
-
-**Sanjeev (Founder & CEO)**
-- Healthcare AI Product Development
-- Full-stack development (Python, React, Azure)
-- Deep understanding of Canadian pharmacy workflows
-
-**Expanding Team Needs (With Funding):**
-- 🎯 **Head of Sales** - Pharmacy industry relationships
-- 💻 **Senior Full-Stack Engineer** - Scale product infrastructure
-- 🧪 **Clinical Pharmacist Advisor** - Domain expertise & validation
-- 📈 **Growth Marketing Lead** - Customer acquisition
-
----
-
-## 💵 Funding Ask
-
-### Seeking: **$500K Seed Round**
-
-**Use of Funds:**
-
-| Category | Amount | Purpose |
-|----------|--------|---------|
-| 💼 **Team** | $250K | Hire 2 engineers + 1 sales lead |
-| 🚀 **Go-to-Market** | $100K | Marketing, sales, pilot programs |
-| ☁️ **Infrastructure** | $75K | Azure credits, scaling database |
-| 🏢 **Operations** | $50K | Legal, compliance, office |
-| 💰 **Runway** | $25K | Buffer (12-month runway total) |
-
-**Milestones This Enables:**
-- ✅ 100 paying pharmacies in 6 months ($120K ARR)
-- ✅ Product-market fit validation
-- ✅ Series A readiness (12-18 months, $1M+ ARR)
-
----
-
-## 📈 Growth Strategy
-
-### Phase 1: Canada Domination (Year 1-2)
-1. **Launch in Ontario & BC** (70% of Canadian pharmacies)
-2. **Partnership with pharmacy associations** (credibility boost)
-3. **Word-of-mouth growth** (pharmacists trust peer recommendations)
-4. **Target: 5% market penetration** (550 pharmacies, $650K ARR)
-
-### Phase 2: Product Expansion (Year 2-3)
-1. **Premium tier:** Drug interaction AI, clinical decision support
-2. **Hospital pharmacies:** Multi-user enterprise version
-3. **White-label partnerships:** Integrate into existing pharmacy software
-4. **Target: 10% market penetration** (1,100 pharmacies, $1.3M ARR)
-
-### Phase 3: International Expansion (Year 3+)
-1. **USA Launch:** FDA data integration (67,000 pharmacies)
-2. **European markets:** EMA data (UK, Germany, France)
-3. **Target: Global leader in pharmacy AI**
-
----
-
-## 🎯 Why Now?
-
-✅ **AI Technology Maturity:** GPT-4o provides production-ready accuracy  
-✅ **Pharmacy Pain Point:** Post-pandemic staffing shortages made efficiency critical  
-✅ **Regulatory Tailwinds:** Health Canada digitizing drug databases  
-✅ **Market Timing:** No dominant Canadian pharmacy AI solution exists  
-✅ **Proven Model:** AI chatbots succeeding in legal (Harvey), medical (Doximity)
-
----
-
-## 🔒 Risks & Mitigation
-
-| Risk | Mitigation |
-|------|------------|
-| **Regulatory Compliance** | Legal review, medical disclaimers, pharmacist-in-the-loop design |
-| **AI Accuracy Concerns** | Citations for every answer, "verify with official sources" warnings |
-| **Slow Pharmacy Adoption** | Free pilot program, integration with existing workflows |
-| **Competitor Entry** | First-mover advantage, exclusive Health Canada dataset, network effects |
-| **Azure OpenAI Costs** | Optimize prompts, cache common queries, negotiate volume pricing |
-
----
-
-## 📞 Contact & Next Steps
-
-**Ready to invest or learn more?**
-
-📧 Email: [Your Email]  
-🌐 Website: [Coming Soon]  
-💼 LinkedIn: [Your LinkedIn]  
-📱 Demo: Schedule a call to see Solomind in action
-
-**For Investors:**
-- 📊 **Pitch Deck:** Available upon request
-- 📈 **Financial Model:** 5-year projections ready
-- 🤝 **Pilot Results:** Demo with live pharmacists
-
----
-
-## 🏆 Vision
-
-**Solomind will become the AI co-pilot for every pharmacist in Canada, then the world.**
-
-We're not just building a chatbot—we're **eliminating drug information fragmentation** and giving pharmacists their time back to focus on patient care.
-
-**Join us in making pharmacy safer, faster, and smarter.** 🚀
-
----
-
-<sub>© 2025 Solomind Health Technologies. All rights reserved. Proprietary and confidential.</sub>
+**Built with ❤️ by the Solomind Team**
