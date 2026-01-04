@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    container_name: maclens_backend
+    volumes:
+      - ./backend/chroma_db:/app/chroma_db
+      - ./backend/data_ingest:/app/data_ingest
+      - ./backend/app:/app/app
+    env_file:
+      - ./backend/.env
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build: ./frontend
+    container_name: maclens_frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
