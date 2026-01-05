@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.api import endpoints
 from app.core.config import settings
 import logging
+from download_db import download_database
 
 # Initialize Sentry (optional - only if DSN is provided)
 if settings.SENTRY_DSN:
@@ -14,6 +15,12 @@ if settings.SENTRY_DSN:
         profiles_sample_rate=0.1,
     )
     logging.info("Sentry error tracking enabled")
+
+# Download database on startup
+print("🚀 Starting Solomind Backend...")
+print("📥 Checking database...")
+download_database()
+print("✅ Database check complete!")
 
 app = FastAPI(title="Maclens Drug Chatbot API")
 
