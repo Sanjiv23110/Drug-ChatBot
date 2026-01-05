@@ -27,11 +27,15 @@ class VectorStoreService:
     
     def _embed_text(self, text: str):
         """Generate embedding using Azure OpenAI"""
-        response = self.openai_client.embeddings.create(
-            input=text,
-            model=settings.AZURE_OPENAI_EMBEDDING_DEPLOYMENT
-        )
-        return response.data[0].embedding
+        try:
+            response = self.openai_client.embeddings.create(
+                input=[text],  # Must be a list
+                model=settings.AZURE_OPENAI_EMBEDDING_DEPLOYMENT
+            )
+            return response.data[0].embedding
+        except Exception as e:
+            print(f"❌ Embedding error: {e}")
+            raise
 
     def add_documents(self, documents: list):
         """
