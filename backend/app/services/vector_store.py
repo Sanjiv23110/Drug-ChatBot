@@ -64,7 +64,7 @@ class VectorStoreService:
                     ids=ids
                 )
                 print(f"Processed batch {i//batch_size + 1}/{(total_docs + batch_size - 1)//batch_size}")
-                time.sleep(1.0)  # Wait 1 second between batches for Cohere rate limits (100/min)
+                time.sleep(1.0)  # Wait 1 second between batches to avoid rate limits
             except Exception as e:
                 print(f"Error processing batch {i}: {e}")
                 time.sleep(5.0)  # Wait longer on error before retrying
