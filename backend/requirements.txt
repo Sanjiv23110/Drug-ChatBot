@@ -16,4 +16,5 @@ langchain
 langchain-text-splitters
 langchain-core==0.3.28
 sentry-sdk[fastapi]==2.18.0
-openai==1.54.5
+openai==1.12.0
+httpx==0.27.0
