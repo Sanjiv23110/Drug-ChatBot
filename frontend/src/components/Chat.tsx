@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import ReactGA from 'react-ga4';
 import DisclaimerModal from './DisclaimerModal';
+import { useTheme } from '../context/ThemeContext';
+import { Moon, Sun, User, Settings, Send, HelpCircle, Activity, ExternalLink } from 'lucide-react';
 
 interface Message {
     id: string;
@@ -10,7 +12,12 @@ interface Message {
 }
 
 const Chat: React.FC = () => {
-    const [messages, setMessages] = useState<Message[]>([]);
+    const { theme, toggleTheme } = useTheme();
+    const [messages, setMessages] = useState<Message[]>([{
+        id: '0',
+        role: 'assistant',
+        content: "Hello! I'm your Solomind.ai Healthcare Assistant. I'm here to help pharmacists with drug information. How can I assist you today?"
+    }]);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [showDisclaimer, setShowDisclaimer] = useState(false);
@@ -62,10 +69,10 @@ const Chat: React.FC = () => {
         setIsLoading(true);
 
         try {
-            const response = await fetch('http://localhost:8000/api/chat', {
+            const response = await fetch('/api/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: userMsg.content }),
+                body: JSON.stringify({ question: userMsg.content }),
             });
 
             if (!response.ok) throw new Error('Network response was not ok');
@@ -97,15 +104,6 @@ const Chat: React.FC = () => {
                 content: "Sorry, I encountered an error processing your request."
             };
             setMessages(prev => [...prev, errorMsg]);
-
-            // Track errors in Google Analytics (if initialized)
-            if (import.meta.env.VITE_GA_MEASUREMENT_ID) {
-                ReactGA.event({
-                    category: 'Chat',
-                    action: 'Query',
-                    label: 'Error',
-                });
-            }
         } finally {
             setIsLoading(false);
         }
@@ -113,99 +111,164 @@ const Chat: React.FC = () => {
 
     return (
         <>
-            {showDisclaimer && <DisclaimerModal onAccept={handleAcceptDisclaimer} />}
+            <DisclaimerModal
+                isOpen={showDisclaimer}
+                onAccept={handleAcceptDisclaimer}
+            />
 
-            <div className="flex flex-col h-screen max-w-4xl mx-auto p-4">
-                <header className="mb-4">
-                    <h1 className="text-2xl font-bold text-gray-800">Solomind Drug Chatbot</h1>
+            <div className="flex flex-col h-screen">
+                {/* Header */}
+                <header className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 px-6 py-4 flex items-center justify-between transition-colors duration-200">
+                    <div className="flex items-center gap-3">
+                        {/* Medical Logo Icon */}
+                        <div className="w-10 h-10 bg-gradient-to-br from-teal-400 to-cyan-500 rounded-lg flex items-center justify-center shadow-md">
+                            <Activity className="w-6 h-6 text-white" strokeWidth={2.5} />
+                        </div>
+                        <div>
+                            <h1 className="text-lg font-semibold text-gray-900 dark:text-white">
+                                Solomind.ai
+                            </h1>
+                            <span className="inline-block px-2 py-0.5 text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded border border-gray-300 dark:border-gray-700">
+                                Clinical Support System
+                            </span>
+                        </div>
+                    </div>
 
-                    {/* Warning Banner - Always Visible */}
-                    <div className="mt-2 bg-yellow-50 border border-yellow-200 rounded-md p-3">
-                        <p className="text-xs text-yellow-800">
-                            ⚠️ <strong>Reference Tool Only:</strong> This chatbot provides drug information for informational purposes only.
-                            Always verify critical information with official sources and consult healthcare professionals for medical decisions.
-                        </p>
-                        <p className="text-xs text-yellow-700 mt-1">
-                            <strong>Source:</strong> All drug monographs sourced from{' '}
-                            <a
-                                href="https://health-products.canada.ca/dpd-bdpp/?lang=eng"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="underline hover:text-yellow-900"
-                            >
-                                Health Canada Drug Product Database
-                            </a>{' '}
-                            (Official Government of Canada)
-                        </p>
+                    {/* Header Icons */}
+                    <div className="flex items-center gap-2">
+                        {/* Theme Toggle */}
+                        <button
+                            onClick={toggleTheme}
+                            className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                            aria-label="Toggle theme"
+                        >
+                            {theme === 'light' ? (
+                                <Moon className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+                            ) : (
+                                <Sun className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+                            )}
+                        </button>
+
+                        {/* User Icon */}
+                        <button
+                            className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                            aria-label="User profile"
+                        >
+                            <User className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+                        </button>
+
+                        {/* Settings Icon */}
+                        <button
+                            className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                            aria-label="Settings"
+                        >
+                            <Settings className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+                        </button>
                     </div>
                 </header>
 
-                <div className="flex-1 overflow-y-auto bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-4">
-                    {messages.length === 0 && (
-                        <div className="text-center text-gray-500 mt-20">
-                            <p>Welcome! Ask me anything about drug monographs.</p>
-                        </div>
-                    )}
-
+                {/* Messages Area */}
+                <div className="flex-1 overflow-y-auto px-6 py-6 space-y-4">
                     {messages.map((msg) => (
                         <div
                             key={msg.id}
-                            className={`mb-4 flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                            className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                         >
-                            <div
-                                className={`max-w-[80%] rounded-lg p-3 ${msg.role === 'user'
-                                    ? 'bg-blue-600 text-white'
-                                    : 'bg-gray-100 text-gray-800'
-                                    }`}
-                            >
-                                <p className="whitespace-pre-wrap">{msg.content}</p>
-                                {msg.sources && msg.sources.length > 0 && (
-                                    <div className="mt-2 text-xs opacity-75 border-t border-gray-300/20 pt-1">
-                                        Sources: {msg.sources.join(', ')}
+                            <div className={`flex gap-3 max-w-3xl ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
+                                {/* Avatar */}
+                                <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${msg.role === 'assistant'
+                                    ? 'bg-gradient-to-br from-emerald-400 to-teal-500'
+                                    : 'bg-gradient-to-br from-blue-400 to-indigo-500'
+                                    }`}>
+                                    {msg.role === 'assistant' ? (
+                                        <Activity className="w-4 h-4 text-white" strokeWidth={2.5} />
+                                    ) : (
+                                        <User className="w-4 h-4 text-white" />
+                                    )}
+                                </div>
+
+                                {/* Message Bubble */}
+                                <div className="flex-1">
+                                    <div className={`px-4 py-3 rounded-2xl ${msg.role === 'assistant'
+                                        ? 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100'
+                                        : 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white'
+                                        }`}>
+                                        <p className="text-sm whitespace-pre-wrap leading-relaxed">{msg.content}</p>
                                     </div>
-                                )}
+                                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 px-1">
+                                        {new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     ))}
+
                     {isLoading && (
-                        <div className="flex justify-start mb-4">
-                            <div className="bg-gray-100 rounded-lg p-3 text-gray-500">
-                                Thinking...
+                        <div className="flex justify-start">
+                            <div className="flex gap-3 max-w-3xl">
+                                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center">
+                                    <Activity className="w-4 h-4 text-white animate-pulse" strokeWidth={2.5} />
+                                </div>
+                                <div className="px-4 py-3 rounded-2xl bg-gray-100 dark:bg-gray-800">
+                                    <div className="flex gap-1">
+                                        <div className="w-2 h-2 bg-gray-400 dark:bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                                        <div className="w-2 h-2 bg-gray-400 dark:bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                                        <div className="w-2 h-2 bg-gray-400 dark:bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     )}
                     <div ref={messagesEndRef} />
                 </div>
 
-                <form onSubmit={handleSubmit} className="flex gap-2">
-                    <input
-                        type="text"
-                        value={input}
-                        onChange={(e) => setInput(e.target.value)}
-                        placeholder="Ask a question..."
-                        className="flex-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        disabled={isLoading}
-                    />
-                    <button
-                        type="submit"
-                        disabled={isLoading}
-                        className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 disabled:opacity-50 font-medium"
-                    >
-                        Send
-                    </button>
-                </form>
+                {/* Input Area */}
+                <div className="border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 px-6 py-4 transition-colors duration-200">
+                    <form onSubmit={handleSubmit} className="space-y-3">
+                        <div className="flex gap-3">
+                            <input
+                                type="text"
+                                value={input}
+                                onChange={(e) => setInput(e.target.value)}
+                                placeholder="Ask about drug interactions, clinical trials, dosing guidelines..."
+                                className="flex-1 px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-all"
+                                disabled={isLoading}
+                            />
+                            <button
+                                type="submit"
+                                disabled={isLoading || !input.trim()}
+                                className="p-3 rounded-xl bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-md hover:shadow-lg"
+                            >
+                                <Send className="w-5 h-5" />
+                            </button>
+                        </div>
 
-                {/* Footer Disclaimer */}
-                <div className="mt-3 text-center">
-                    <p className="text-xs text-gray-500">
-                        Solomind Drug Chatbot v1.0 | For healthcare professionals only |
-                        <button
-                            onClick={() => setShowDisclaimer(true)}
-                            className="ml-1 text-blue-600 hover:underline"
-                        >
-                            View Full Disclaimer
-                        </button>
-                    </p>
+                        <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+                            <div className="flex items-center gap-2 flex-wrap">
+                                <p>Press Enter to send, Shift + Enter for new line.</p>
+                                <span className="text-gray-400 dark:text-gray-500">•</span>
+                                <p>This AI provides educational information only and should not replace professional medical judgment.</p>
+                                <span className="text-gray-400 dark:text-gray-500">•</span>
+                                <a
+                                    href="https://health-products.canada.ca/dpd-bdpp/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium underline"
+                                >
+                                    Health Canada DPD
+                                    <ExternalLink className="w-3 h-3" />
+                                </a>
+                            </div>
+                            <button
+                                type="button"
+                                onClick={() => setShowDisclaimer(true)}
+                                className="p-1.5 rounded-full bg-gray-900 dark:bg-gray-800 hover:bg-gray-800 dark:hover:bg-gray-700 transition-colors flex-shrink-0"
+                                aria-label="View full disclaimer"
+                            >
+                                <HelpCircle className="w-4 h-4 text-white" />
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </>

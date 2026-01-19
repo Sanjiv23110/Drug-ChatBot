@@ -1,0 +1,15 @@
+# Sample drug name mappings for testing
+# Format: brand_name,generic_name
+
+Gravol,dimenhydrinate
+Tylenol,acetaminophen
+Advil,ibuprofen
+Aspirin,acetylsalicylic acid
+Motrin,ibuprofen
+Aleve,naproxen
+Benadryl,diphenhydramine
+Claritin,loratadine
+Zyrtec,cetirizine
+Pepcid,famotidine
+Zantac,ranitidine
+Imodium,loperamide

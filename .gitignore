@@ -1,4 +1,18 @@
+# ==========================================
+# CRITICAL: Environment Variables & Secrets
+# ==========================================
+# NEVER commit these - contain API keys!
+.env
+.env.*
+!.env.example
+.env.local
+.env.*.local
+backend/.env
+frontend/.env
+
+# ==========================================
 # Python
+# ==========================================
 __pycache__/
 *.py[cod]
 *$py.class
@@ -23,49 +37,108 @@ wheels/
 .installed.cfg
 *.egg
 
-# Environment variables (CRITICAL - contains API keys!)
-.env
-.env.local
-.env.*.local
-
-# ChromaDB database (large files, rebuilt from source data)
-chroma_db/
+# ==========================================
+# Database Files (TOO LARGE for Git!)
+# ==========================================
+# These go in Docker images, not Git
 *.db
 *.sqlite
+*.sqlite3
+chroma_db/
+data/
+backend/data/
+!backend/data/.gitkeep
 
-# Node
+# PDFs are stored in Docker images
+*.pdf
+!README.pdf
+
+# ==========================================
+# Node / Frontend
+# ==========================================
 node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
-
-# Build outputs
 dist/
 build/
+.next/
+.nuxt/
+.cache/
+.vite/
 
-# IDE
+# ==========================================
+# Docker (for Hybrid approach)
+# ==========================================
+# Don't commit built images or volumes
+*.tar
+*.tar.gz
+docker-compose.override.yml
+.dockerignore
+
+# ==========================================
+# IDE / Editor
+# ==========================================
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
 .DS_Store
+*.code-workspace
 
+# ==========================================
 # Testing
+# ==========================================
 .pytest_cache/
 .coverage
 htmlcov/
+*.cover
+.hypothesis/
+.tox/
 
+# ==========================================
 # Logs
+# ==========================================
 *.log
 logs/
+npm-debug.log*
+yarn-debug.log*
 
-# Data files (PDFs are large - store separately)
-data/
-*.pdf
-
-# Temporary files
+# ==========================================
+# Temporary Files
+# ==========================================
 *.tmp
 *.bak
 .cache/
+*.swp
+.temp/
+
+# ==========================================
+# OS Generated
+# ==========================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# ==========================================
+# Backup Scripts Output
+# ==========================================
+*-backup-*.tar.gz
+*-backup-*.zip
+backup/
+backups/
+
+# ==========================================
+# Production Secrets
+# ==========================================
+*.pem
+*.key
+*.cert
+secrets/
+credentials/

@@ -1,19 +1,23 @@
-fastapi
-fastapi==0.115.6
-uvicorn[standard]==0.34.0
-groq
-langchain-groq
-langchain-huggingface
-sentence-transformers
-chromadb==0.5.23
-python-multipart==0.0.20
-python-dotenv==1.2.1
-pydantic==2.10.4
-pydantic-settings==2.7.0
-pypdf==5.1.0
-unstructured==0.16.14
-langchain
-langchain-text-splitters
-langchain-core==0.3.28
-sentry-sdk[fastapi]==2.18.0
-openai==1.54.5
+# Core FastAPI
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+pydantic>=2.0.0
+pydantic-settings>=2.0.0
+python-multipart
+
+# Azure OpenAI
+openai>=1.12.0
+httpx==0.27.0
+
+# Vector store
+faiss-cpu==1.7.4
+numpy>=1.24.0,<2.0  # Pin to <2.0 for faiss-cpu compatibility
+
+# PDF processing
+pypdf>=4.0.0
+
+# Text splitting
+langchain-text-splitters>=0.0.7
+
+# Environment
+python-dotenv>=1.0.0

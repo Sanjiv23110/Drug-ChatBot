@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import ReactGA from 'react-ga4'
 import Chat from './components/Chat'
+import { ThemeProvider } from './context/ThemeContext'
 
 function App() {
   useEffect(() => {
@@ -13,9 +14,11 @@ function App() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Chat />
-    </div>
+    <ThemeProvider>
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-950 transition-colors duration-200">
+        <Chat />
+      </div>
+    </ThemeProvider>
   )
 }
 

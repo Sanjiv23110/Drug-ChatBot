@@ -3,20 +3,34 @@ version: '3.8'
 services:
   backend:
     build: ./backend
-    container_name: maclens_backend
-    volumes:
-      - ./backend/chroma_db:/app/chroma_db
-      - ./backend/data_ingest:/app/data_ingest
-      - ./backend/app:/app/app
-    env_file:
-      - ./backend/.env
+    container_name: solomind_backend
     ports:
       - "8000:8000"
+    env_file:
+      - ./backend/.env
+    volumes:
+      # Data volume for persistence
+      - ./backend/data:/app/data
+    networks:
+      - solomind_network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
   frontend:
     build: ./frontend
-    container_name: maclens_frontend
+    container_name: solomind_frontend
     ports:
-      - "80:80"
+      - "3000:80" # nginx listens on 80 inside container
+    networks:
+      - solomind_network
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
+
+networks:
+  solomind_network:
+    driver: bridge
