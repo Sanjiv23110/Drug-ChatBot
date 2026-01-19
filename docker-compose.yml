@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   backend:
-    build: ./backend
+    image: sanjivp/solomind-backend:latest
     container_name: solomind_backend
     ports:
       - "8000:8000"
@@ -21,7 +21,7 @@ services:
       start_period: 30s
 
   frontend:
-    build: ./frontend
+    image: sanjivp/solomind-frontend:latest
     container_name: solomind_frontend
     ports:
       - "3000:80" # nginx listens on 80 inside container
