@@ -46,11 +46,12 @@ SECTION_QUERY_KEYWORDS = {
     }
 }
 
-# Default retrieval parameters (AGGRESSIVE for deadline - increased for better coverage)
-TOP_K_INITIAL = 100          # Retrieve more candidates (was 50)
-MIN_CONTEXT_CHUNKS = 20      # Return at least 20 chunks (was 10)
-MAX_CONTEXT_CHUNKS = 35      # Up to 35 chunks (was 20)
-RERANK_TOP_K = 40           # Consider more for reranking (was 25)
+# Default retrieval parameters (ENHANCED FOR PATH 1 - ChatGPT-level coverage)
+# Component 1: Increased retrieval for comprehensive PDF coverage
+TOP_K_INITIAL = 200          # Retrieve MORE candidates (was 100) - casts wider net
+MIN_CONTEXT_CHUNKS = 30      # Return at least 30 chunks (was 20) - ensures minimum context
+MAX_CONTEXT_CHUNKS = 60      # Up to 60 chunks (was 35) - allows comprehensive answers
+RERANK_TOP_K = 80           # Consider more for reranking (was 40) - better selection
 
 # FIX #2: Medical synonym expansion for keyword boosting
 # Improves retrieval for pregnancy/geriatric queries by expanding with medical terms
@@ -461,6 +462,10 @@ def retrieve_with_resolver(
     """
     Retrieve with drug name resolution.
     
+    CASE-SENSITIVITY FIX:
+    Normalize query to lowercase to ensure consistent embeddings.
+    This prevents "GRAVOL" and "gravol" from producing different results.
+    
     Implements Guardrail 3: Multi-drug detection
     
     If >1 drug detected → disable drug-consistency filtering
@@ -483,10 +488,14 @@ def retrieve_with_resolver(
         "What is Gravol?" → single drug → filter to dimenhydrinate
         "Can I take Tylenol and Advil?" → 2 drugs → NO FILTER (interaction query)
     """
+    # FIX: Normalize query to lowercase for consistent embeddings
+    # This ensures "GRAVOL", "gravol", "Gravol" all produce same embedding
+    normalized_query = query.lower()
+    
     # Extract all drug names from query (Guardrail 3)
     # Use resolve() instead of extract_drug_names() to enable fuzzy matching
     # This allows brand names like "GRAVOL" to be detected and resolved to generic names
-    resolved = resolver.resolve(query)
+    resolved = resolver.resolve(normalized_query)
     drugs_found = [resolved] if resolved else []
     
     if len(drugs_found) == 0:
@@ -507,9 +516,9 @@ def retrieve_with_resolver(
         )
         query_drug = None
     
-    # Call standard retrieve with resolved drug (or None)
+    # Call standard retrieve with normalized query (lowercase)
     return retrieve(
-        query=query,
+        query=normalized_query,
         faiss_store=faiss_store,
         metadata_store=metadata_store,
         embedder=embedder,
@@ -518,4 +527,5 @@ def retrieve_with_resolver(
         min_context=min_context,
         max_context=max_context
     )
+
 

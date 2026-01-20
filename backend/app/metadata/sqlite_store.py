@@ -5,6 +5,7 @@ Deterministic chunk IDs ensure FAISS index alignment.
 """
 import sqlite3
 import hashlib
+import logging
 from pathlib import Path
 from typing import List, Dict, Optional, Tuple
 from datetime import datetime
@@ -171,6 +172,96 @@ class SQLiteMetadataStore:
                 (file_path,)
             )
             return cursor.rowcount
+    
+    def get_chunks_by_drug_and_section(
+        self,
+        drug_name: str,
+        section_name: str
+    ) -> List[Dict]:
+        """
+        Get ALL chunks from a specific section for a drug.
+        
+        This is for exhaustive section retrieval - returns every chunk
+        from the section regardless of semantic similarity.
+        
+        HANDLES NULL SECTION NAMES: If section_name is NULL in database,
+        falls back to searching in chunk_text.
+        
+        Args:
+            drug_name: Drug name (generic or brand)
+            section_name: Section name (e.g., 'ADVERSE REACTIONS')
+            
+        Returns:
+            List of all chunks from the section, sorted by page and position
+            
+        Example:
+            get_chunks_by_drug_and_section('trimipramine', 'ADVERSE REACTIONS')
+            → Returns ALL chunks from adverse reactions section
+        """
+        with sqlite3.connect(self.db_path) as conn:
+            conn.row_factory = sqlite3.Row
+            
+            # Strategy 1: Try with section_name field first (properly ingested PDFs)
+            cursor = conn.execute(
+                """
+                SELECT * FROM chunks 
+                WHERE (file_path LIKE ? OR file_path LIKE ?)
+                AND section_name LIKE ?
+                ORDER BY file_path, page_num, char_start
+                """,
+                (
+                    f'%{drug_name}%',  # Generic name
+                    f'%{drug_name.upper()}%',  # Brand name (often uppercase)
+                    f'%{section_name}%'  # Section name (partial match)
+                )
+            )
+            
+            chunks = [dict(row) for row in cursor.fetchall()]
+            
+            # Strategy 2: If no results (NULL section names), search in chunk_text
+            if not chunks:
+                logging.info(
+                    f"No chunks found with section_name, falling back to text search"
+                )
+                
+                # Search for section heading in the text
+                # Common formats: "ADVERSE REACTIONS", "Adverse Reactions:", etc.
+                section_patterns = [
+                    section_name.upper(),  # "ADVERSE REACTIONS"
+                    section_name.title(),  # "Adverse Reactions"
+                    section_name.lower(),  # "adverse reactions"
+                ]
+                
+                # Build OR condition for all patterns
+                or_conditions = " OR ".join(["chunk_text LIKE ?" for _ in section_patterns])
+                
+                query = f"""
+                    SELECT * FROM chunks 
+                    WHERE (file_path LIKE ? OR file_path LIKE ?)
+                    AND ({or_conditions})
+                    ORDER BY file_path, page_num, char_start
+                """
+                
+                params = [
+                    f'%{drug_name}%',
+                    f'%{drug_name.upper()}%'
+                ] + [f'%{pattern}%' for pattern in section_patterns]
+                
+                cursor = conn.execute(query, params)
+                chunks = [dict(row) for row in cursor.fetchall()]
+                
+                if chunks:
+                    logging.info(
+                        f"Found {len(chunks)} chunks using text search fallback"
+                    )
+            
+            # Add chunk_index for proper ordering
+            for i, chunk in enumerate(chunks):
+                if 'chunk_index' not in chunk:
+                    chunk['chunk_index'] = i
+            
+            return chunks
+
     
     # File record methods for fingerprinting
     

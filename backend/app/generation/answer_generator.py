@@ -58,12 +58,12 @@ class AnswerGenerator:
         self,
         model: str = "gpt-4o",
         temperature: float = 0.0,
-        max_tokens: int = 800,  # Increased for comprehensive answers
+        max_tokens: int = 800,  # Default, but will be dynamically adjusted
         timeout: int = 30
     ):
         self.model = model
         self.temperature = temperature
-        self.max_tokens = max_tokens
+        self.default_max_tokens = max_tokens  # Store default
         self.timeout = timeout
         
         # Initialize Azure OpenAI client
@@ -77,13 +77,134 @@ class AnswerGenerator:
         
         logging.info(f"AnswerGenerator initialized with model={self.model}, temp={self.temperature}")
     
+    def _calculate_dynamic_tokens(self, query: str, context_chunks: List[Dict]) -> int:
+        """
+        Dynamically calculate max_tokens based on query complexity and context.
+        
+        Strategy:
+        - Simple queries (e.g., "what is X?") → fewer tokens (300-500)
+        - Complex queries (e.g., "explain mechanism...") → more tokens (800-1200)
+        - More context chunks → potentially longer answer
+        
+        Args:
+            query: User query text
+            context_chunks: Retrieved context chunks
+            
+        Returns:
+            Optimal max_tokens for this query
+        """
+        query_lower = query.lower()
+        
+        # Base token allocation
+        base_tokens = 300
+        
+        # 1. Query complexity factors
+        
+        # Simple factual queries (short answers expected)
+        simple_patterns = [
+            "what is",
+            "name",
+            "define",
+            "how much",
+            "how many",
+            "what's",
+            "is it",
+            "can i",
+            "should i"
+        ]
+        
+        # Complex explanation queries (longer answers expected)
+        complex_patterns = [
+            "explain",
+            "all",
+            "how does",
+            "mechanism",
+            "why",
+            "compare",
+            "difference between",
+            "interaction",
+            "contraindication",
+            "list",
+            "side effect",
+            "adverse",
+            "warning",
+            "precaution"
+        ]
+        
+        # List queries (medium length)
+        list_patterns = [
+            "what are",
+            "types of"
+        ]
+        
+        # Determine query type
+        is_simple = any(pattern in query_lower for pattern in simple_patterns)
+        is_complex = any(pattern in query_lower for pattern in complex_patterns)
+        is_list = any(pattern in query_lower for pattern in list_patterns)
+        
+        if is_simple:
+            # Simple factual question → short answer
+            base_tokens = 300
+            logging.debug(f"Simple query detected, base_tokens={base_tokens}")
+        elif is_list:
+            # List query → medium length
+            base_tokens = 500
+            logging.debug(f"List query detected, base_tokens={base_tokens}")
+        elif is_complex:
+            # Complex explanation → longer answer
+            base_tokens = 800
+            logging.debug(f"Complex query detected, base_tokens={base_tokens}")
+        else:
+            # Default for unclear queries
+            base_tokens = 800
+            logging.debug(f"Default query type, base_tokens={base_tokens}")
+        
+        # 2. Context size adjustment
+        # More context chunks might need longer synthesis
+        num_chunks = len(context_chunks)
+        if num_chunks > 10:
+            # Many chunks → might need comprehensive synthesis
+            context_bonus = 200
+        elif num_chunks > 5:
+            context_bonus = 100
+        else:
+            context_bonus = 0
+        
+        # 3. Query length adjustment
+        # Longer questions often expect detailed answers
+        query_words = len(query.split())
+        if query_words > 15:
+            # Detailed question → detailed answer
+            query_bonus = 150
+        elif query_words > 10:
+            query_bonus = 50
+        else:
+            query_bonus = 0
+        
+        # Calculate final tokens
+        max_tokens = base_tokens + context_bonus + query_bonus
+        
+        # Enforce bounds
+        min_tokens = 200  # Always allow at least 200 tokens
+        max_tokens_limit = 1500  # Cap at 1500 to control costs
+        
+        max_tokens = max(min_tokens, min(max_tokens, max_tokens_limit))
+        
+        logging.info(
+            f"Dynamic tokens: base={base_tokens}, context_bonus={context_bonus}, "
+            f"query_bonus={query_bonus}, final={max_tokens}"
+        )
+        
+        return max_tokens
+
+    
     def generate(
         self,
         query: str,
         context_chunks: List[Dict]
     ) -> Dict:
         """
-        Generate answer with 5-gate validation.
+        Generate answer with 5-gate validation and dynamic token allocation.
         
         Args:
             query: User query
@@ -104,13 +225,16 @@ class AnswerGenerator:
         if not context_chunks:
             return self._return_not_found("No context chunks provided", start_time)
         
+        # Calculate dynamic max_tokens based on query complexity
+        dynamic_max_tokens = self._calculate_dynamic_tokens(query, context_chunks)
+        
         # Format context with sources
         context_text, context_sources = self._format_context(context_chunks)
         user_prompt = format_user_prompt(query, context_text)
         
-        # Generate response with GPT-4 (NO VALIDATION - just return answer)
+        # Generate response with GPT-4 using dynamic tokens
         try:
-            response = self._call_llm(user_prompt)
+            response = self._call_llm(user_prompt, max_tokens=dynamic_max_tokens)
         except Exception as e:
             logging.error(f"LLM call failed: {e}")
             return self._return_not_found(f"LLM generation failed: {e}", start_time)
@@ -166,17 +290,21 @@ class AnswerGenerator:
         context_text = "\n---\n\n".join(context_parts)
         return context_text, sources
     
-    def _call_llm(self, user_prompt: str, max_retries: int = 3) -> str:
+    def _call_llm(self, user_prompt: str, max_tokens: int = None, max_retries: int = 3) -> str:
         """
-        Call Azure OpenAI with retry logic.
+        Call Azure OpenAI with retry logic and dynamic token allocation.
         
         Args:
             user_prompt: Already formatted user prompt with context
+            max_tokens: Maximum tokens to generate (if None, uses default)
             max_retries: Number of retry attempts
             
         Returns:
             LLM response text
         """
+        # Use provided max_tokens or fall back to default
+        tokens_to_use = max_tokens if max_tokens is not None else self.default_max_tokens
+        
         for attempt in range(max_retries):
             try:
                 response = self.client.chat.completions.create(
@@ -186,7 +314,7 @@ class AnswerGenerator:
                         {"role": "user", "content": user_prompt}
                     ],
                     temperature=self.temperature,
-                    max_tokens=self.max_tokens,
+                    max_tokens=tokens_to_use,
                     timeout=self.timeout
                 )
                 

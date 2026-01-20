@@ -5,6 +5,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Dict, Optional
+import logging
 
 # Import RAG components
 from app.vectorstore.faiss_store import FAISSVectorStore
@@ -14,6 +15,13 @@ from app.ingestion.embedder import AzureEmbedder
 from app.retrieval.retriever import retrieve_with_resolver
 from app.resolver.drug_name_resolver import DrugNameResolver
 from app.generation.answer_generator import AnswerGenerator
+
+# Component 2: Multi-Query Expansion Agent
+from app.agents.query_expander import QueryExpander
+from app.utils.deduplication import deduplicate_chunks
+
+# Production: Exhaustive Section Retrieval System
+from app.retrieval.section_retrieval import SectionDetector, ExhaustiveSectionRetriever
 
 # Initialize app
 app = FastAPI(title="Medical RAG API")
@@ -33,11 +41,15 @@ metadata_store = None
 embedder = None
 resolver = None
 generator = None
+query_expander = None  # Component 2: Query expansion agent
+section_detector = None  # Production: Section detection
+exhaustive_retriever = None  # Production: Exhaustive section retrieval
 
 @app.on_event("startup")
 async def startup():
     """Initialize RAG system on startup."""
-    global faiss_store, metadata_store, embedder, resolver, generator
+    global faiss_store, metadata_store, embedder, resolver, generator, query_expander
+    global section_detector, exhaustive_retriever
     
     print("🚀 Initializing RAG system...")
     
@@ -58,6 +70,15 @@ async def startup():
     embedder = AzureEmbedder()
     resolver = DrugNameResolver("data/metadata.db")
     generator = AnswerGenerator()
+    
+    # Component 2: Initialize query expander agent
+    query_expander = QueryExpander(drug_resolver=resolver)
+    print("✓ Query expansion agent initialized")
+    
+    # Production: Initialize exhaustive section retrieval
+    section_detector = SectionDetector()
+    exhaustive_retriever = ExhaustiveSectionRetriever(metadata_store)
+    print("✓ Exhaustive section retrieval initialized")
     
     print("✅ RAG system ready!\n")
 
@@ -100,16 +121,61 @@ async def query_rag(request: QueryRequest):
         )
     
     try:
-        # 1. Retrieve relevant chunks
-        chunks = retrieve_with_resolver(
-            query=request.question,
-            faiss_store=faiss_store,
-            metadata_store=metadata_store,
-            embedder=embedder,
-            resolver=resolver
-        )
+        # PRODUCTION: Hybrid Intelligent Routing
+        # Step 0: Detect if this is a section query (e.g., adverse reactions)
+        section_detection = section_detector.detect_section(request.question)
+        drug_name = resolver.extract_drug_names(request.question)
         
-        if not chunks:
+        final_chunks = None  # Initialize to prevent UnboundLocalError
+        
+        if section_detection and drug_name:
+            # EXHAUSTIVE MODE: Get ALL chunks from the section
+            section_type, confidence = section_detection
+            detected_drug = drug_name[0] if drug_name else None
+            
+            if detected_drug:
+                logging.info(
+                    f"🎯 EXHAUSTIVE retrieval triggered: {section_type} "
+                    f"for {detected_drug} (confidence: {confidence:.2f})"
+                )
+                
+                # Get ALL chunks from the section
+                final_chunks = exhaustive_retriever.retrieve_section_exhaustive(
+                    drug_name=detected_drug,
+                    section_type=section_type
+                )
+                
+                if not final_chunks:
+                    # Fall back to standard retrieval if section not found
+                    logging.warning("Exhaustive retrieval returned no results, falling back")
+                    section_detection = None
+                else:
+                    logging.info(f"✓ Retrieved {len(final_chunks)} chunks from section exhaustively")        
+        
+        if not section_detection or not final_chunks:
+            # STANDARD MODE: Multi-query expansion + top-K retrieval
+            # Step 1: Expand query into variants (Component 2)
+            query_variants = query_expander.expand_query(request.question)
+            
+            # Step 2: Retrieve for ALL variants
+            all_chunks = []
+            for variant in query_variants:
+                chunks = retrieve_with_resolver(
+                    query=variant,
+                    faiss_store=faiss_store,
+                    metadata_store=metadata_store,
+                    embedder=embedder,
+                    resolver=resolver
+                )
+                all_chunks.extend(chunks)
+            
+            # Step 3: Deduplicate chunks
+            unique_chunks = deduplicate_chunks(all_chunks)
+            
+            # Step 4: Select top chunks (max 60 from Component 1)
+            final_chunks = unique_chunks[:60]
+        
+        if not final_chunks:
             return QueryResponse(
                 answer="I couldn't find relevant information in the available drug monographs.",
                 sources=[],
@@ -117,17 +183,17 @@ async def query_rag(request: QueryRequest):
                 chunks_retrieved=0
             )
         
-        # 2. Generate answer
+        # Step 5: Generate answer from comprehensive context
         result = generator.generate(
-            query=request.question,
-            context_chunks=chunks
+            query=request.question,  # Use original query for answer
+            context_chunks=final_chunks
         )
         
         return QueryResponse(
             answer=result['answer'],
             sources=result['sources'],
             has_answer=result['has_answer'],
-            chunks_retrieved=len(chunks)
+            chunks_retrieved=len(final_chunks)
         )
     
     except Exception as e:
