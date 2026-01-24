@@ -108,7 +108,10 @@ class QueryExpander:
     
     def _is_general_info_query(self, query_lower: str) -> bool:
         """Detect general information queries."""
-        patterns = ['what is', 'tell me about', 'information', 'describe']
+        patterns = [
+            'what is', 'tell me about', 'information', 'describe',
+            'used for', 'use of', 'indication', 'purpose'
+        ]
         return any(p in query_lower for p in patterns)
     
     def _is_mechanism_query(self, query_lower: str) -> bool:
@@ -216,16 +219,33 @@ class QueryExpander:
              "Gravol description",
              "Gravol indications",
              "Tell me about Gravol"]
+            
+            "What is Gravol used for" →
+            ["Gravol indications",
+             "Gravol use",
+             "Gravol purpose",
+             "What is Gravol for"]
         """
         if not drug:
             return []
         
-        return [
+        variants = [
             f"{drug} information",
             f"{drug} description",
             f"{drug} indications",
             f"Tell me about {drug}"
         ]
+        
+        # If asking about use/purpose, add those variants
+        if any(p in query_lower for p in ['used for', 'use of', 'purpose', 'indication']):
+            variants.extend([
+                f"{drug} use",
+                f"{drug} purpose",
+                f"What is {drug} for",
+                f"{drug} therapeutic use"
+            ])
+        
+        return variants
     
     def _expand_mechanism(self, drug: Optional[str], query_lower: str) -> List[str]:
         """

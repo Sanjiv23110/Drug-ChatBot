@@ -103,6 +103,36 @@ class QueryResponse(BaseModel):
     chunks_retrieved: int
 
 
+def normalize_query(query: str) -> str:
+    """
+    Normalize query for consistent retrieval.
+    
+    Fixes issue where "what is gravol?", "whats gravol", "what is the use of gravol?"
+    would generate different results due to multi-query expansion inconsistency.
+    
+    Args:
+        query: Raw user question
+        
+    Returns:
+        Normalized query string
+    """
+    # Lowercase for consistency
+    query = query.lower().strip()
+    
+    # Remove trailing punctuation
+    query = query.rstrip('?.!,;:')
+    
+    # Normalize spacing
+    query = ' '.join(query.split())
+    
+    # Common contractions
+    query = query.replace("what's", "what is")
+    query = query.replace("whats", "what is")
+    query = query.replace("'s", " is")
+    
+    return query
+
+
 @app.post("/api/chat", response_model=QueryResponse)
 async def query_rag(request: QueryRequest):
     """
@@ -121,10 +151,15 @@ async def query_rag(request: QueryRequest):
         )
     
     try:
+        # CRITICAL: Normalize query for consistency
+        # Ensures "what is gravol?", "whats gravol", etc. get same results
+        normalized_question = normalize_query(request.question)
+        logging.info(f"Original query: '{request.question}' → Normalized: '{normalized_question}'")
+        
         # PRODUCTION: Hybrid Intelligent Routing
         # Step 0: Detect if this is a section query (e.g., adverse reactions)
-        section_detection = section_detector.detect_section(request.question)
-        drug_name = resolver.extract_drug_names(request.question)
+        section_detection = section_detector.detect_section(normalized_question)
+        drug_name = resolver.extract_drug_names(normalized_question)
         
         final_chunks = None  # Initialize to prevent UnboundLocalError
         
@@ -155,7 +190,7 @@ async def query_rag(request: QueryRequest):
         if not section_detection or not final_chunks:
             # STANDARD MODE: Multi-query expansion + top-K retrieval
             # Step 1: Expand query into variants (Component 2)
-            query_variants = query_expander.expand_query(request.question)
+            query_variants = query_expander.expand_query(normalized_question)
             
             # Step 2: Retrieve for ALL variants
             all_chunks = []
@@ -165,15 +200,18 @@ async def query_rag(request: QueryRequest):
                     faiss_store=faiss_store,
                     metadata_store=metadata_store,
                     embedder=embedder,
-                    resolver=resolver
+                    resolver=resolver,
+                    top_k=80  # Component 1: Enhanced from 35 to 60
                 )
                 all_chunks.extend(chunks)
             
-            # Step 3: Deduplicate chunks
-            unique_chunks = deduplicate_chunks(all_chunks)
+            # Step 3: Deduplicate across all variants
+            final_chunks = deduplicate_chunks(all_chunks)
             
-            # Step 4: Select top chunks (max 60 from Component 1)
-            final_chunks = unique_chunks[:60]
+            # Step 4: Select top-K (Component 1)
+            final_chunks = final_chunks[:60]  # Enhanced from 35 to 60
+            
+            logging.info(f"Retrieved {len(final_chunks)} unique chunks after deduplication")
         
         if not final_chunks:
             return QueryResponse(
