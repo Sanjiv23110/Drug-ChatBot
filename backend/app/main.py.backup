@@ -23,6 +23,9 @@ from app.utils.deduplication import deduplicate_chunks
 # Production: Exhaustive Section Retrieval System
 from app.retrieval.section_retrieval import SectionDetector, ExhaustiveSectionRetriever
 
+# Phase 3: Evidence-Based Guardrail System
+from app.guardrails import has_sufficient_evidence, get_no_evidence_response
+
 # Initialize app
 app = FastAPI(title="Medical RAG API")
 
@@ -213,13 +216,47 @@ async def query_rag(request: QueryRequest):
             
             logging.info(f"Retrieved {len(final_chunks)} unique chunks after deduplication")
         
-        if not final_chunks:
+        # =====================================================================
+        # PHASE 3: EVIDENCE-BASED GUARDRAIL
+        # =====================================================================
+        # Validate evidence BEFORE attempting to generate answer
+        # This prevents hallucinations and provides professional no-info responses
+        
+        drug_name_str = drug_name[0] if drug_name else None
+        section_type_str = section_detection[0] if section_detection else None
+        
+        if not has_sufficient_evidence(final_chunks, normalized_question):
+            # Insufficient evidence → Return professional no-info response
+            
+            # Determine reason for better contextual message
+            if drug_name_str and (not final_chunks or len(final_chunks) == 0):
+                reason = 'drug_not_found'
+            elif drug_name_str and section_type_str and final_chunks:
+                reason = 'section_not_found'
+            else:
+                reason = 'default'
+            
+            no_evidence_msg = get_no_evidence_response(
+                query=normalized_question,
+                drug_name=drug_name_str,
+                section_type=section_type_str,
+                reason=reason
+            )
+            
+            logging.warning(
+                f"⚠️  GUARDRAIL: Insufficient evidence for query: '{request.question}' "
+                f"(chunks: {len(final_chunks) if final_chunks else 0}, reason: {reason})"
+            )
+            
             return QueryResponse(
-                answer="I couldn't find relevant information in the available drug monographs.",
+                answer=no_evidence_msg,
                 sources=[],
                 has_answer=False,
-                chunks_retrieved=0
+                chunks_retrieved=len(final_chunks) if final_chunks else 0
             )
+        
+        # Evidence validation passed → Proceed with answer generation
+        logging.info(f"✅ GUARDRAIL: Evidence check passed, generating answer")
         
         # Step 5: Generate answer from comprehensive context
         result = generator.generate(
