@@ -72,11 +72,7 @@ const Chat: React.FC = () => {
             // Use environment variable for production, fallback to proxy for development
             const API_BASE_URL = import.meta.env.VITE_API_URL || '';
             const apiUrl = `${API_BASE_URL}/api/chat`;
-<<<<<<< HEAD
 
-=======
-            
->>>>>>> 14272d9239a04bd241db9bf7b1e27c6fd2ae4056
             const response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
