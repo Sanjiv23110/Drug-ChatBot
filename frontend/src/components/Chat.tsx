@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import ReactGA from 'react-ga4';
 import DisclaimerModal from './DisclaimerModal';
 import { useTheme } from '../context/ThemeContext';
-import { Moon, Sun, User, Settings, Send, HelpCircle, Activity, ExternalLink } from 'lucide-react';
+import { Moon, Sun, User, Settings, Send, HelpCircle, ExternalLink } from 'lucide-react';
 
 interface Message {
     id: string;
@@ -125,8 +125,8 @@ const Chat: React.FC = () => {
                 <header className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 px-6 py-4 flex items-center justify-between transition-colors duration-200">
                     <div className="flex items-center gap-3">
                         {/* Medical Logo Icon */}
-                        <div className="w-10 h-10 bg-gradient-to-br from-teal-400 to-cyan-500 rounded-lg flex items-center justify-center shadow-md">
-                            <Activity className="w-6 h-6 text-white" strokeWidth={2.5} />
+                        <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-md p-1.5">
+                            <img src="/solomind-logo.png" alt="Solomind Logo" className="w-full h-full object-contain" />
                         </div>
                         <div>
                             <h1 className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -181,11 +181,11 @@ const Chat: React.FC = () => {
                             <div className={`flex gap-3 max-w-3xl ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
                                 {/* Avatar */}
                                 <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${msg.role === 'assistant'
-                                    ? 'bg-gradient-to-br from-emerald-400 to-teal-500'
+                                    ? 'bg-white'
                                     : 'bg-gradient-to-br from-blue-400 to-indigo-500'
                                     }`}>
                                     {msg.role === 'assistant' ? (
-                                        <Activity className="w-4 h-4 text-white" strokeWidth={2.5} />
+                                        <img src="/solomind-logo.png" alt="Solomind" className="w-6 h-6 object-contain p-0.5" />
                                     ) : (
                                         <User className="w-4 h-4 text-white" />
                                     )}
@@ -210,8 +210,8 @@ const Chat: React.FC = () => {
                     {isLoading && (
                         <div className="flex justify-start">
                             <div className="flex gap-3 max-w-3xl">
-                                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center">
-                                    <Activity className="w-4 h-4 text-white animate-pulse" strokeWidth={2.5} />
+                                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-white flex items-center justify-center">
+                                    <img src="/solomind-logo.png" alt="Solomind" className="w-6 h-6 object-contain animate-pulse p-0.5" />
                                 </div>
                                 <div className="px-4 py-3 rounded-2xl bg-gray-100 dark:bg-gray-800">
                                     <div className="flex gap-1">
