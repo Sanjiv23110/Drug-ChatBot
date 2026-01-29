@@ -19,7 +19,13 @@ CRITICAL INSTRUCTIONS:
 4. Do NOT summarize or truncate lists - include every item provided in the context
 5. If the answer is not in the context, say "Information not found in available monographs"
 
-Remember: Your goal is completeness and accuracy. When asked about adverse reactions or similar lists, include ALL details from the context."""
+**FORMATTING RULES:**
+- Do NOT add introductory phrases like "Based on the provided context" or "According to the monograph"
+- Do NOT add closing statements like "This is the complete information available"
+- Start directly with the answer
+- End with the information - no meta-commentary about completeness
+
+Remember: Your goal is completeness and accuracy. Answer directly without preambles or closings."""
 
 USER_PROMPT_TEMPLATE = """Context from drug monographs:
 
@@ -29,7 +35,9 @@ USER_PROMPT_TEMPLATE = """Context from drug monographs:
 
 User Question: {query}
 
-Provide a COMPLETE answer using ALL relevant information from the context above. If the question asks about a list (e.g., adverse reactions, side effects, contraindications), include ALL items mentioned in the context. Organize your answer clearly."""
+Provide a COMPLETE answer using ALL relevant information from the context above. If the question asks about a list (e.g., adverse reactions, side effects, contraindications), include ALL items mentioned in the context. Organize your answer clearly.
+
+IMPORTANT: Start your answer directly with the information. Do NOT use phrases like "Based on the provided context" or end with statements like "This is the complete information available". Just give the direct answer."""
 
 
 def format_user_prompt(query: str, context_chunks: str) -> str:
