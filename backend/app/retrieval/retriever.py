@@ -24,9 +24,13 @@ SECTION_QUERY_KEYWORDS = {
         "keywords": ["contraindication", "contraindicated", "not use", "should not", "must not"],
         "sections": ["CONTRAINDICATIONS"]
     },
+    "dosage_forms": {
+        "keywords": ["dosage form", "dosage forms", "formulation", "bottle", "vial", "tablet", "capsule", "solution"],
+        "sections": ["DOSAGE FORMS"]
+    },
     "dosage": {
         "keywords": ["dosage", "dose", "how much", "administration", "administer"],
-        "sections": ["DOSAGE AND ADMINISTRATION", "DOSAGE FORMS"]
+        "sections": ["DOSAGE AND ADMINISTRATION"]
     },
     "side_effect": {
         "keywords": ["side effect", "adverse reaction", "adverse effect", "undesirable effect", "side-effect"],
