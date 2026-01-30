@@ -9,15 +9,38 @@ python-multipart
 openai>=1.12.0
 httpx==0.27.0
 
-# Vector store
+# Vector store (legacy - keeping for migration period)
 faiss-cpu==1.7.4
 numpy>=1.24.0,<2.0  # Pin to <2.0 for faiss-cpu compatibility
 
-# PDF processing
+# PDF processing (legacy)
 pypdf>=4.0.0
 
-# Text splitting
+# Text splitting (legacy)
 langchain-text-splitters>=0.0.7
 
 # Environment
 python-dotenv>=1.0.0
+
+# ============================================
+# NEW: Production PostgreSQL-based RAG System
+# ============================================
+
+# PostgreSQL (async)
+asyncpg>=0.29.0
+psycopg2-binary>=2.9.9
+sqlmodel>=0.0.14
+sqlalchemy[asyncio]>=2.0.0
+
+# pgvector for embeddings
+pgvector>=0.2.4
+
+# PDF Processing (IBM docling)
+docling>=2.0.0
+
+# Image processing
+pillow>=10.0.0
+
+# Async utilities
+anyio>=4.0.0
+aiofiles>=23.0.0

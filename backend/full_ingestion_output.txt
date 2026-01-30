@@ -1,0 +1,366 @@
+2026-01-29 22:06:40 | [32mINFO    [0m | session:init_db:144 | Γ£ô pgvector extension enabled
+2026-01-29 22:06:40 | [32mINFO    [0m | session:init_db:150 | Γ£ô pg_trgm extension enabled
+2026-01-29 22:06:40 | [32mINFO    [0m | session:init_db:156 | Γ£ô Database tables created
+2026-01-29 22:06:40 | [32mINFO    [0m | docling_utils:__init__:102 | DoclingParser initialized (OCR: True, Images: False)
+2026-01-29 22:06:41 | [32mINFO    [0m | ingest:__init__:300 | IngestionPipeline initialized
+2026-01-29 22:06:41 | [32mINFO    [0m | ingest:ingest_directory:643 | Found 2 PDFs in data/pdfs
+2026-01-29 22:06:41 | [32mINFO    [0m | ingest:ingest_pdf:325 | Starting ingestion: 00062205.pdf
+2026-01-29 22:06:41 | [32mINFO    [0m | docling_utils:parse:125 | Parsing PDF: 00062205.pdf (hash: c72295bc...)
+2026-01-29 22:06:41 | [32mINFO    [0m | document:_guess_format:538 | detected formats: [<InputFormat.PDF: 'pdf'>]
+2026-01-29 22:06:41 | [32mINFO    [0m | document_converter:_convert:449 | Going to convert document batch...
+2026-01-29 22:06:41 | [32mINFO    [0m | document_converter:_get_pipeline:494 | Initializing pipeline for StandardPdfPipeline with options hash 4f39f3c2d53938e7a7298827020a1fe0
+2026-01-29 22:06:41 | [32mINFO    [0m | base_factory:load_from_plugins:112 | Loading plugin 'docling_defaults'
+2026-01-29 22:06:41 | [32mINFO    [0m | __init__:get_picture_description_factory:28 | Registered picture descriptions: ['vlm', 'api']
+2026-01-29 22:06:41 | [32mINFO    [0m | base_factory:load_from_plugins:112 | Loading plugin 'docling_defaults'
+2026-01-29 22:06:41 | [32mINFO    [0m | __init__:get_ocr_factory:18 | Registered ocr engines: ['auto', 'easyocr', 'ocrmac', 'rapidocr', 'tesserocr', 'tesseract']
+2026-01-29 22:06:41 | [32mINFO    [0m | auto_ocr_model:__init__:77 | rapidocr cannot be used because onnxruntime is not installed.
+2026-01-29 22:06:41 | [32mINFO    [0m | auto_ocr_model:__init__:96 | easyocr cannot be used because it is not installed.
+2026-01-29 22:06:41 | [32mINFO    [0m | accelerator_utils:decide_device:96 | Accelerator device: 'cpu'
+[INFO] 2026-01-29 22:06:41,555 [RapidOCR] base.py:22: Using engine_name: torch
+[INFO] 2026-01-29 22:06:41,562 [RapidOCR] device_config.py:50: Using CPU device
+[INFO] 2026-01-29 22:06:41,575 [RapidOCR] download_file.py:60: File exists and is valid: C:\G\Maclens chatbot w api\backend\venv\Lib\site-packages\rapidocr\models\ch_PP-OCRv4_det_infer.pth
+[INFO] 2026-01-29 22:06:41,575 [RapidOCR] main.py:50: Using C:\G\Maclens chatbot w api\backend\venv\Lib\site-packages\rapidocr\models\ch_PP-OCRv4_det_infer.pth
+[INFO] 2026-01-29 22:06:41,730 [RapidOCR] base.py:22: Using engine_name: torch
+[INFO] 2026-01-29 22:06:41,730 [RapidOCR] device_config.py:50: Using CPU device
+[INFO] 2026-01-29 22:06:41,731 [RapidOCR] download_file.py:60: File exists and is valid: C:\G\Maclens chatbot w api\backend\venv\Lib\site-packages\rapidocr\models\ch_ptocr_mobile_v2.0_cls_infer.pth
+[INFO] 2026-01-29 22:06:41,731 [RapidOCR] main.py:50: Using C:\G\Maclens chatbot w api\backend\venv\Lib\site-packages\rapidocr\models\ch_ptocr_mobile_v2.0_cls_infer.pth
+[INFO] 2026-01-29 22:06:41,789 [RapidOCR] base.py:22: Using engine_name: torch
+[INFO] 2026-01-29 22:06:41,790 [RapidOCR] device_config.py:50: Using CPU device
+[INFO] 2026-01-29 22:06:41,807 [RapidOCR] download_file.py:60: File exists and is valid: C:\G\Maclens chatbot w api\backend\venv\Lib\site-packages\rapidocr\models\ch_PP-OCRv4_rec_infer.pth
+[INFO] 2026-01-29 22:06:41,807 [RapidOCR] main.py:50: Using C:\G\Maclens chatbot w api\backend\venv\Lib\site-packages\rapidocr\models\ch_PP-OCRv4_rec_infer.pth
+2026-01-29 22:06:42 | [32mINFO    [0m | auto_ocr_model:__init__:113 | Auto OCR model selected rapidocr with torch.
+2026-01-29 22:06:42 | [32mINFO    [0m | base_factory:load_from_plugins:112 | Loading plugin 'docling_defaults'
+2026-01-29 22:06:42 | [32mINFO    [0m | __init__:get_layout_factory:36 | Registered layout engines: ['docling_layout_default', 'docling_experimental_table_crops_layout']
+2026-01-29 22:06:43 | [32mINFO    [0m | accelerator_utils:decide_device:96 | Accelerator device: 'cpu'
+2026-01-29 22:06:44 | [32mINFO    [0m | base_factory:load_from_plugins:112 | Loading plugin 'docling_defaults'
+2026-01-29 22:06:44 | [32mINFO    [0m | __init__:get_table_structure_factory:46 | Registered table structure engines: ['docling_tableformer']
+2026-01-29 22:06:44 | [32mINFO    [0m | accelerator_utils:decide_device:96 | Accelerator device: 'cpu'
+2026-01-29 22:06:45 | [32mINFO    [0m | base_pipeline:execute:65 | Processing document 00062205.pdf
+2026-01-29 22:07:25 | [32mINFO    [0m | document_converter:_convert:473 | Finished converting document 00062205.pdf in 44.08 sec.
+2026-01-29 22:07:25 | [33mWARNING [0m | document:export_to_markdown:5007 | Parameter `strict_text` has been deprecated and will be ignored.
+2026-01-29 22:07:25 | [32mINFO    [0m | docling_utils:parse:145 | Successfully parsed 00062205.pdf: 64623 chars, 0 images, 27 pages
+2026-01-29 22:07:27 | [32mINFO    [0m | _client:_send_single_request:1026 | HTTP Request: POST https://jason-mj5zxtab-canadaeast.cognitiveservices.azure.com/openai/deployments/gpt-4o-agent/chat/completions?api-version=2024-12-01-preview "HTTP/1.1 200 OK"
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:extract:156 | Extracted drug: nizatidine (brand: axid, generic: nizatidine)
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:chunk:253 | Chunked into 63 sections
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 1/63: pr axid
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: pr axid
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 2/63: table of contents
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: table of contents
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 3/63: indications
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: indications
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 4/63: pediatrics
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: pediatrics
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 5/63: geriatrics
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: geriatrics
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 6/63: contraindications
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: contraindications
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 7/63: recommended dose and dosage adjustment
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: recommended dose and dosage adjustment
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 8/63: dose adjustment in renal impairment
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: dose adjustment in renal impairment
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 9/63: administration
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: administration
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 10/63: missed dose
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: missed dose
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 11/63: overdosage
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: overdosage
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 12/63: dosage forms strengths composition and packaging
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: dosage forms strengths composition and packaging
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 13/63: endocrine and metabolism
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: endocrine and metabolism
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 14/63: gastrointestinal
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: gastrointestinal
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 15/63: hepaticbiliarypancreatic
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: hepaticbiliarypancreatic
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 16/63: monitoring and laboratory tests
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: monitoring and laboratory tests
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 17/63: renal
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: renal
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 18/63: pregnant women
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: pregnant women
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 19/63: breast-feeding
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: breast-feeding
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 20/63: pediatrics
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: pediatrics
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 21/63: geriatrics
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: geriatrics
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 22/63: adverse reaction overview
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: adverse reaction overview
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 23/63: clinical trial adverse reactions
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: clinical trial adverse reactions
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 24/63: less common clinical trial adverse reactions
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: less common clinical trial adverse reactions
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 25/63: drug interactions overview
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: drug interactions overview
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 26/63: drug-drug interactions
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: drug-drug interactions
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 27/63: drug-food interactions
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: drug-food interactions
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 28/63: drug-herb interactions
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: drug-herb interactions
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 29/63: drug-laboratory test interactions
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: drug-laboratory test interactions
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 30/63: mechanism of action
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: mechanism of action
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 31/63: pharmacodynamics
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: pharmacodynamics
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 32/63: absorption
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: absorption
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 33/63: distribution
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: distribution
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 34/63: metabolism
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: metabolism
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 35/63: elimination
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: elimination
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 36/63: special populations and conditions
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: special populations and conditions
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 37/63: storage stability and disposal
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: storage stability and disposal
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 38/63: drug substance
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: drug substance
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 39/63: clinical trials
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: clinical trials
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 40/63: microbiology
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: microbiology
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 41/63: acute toxicity
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: acute toxicity
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 42/63: subacute toxicity
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: subacute toxicity
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 43/63: chronic toxicity
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: chronic toxicity
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 44/63: carcinogenicity
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: carcinogenicity
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 45/63: genotoxicity
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: genotoxicity
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 46/63: reproductive and developmental toxicology
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: reproductive and developmental toxicology
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 47/63: teratology
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: teratology
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 48/63: nizatidine capsules
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: nizatidine capsules
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 49/63: what is axid used for
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: what is axid used for
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 50/63: how does axid work
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: how does axid work
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 51/63: what are the ingredients in axid
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: what are the ingredients in axid
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 52/63: axid comes in the following dosage forms
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: axid comes in the following dosage forms
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 53/63: do not use axid if
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: do not use axid if
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 54/63: other warnings you should know about
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: other warnings you should know about
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 55/63: the following may interact with axid
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: the following may interact with axid
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 56/63: how to take axid
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: how to take axid
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 57/63: adults
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: adults
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 58/63: overdose
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: overdose
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 59/63: missed dose
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: missed dose
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 60/63: what are possible side effects from using axid
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: what are possible side effects from using axid
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 61/63: reporting side effects
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: reporting side effects
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 62/63: storage
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: storage
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 63/63: if you want more information about axid
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: if you want more information about axid
+2026-01-29 22:07:27 | [31mERROR   [0m | session:get_session:125 | Database session error: (sqlalchemy.dialects.postgresql.asyncpg.IntegrityError) <class 'asyncpg.exceptions.UniqueViolationError'>: duplicate key value violates unique constraint "ix_section_mappings_original_header"
+DETAIL:  Key (original_header)=(pediatrics) already exists.
+[SQL: INSERT INTO section_mappings (original_header, normalized_name, display_name, suggested_by, confidence, is_common, usage_count, created_at, updated_at, section_group) SELECT p0::VARCHAR, p1::VARCHAR, p2::VARCHAR, p3::VARCHAR, p4::FLOAT, p5::BOOLEAN,  ... 12252 characters truncated ... 8, p9, sen_counter) ORDER BY sen_counter RETURNING section_mappings.id, section_mappings.id AS id__1]
+[parameters: ('pr axid', 'pr_axid', 'Pr Axid', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 37, 27, 276654), datetime.datetime(2026, 1, 29, 16, 37, 27, 276654), None, 'table of contents', 'table_of_contents', 'Table Of Contents', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 37, 27, 276654), datetime.datetime(2026, 1, 29, 16, 37, 27, 276654), None, 'indications', 'indications', 'Indications', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 37, 27, 282245), datetime.datetime(2026, 1, 29, 16, 37, 27, 282245), None, 'pediatrics', 'pediatrics', 'Pediatrics', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 37, 27, 284804), datetime.datetime(2026, 1, 29, 16, 37, 27, 284804), None, 'geriatrics', 'geriatrics', 'Geriatrics', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 37, 27, 285330), datetime.datetime(2026, 1, 29, 16, 37, 27, 285330), None ... 530 parameters truncated ... 'missed dose', 'missed_dose', 'Missed Dose', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 37, 27, 359801), datetime.datetime(2026, 1, 29, 16, 37, 27, 359801), None, 'what are possible side effects from using axid', 'what_are_possible_side_effects_from_using_axid', 'What Are Possible Side Effects From Using Axid', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 37, 27, 359801), datetime.datetime(2026, 1, 29, 16, 37, 27, 359801), None, 'reporting side effects', 'reporting_side_effects', 'Reporting Side Effects', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 37, 27, 359801), datetime.datetime(2026, 1, 29, 16, 37, 27, 359801), None, 'storage', 'storage', 'Storage', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 37, 27, 359801), datetime.datetime(2026, 1, 29, 16, 37, 27, 359801), None, 'if you want more information about axid', 'if_you_want_more_information_about_axid', 'If You Want More Information About Axid', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 37, 27, 364596), datetime.datetime(2026, 1, 29, 16, 37, 27, 364596), None)]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2026-01-29 22:07:27 | [31mERROR   [0m | ingest:ingest_pdf:431 | Ingestion failed for 00062205.pdf: (sqlalchemy.dialects.postgresql.asyncpg.IntegrityError) <class 'asyncpg.exceptions.UniqueViolationError'>: duplicate key value violates unique constraint "ix_section_mappings_original_header"
+DETAIL:  Key (original_header)=(pediatrics) already exists.
+[SQL: INSERT INTO section_mappings (original_header, normalized_name, display_name, suggested_by, confidence, is_common, usage_count, created_at, updated_at, section_group) SELECT p0::VARCHAR, p1::VARCHAR, p2::VARCHAR, p3::VARCHAR, p4::FLOAT, p5::BOOLEAN,  ... 12252 characters truncated ... 8, p9, sen_counter) ORDER BY sen_counter RETURNING section_mappings.id, section_mappings.id AS id__1]
+[parameters: ('pr axid', 'pr_axid', 'Pr Axid', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 37, 27, 276654), datetime.datetime(2026, 1, 29, 16, 37, 27, 276654), None, 'table of contents', 'table_of_contents', 'Table Of Contents', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 37, 27, 276654), datetime.datetime(2026, 1, 29, 16, 37, 27, 276654), None, 'indications', 'indications', 'Indications', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 37, 27, 282245), datetime.datetime(2026, 1, 29, 16, 37, 27, 282245), None, 'pediatrics', 'pediatrics', 'Pediatrics', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 37, 27, 284804), datetime.datetime(2026, 1, 29, 16, 37, 27, 284804), None, 'geriatrics', 'geriatrics', 'Geriatrics', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 37, 27, 285330), datetime.datetime(2026, 1, 29, 16, 37, 27, 285330), None ... 530 parameters truncated ... 'missed dose', 'missed_dose', 'Missed Dose', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 37, 27, 359801), datetime.datetime(2026, 1, 29, 16, 37, 27, 359801), None, 'what are possible side effects from using axid', 'what_are_possible_side_effects_from_using_axid', 'What Are Possible Side Effects From Using Axid', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 37, 27, 359801), datetime.datetime(2026, 1, 29, 16, 37, 27, 359801), None, 'reporting side effects', 'reporting_side_effects', 'Reporting Side Effects', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 37, 27, 359801), datetime.datetime(2026, 1, 29, 16, 37, 27, 359801), None, 'storage', 'storage', 'Storage', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 37, 27, 359801), datetime.datetime(2026, 1, 29, 16, 37, 27, 359801), None, 'if you want more information about axid', 'if_you_want_more_information_about_axid', 'If You Want More Information About Axid', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 37, 27, 364596), datetime.datetime(2026, 1, 29, 16, 37, 27, 364596), None)]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2026-01-29 22:07:27 | [32mINFO    [0m | ingest:ingest_pdf:325 | Starting ingestion: 00062205.pdf
+2026-01-29 22:07:27 | [32mINFO    [0m | docling_utils:parse:125 | Parsing PDF: 00062205.pdf (hash: c72295bc...)
+2026-01-29 22:07:27 | [32mINFO    [0m | document:_guess_format:538 | detected formats: [<InputFormat.PDF: 'pdf'>]
+2026-01-29 22:07:27 | [32mINFO    [0m | document_converter:_convert:449 | Going to convert document batch...
+2026-01-29 22:07:27 | [32mINFO    [0m | base_pipeline:execute:65 | Processing document 00062205.pdf
+2026-01-29 22:08:09 | [32mINFO    [0m | document_converter:_convert:473 | Finished converting document 00062205.pdf in 42.33 sec.
+2026-01-29 22:08:09 | [33mWARNING [0m | document:export_to_markdown:5007 | Parameter `strict_text` has been deprecated and will be ignored.
+2026-01-29 22:08:09 | [32mINFO    [0m | docling_utils:parse:145 | Successfully parsed 00062205.pdf: 64623 chars, 0 images, 27 pages
+2026-01-29 22:08:11 | [32mINFO    [0m | _client:_send_single_request:1026 | HTTP Request: POST https://jason-mj5zxtab-canadaeast.cognitiveservices.azure.com/openai/deployments/gpt-4o-agent/chat/completions?api-version=2024-12-01-preview "HTTP/1.1 200 OK"
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:extract:156 | Extracted drug: nizatidine (brand: axid, generic: nizatidine)
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:chunk:253 | Chunked into 63 sections
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 1/63: pr axid
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: pr axid
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 2/63: table of contents
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: table of contents
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 3/63: indications
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: indications
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 4/63: pediatrics
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: pediatrics
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 5/63: geriatrics
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: geriatrics
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 6/63: contraindications
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: contraindications
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 7/63: recommended dose and dosage adjustment
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: recommended dose and dosage adjustment
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 8/63: dose adjustment in renal impairment
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: dose adjustment in renal impairment
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 9/63: administration
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: administration
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 10/63: missed dose
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: missed dose
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 11/63: overdosage
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: overdosage
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 12/63: dosage forms strengths composition and packaging
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: dosage forms strengths composition and packaging
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 13/63: endocrine and metabolism
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: endocrine and metabolism
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 14/63: gastrointestinal
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: gastrointestinal
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 15/63: hepaticbiliarypancreatic
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: hepaticbiliarypancreatic
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 16/63: monitoring and laboratory tests
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: monitoring and laboratory tests
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 17/63: renal
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: renal
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 18/63: pregnant women
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: pregnant women
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 19/63: breast-feeding
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: breast-feeding
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 20/63: pediatrics
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: pediatrics
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 21/63: geriatrics
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: geriatrics
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 22/63: adverse reaction overview
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: adverse reaction overview
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 23/63: clinical trial adverse reactions
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: clinical trial adverse reactions
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 24/63: less common clinical trial adverse reactions
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: less common clinical trial adverse reactions
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 25/63: drug interactions overview
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: drug interactions overview
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 26/63: drug-drug interactions
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: drug-drug interactions
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 27/63: drug-food interactions
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: drug-food interactions
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 28/63: drug-herb interactions
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: drug-herb interactions
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 29/63: drug-laboratory test interactions
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: drug-laboratory test interactions
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 30/63: mechanism of action
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: mechanism of action
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 31/63: pharmacodynamics
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: pharmacodynamics
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 32/63: absorption
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: absorption
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 33/63: distribution
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: distribution
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 34/63: metabolism
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: metabolism
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 35/63: elimination
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: elimination
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 36/63: special populations and conditions
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: special populations and conditions
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 37/63: storage stability and disposal
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: storage stability and disposal
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 38/63: drug substance
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: drug substance
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 39/63: clinical trials
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: clinical trials
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 40/63: microbiology
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: microbiology
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 41/63: acute toxicity
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: acute toxicity
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 42/63: subacute toxicity
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: subacute toxicity
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 43/63: chronic toxicity
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: chronic toxicity
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 44/63: carcinogenicity
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: carcinogenicity
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 45/63: genotoxicity
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: genotoxicity
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 46/63: reproductive and developmental toxicology
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: reproductive and developmental toxicology
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 47/63: teratology
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: teratology
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 48/63: nizatidine capsules
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: nizatidine capsules
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 49/63: what is axid used for
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: what is axid used for
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 50/63: how does axid work
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: how does axid work
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 51/63: what are the ingredients in axid
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: what are the ingredients in axid
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 52/63: axid comes in the following dosage forms
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: axid comes in the following dosage forms
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 53/63: do not use axid if
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: do not use axid if
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 54/63: other warnings you should know about
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: other warnings you should know about
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 55/63: the following may interact with axid
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: the following may interact with axid
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 56/63: how to take axid
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: how to take axid
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 57/63: adults
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: adults
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 58/63: overdose
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: overdose
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 59/63: missed dose
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: missed dose
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 60/63: what are possible side effects from using axid
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: what are possible side effects from using axid
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 61/63: reporting side effects
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: reporting side effects
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 62/63: storage
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: storage
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:479 | Processing section 63/63: if you want more information about axid
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:_store_sections:489 | Discovered new section type: if you want more information about axid
+2026-01-29 22:08:11 | [31mERROR   [0m | session:get_session:125 | Database session error: (sqlalchemy.dialects.postgresql.asyncpg.IntegrityError) <class 'asyncpg.exceptions.UniqueViolationError'>: duplicate key value violates unique constraint "ix_section_mappings_original_header"
+DETAIL:  Key (original_header)=(pediatrics) already exists.
+[SQL: INSERT INTO section_mappings (original_header, normalized_name, display_name, suggested_by, confidence, is_common, usage_count, created_at, updated_at, section_group) SELECT p0::VARCHAR, p1::VARCHAR, p2::VARCHAR, p3::VARCHAR, p4::FLOAT, p5::BOOLEAN,  ... 12252 characters truncated ... 8, p9, sen_counter) ORDER BY sen_counter RETURNING section_mappings.id, section_mappings.id AS id__1]
+[parameters: ('pr axid', 'pr_axid', 'Pr Axid', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 38, 11, 351833), datetime.datetime(2026, 1, 29, 16, 38, 11, 351833), None, 'table of contents', 'table_of_contents', 'Table Of Contents', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 38, 11, 351833), datetime.datetime(2026, 1, 29, 16, 38, 11, 351833), None, 'indications', 'indications', 'Indications', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 38, 11, 351833), datetime.datetime(2026, 1, 29, 16, 38, 11, 351833), None, 'pediatrics', 'pediatrics', 'Pediatrics', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 38, 11, 357855), datetime.datetime(2026, 1, 29, 16, 38, 11, 357855), None, 'geriatrics', 'geriatrics', 'Geriatrics', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 38, 11, 357855), datetime.datetime(2026, 1, 29, 16, 38, 11, 357855), None ... 530 parameters truncated ... 'missed dose', 'missed_dose', 'Missed Dose', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 38, 11, 434382), datetime.datetime(2026, 1, 29, 16, 38, 11, 434382), None, 'what are possible side effects from using axid', 'what_are_possible_side_effects_from_using_axid', 'What Are Possible Side Effects From Using Axid', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 38, 11, 434893), datetime.datetime(2026, 1, 29, 16, 38, 11, 434893), None, 'reporting side effects', 'reporting_side_effects', 'Reporting Side Effects', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 38, 11, 434893), datetime.datetime(2026, 1, 29, 16, 38, 11, 434893), None, 'storage', 'storage', 'Storage', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 38, 11, 437382), datetime.datetime(2026, 1, 29, 16, 38, 11, 437382), None, 'if you want more information about axid', 'if_you_want_more_information_about_axid', 'If You Want More Information About Axid', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 38, 11, 439893), datetime.datetime(2026, 1, 29, 16, 38, 11, 439893), None)]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2026-01-29 22:08:11 | [31mERROR   [0m | ingest:ingest_pdf:431 | Ingestion failed for 00062205.pdf: (sqlalchemy.dialects.postgresql.asyncpg.IntegrityError) <class 'asyncpg.exceptions.UniqueViolationError'>: duplicate key value violates unique constraint "ix_section_mappings_original_header"
+DETAIL:  Key (original_header)=(pediatrics) already exists.
+[SQL: INSERT INTO section_mappings (original_header, normalized_name, display_name, suggested_by, confidence, is_common, usage_count, created_at, updated_at, section_group) SELECT p0::VARCHAR, p1::VARCHAR, p2::VARCHAR, p3::VARCHAR, p4::FLOAT, p5::BOOLEAN,  ... 12252 characters truncated ... 8, p9, sen_counter) ORDER BY sen_counter RETURNING section_mappings.id, section_mappings.id AS id__1]
+[parameters: ('pr axid', 'pr_axid', 'Pr Axid', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 38, 11, 351833), datetime.datetime(2026, 1, 29, 16, 38, 11, 351833), None, 'table of contents', 'table_of_contents', 'Table Of Contents', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 38, 11, 351833), datetime.datetime(2026, 1, 29, 16, 38, 11, 351833), None, 'indications', 'indications', 'Indications', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 38, 11, 351833), datetime.datetime(2026, 1, 29, 16, 38, 11, 351833), None, 'pediatrics', 'pediatrics', 'Pediatrics', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 38, 11, 357855), datetime.datetime(2026, 1, 29, 16, 38, 11, 357855), None, 'geriatrics', 'geriatrics', 'Geriatrics', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 38, 11, 357855), datetime.datetime(2026, 1, 29, 16, 38, 11, 357855), None ... 530 parameters truncated ... 'missed dose', 'missed_dose', 'Missed Dose', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 38, 11, 434382), datetime.datetime(2026, 1, 29, 16, 38, 11, 434382), None, 'what are possible side effects from using axid', 'what_are_possible_side_effects_from_using_axid', 'What Are Possible Side Effects From Using Axid', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 38, 11, 434893), datetime.datetime(2026, 1, 29, 16, 38, 11, 434893), None, 'reporting side effects', 'reporting_side_effects', 'Reporting Side Effects', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 38, 11, 434893), datetime.datetime(2026, 1, 29, 16, 38, 11, 434893), None, 'storage', 'storage', 'Storage', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 38, 11, 437382), datetime.datetime(2026, 1, 29, 16, 38, 11, 437382), None, 'if you want more information about axid', 'if_you_want_more_information_about_axid', 'If You Want More Information About Axid', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 38, 11, 439893), datetime.datetime(2026, 1, 29, 16, 38, 11, 439893), None)]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2026-01-29 22:08:11 | [32mINFO    [0m | ingest:ingest_directory:670 | Ingestion complete: 0/2 successful, 0 sections, 0 structures, 0 new section types discovered
+
+≡ƒÅÑ Medical Drug Monograph Ingestion System
+==================================================
+
+≡ƒöº Initializing PostgreSQL database...
+--------------------------------------------------
+Database: medical_rag@localhost
+Γ£à Database initialized successfully!
+
+≡ƒôÜ Starting PDF Ingestion
+--------------------------------------------------
+Source: data/pdfs
+Vision: disabled
+
+Found 2 PDF files
+
+
+==================================================
+≡ƒôè INGESTION SUMMARY
+==================================================
+Γ£à Successful: 0
+Γ¥î Failed: 2
+≡ƒôä Sections created: 0
+≡ƒû╝∩╕Å  Images extracted: 0
+≡ƒº¼ Structures detected: 0
+ΓÅ▒∩╕Å  Time elapsed: 90.6s
+
+ΓÜá∩╕Å Failed files:
+  - 00062205.pdf: (sqlalchemy.dialects.postgresql.asyncpg.IntegrityError) <class 'asyncpg.exceptions.UniqueViolationError'>: duplicate key value violates unique constraint "ix_section_mappings_original_header"
+DETAIL:  Key (original_header)=(pediatrics) already exists.
+[SQL: INSERT INTO section_mappings (original_header, normalized_name, display_name, suggested_by, confidence, is_common, usage_count, created_at, updated_at, section_group) SELECT p0::VARCHAR, p1::VARCHAR, p2::VARCHAR, p3::VARCHAR, p4::FLOAT, p5::BOOLEAN,  ... 12252 characters truncated ... 8, p9, sen_counter) ORDER BY sen_counter RETURNING section_mappings.id, section_mappings.id AS id__1]
+[parameters: ('pr axid', 'pr_axid', 'Pr Axid', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 37, 27, 276654), datetime.datetime(2026, 1, 29, 16, 37, 27, 276654), None, 'table of contents', 'table_of_contents', 'Table Of Contents', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 37, 27, 276654), datetime.datetime(2026, 1, 29, 16, 37, 27, 276654), None, 'indications', 'indications', 'Indications', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 37, 27, 282245), datetime.datetime(2026, 1, 29, 16, 37, 27, 282245), None, 'pediatrics', 'pediatrics', 'Pediatrics', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 37, 27, 284804), datetime.datetime(2026, 1, 29, 16, 37, 27, 284804), None, 'geriatrics', 'geriatrics', 'Geriatrics', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 37, 27, 285330), datetime.datetime(2026, 1, 29, 16, 37, 27, 285330), None ... 530 parameters truncated ... 'missed dose', 'missed_dose', 'Missed Dose', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 37, 27, 359801), datetime.datetime(2026, 1, 29, 16, 37, 27, 359801), None, 'what are possible side effects from using axid', 'what_are_possible_side_effects_from_using_axid', 'What Are Possible Side Effects From Using Axid', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 37, 27, 359801), datetime.datetime(2026, 1, 29, 16, 37, 27, 359801), None, 'reporting side effects', 'reporting_side_effects', 'Reporting Side Effects', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 37, 27, 359801), datetime.datetime(2026, 1, 29, 16, 37, 27, 359801), None, 'storage', 'storage', 'Storage', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 37, 27, 359801), datetime.datetime(2026, 1, 29, 16, 37, 27, 359801), None, 'if you want more information about axid', 'if_you_want_more_information_about_axid', 'If You Want More Information About Axid', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 37, 27, 364596), datetime.datetime(2026, 1, 29, 16, 37, 27, 364596), None)]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+  - 00062205.pdf: (sqlalchemy.dialects.postgresql.asyncpg.IntegrityError) <class 'asyncpg.exceptions.UniqueViolationError'>: duplicate key value violates unique constraint "ix_section_mappings_original_header"
+DETAIL:  Key (original_header)=(pediatrics) already exists.
+[SQL: INSERT INTO section_mappings (original_header, normalized_name, display_name, suggested_by, confidence, is_common, usage_count, created_at, updated_at, section_group) SELECT p0::VARCHAR, p1::VARCHAR, p2::VARCHAR, p3::VARCHAR, p4::FLOAT, p5::BOOLEAN,  ... 12252 characters truncated ... 8, p9, sen_counter) ORDER BY sen_counter RETURNING section_mappings.id, section_mappings.id AS id__1]
+[parameters: ('pr axid', 'pr_axid', 'Pr Axid', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 38, 11, 351833), datetime.datetime(2026, 1, 29, 16, 38, 11, 351833), None, 'table of contents', 'table_of_contents', 'Table Of Contents', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 38, 11, 351833), datetime.datetime(2026, 1, 29, 16, 38, 11, 351833), None, 'indications', 'indications', 'Indications', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 38, 11, 351833), datetime.datetime(2026, 1, 29, 16, 38, 11, 351833), None, 'pediatrics', 'pediatrics', 'Pediatrics', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 38, 11, 357855), datetime.datetime(2026, 1, 29, 16, 38, 11, 357855), None, 'geriatrics', 'geriatrics', 'Geriatrics', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 38, 11, 357855), datetime.datetime(2026, 1, 29, 16, 38, 11, 357855), None ... 530 parameters truncated ... 'missed dose', 'missed_dose', 'Missed Dose', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 38, 11, 434382), datetime.datetime(2026, 1, 29, 16, 38, 11, 434382), None, 'what are possible side effects from using axid', 'what_are_possible_side_effects_from_using_axid', 'What Are Possible Side Effects From Using Axid', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 38, 11, 434893), datetime.datetime(2026, 1, 29, 16, 38, 11, 434893), None, 'reporting side effects', 'reporting_side_effects', 'Reporting Side Effects', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 38, 11, 434893), datetime.datetime(2026, 1, 29, 16, 38, 11, 434893), None, 'storage', 'storage', 'Storage', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 38, 11, 437382), datetime.datetime(2026, 1, 29, 16, 38, 11, 437382), None, 'if you want more information about axid', 'if_you_want_more_information_about_axid', 'If You Want More Information About Axid', 'auto', 0.8, False, 1, datetime.datetime(2026, 1, 29, 16, 38, 11, 439893), datetime.datetime(2026, 1, 29, 16, 38, 11, 439893), None)]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)

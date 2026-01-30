@@ -1,0 +1,18 @@
+[INFO] 2026-01-29 18:35:37,960 [RapidOCR] base.py:22: Using engine_name: torch
+[INFO] 2026-01-29 18:35:37,968 [RapidOCR] device_config.py:50: Using CPU device
+[INFO] 2026-01-29 18:35:37,980 [RapidOCR] download_file.py:60: File exists and is valid: C:\G\Maclens chatbot w api\backend\venv\Lib\site-packages\rapidocr\models\ch_PP-OCRv4_det_infer.pth
+[INFO] 2026-01-29 18:35:37,981 [RapidOCR] main.py:50: Using C:\G\Maclens chatbot w api\backend\venv\Lib\site-packages\rapidocr\models\ch_PP-OCRv4_det_infer.pth
+[INFO] 2026-01-29 18:35:38,128 [RapidOCR] base.py:22: Using engine_name: torch
+[INFO] 2026-01-29 18:35:38,129 [RapidOCR] device_config.py:50: Using CPU device
+[INFO] 2026-01-29 18:35:38,130 [RapidOCR] download_file.py:60: File exists and is valid: C:\G\Maclens chatbot w api\backend\venv\Lib\site-packages\rapidocr\models\ch_ptocr_mobile_v2.0_cls_infer.pth
+[INFO] 2026-01-29 18:35:38,130 [RapidOCR] main.py:50: Using C:\G\Maclens chatbot w api\backend\venv\Lib\site-packages\rapidocr\models\ch_ptocr_mobile_v2.0_cls_infer.pth
+[INFO] 2026-01-29 18:35:38,186 [RapidOCR] base.py:22: Using engine_name: torch
+[INFO] 2026-01-29 18:35:38,186 [RapidOCR] device_config.py:50: Using CPU device
+[INFO] 2026-01-29 18:35:38,210 [RapidOCR] download_file.py:60: File exists and is valid: C:\G\Maclens chatbot w api\backend\venv\Lib\site-packages\rapidocr\models\ch_PP-OCRv4_rec_infer.pth
+[INFO] 2026-01-29 18:35:38,210 [RapidOCR] main.py:50: Using C:\G\Maclens chatbot w api\backend\venv\Lib\site-packages\rapidocr\models\ch_PP-OCRv4_rec_infer.pth
+Failed to parse PDF 00062205.pdf: No module named 'torchvision'
+-> Cannot close object; pdfium library is destroyed. This may cause a memory leak.
+Success: False
+Drug: 
+Sections: 0
+Error: No module named 'torchvision'

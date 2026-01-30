@@ -1,0 +1,107 @@
+2026-01-29 21:52:29,024 | DEBUG | asyncio | Using proactor: IocpProactor
+2026-01-29 21:52:29,025 | INFO | __main__ | ============================================================
+2026-01-29 21:52:29,025 | INFO | __main__ | STEP 1: Testing imports...
+2026-01-29 21:52:33,647 | INFO | __main__ | Γ£à All imports successful
+2026-01-29 21:52:33,647 | INFO | __main__ | ============================================================
+2026-01-29 21:52:33,647 | INFO | __main__ | STEP 2: Testing database connection...
+2026-01-29 21:52:33,705 | INFO | __main__ | Γ£à Database connection OK
+2026-01-29 21:52:33,705 | INFO | __main__ | ============================================================
+2026-01-29 21:52:33,705 | INFO | __main__ | STEP 3: Testing PDF parsing (this takes ~60s)...
+2026-01-29 21:52:33,710 | INFO | app.ingestion.docling_utils | DoclingParser initialized (OCR: True, Images: False)
+2026-01-29 21:52:33,710 | INFO | __main__ | Parsing data/pdfs/00062205.pdf...
+2026-01-29 21:52:33,710 | INFO | app.ingestion.docling_utils | Parsing PDF: 00062205.pdf (hash: c72295bc...)
+2026-01-29 21:52:33,710 | INFO | docling.datamodel.document | detected formats: [<InputFormat.PDF: 'pdf'>]
+2026-01-29 21:52:33,741 | INFO | docling.document_converter | Going to convert document batch...
+2026-01-29 21:52:33,741 | INFO | docling.document_converter | Initializing pipeline for StandardPdfPipeline with options hash 4f39f3c2d53938e7a7298827020a1fe0
+2026-01-29 21:52:33,751 | INFO | docling.models.factories.base_factory | Loading plugin 'docling_defaults'
+2026-01-29 21:52:33,754 | INFO | docling.models.factories | Registered picture descriptions: ['vlm', 'api']
+2026-01-29 21:52:33,766 | INFO | docling.models.factories.base_factory | Loading plugin 'docling_defaults'
+2026-01-29 21:52:33,775 | INFO | docling.models.factories | Registered ocr engines: ['auto', 'easyocr', 'ocrmac', 'rapidocr', 'tesserocr', 'tesseract']
+2026-01-29 21:52:33,912 | INFO | docling.models.stages.ocr.auto_ocr_model | rapidocr cannot be used because onnxruntime is not installed.
+2026-01-29 21:52:33,913 | INFO | docling.models.stages.ocr.auto_ocr_model | easyocr cannot be used because it is not installed.
+2026-01-29 21:52:34,145 | INFO | docling.utils.accelerator_utils | Accelerator device: 'cpu'
+[INFO] 2026-01-29 21:52:34,158 [RapidOCR] base.py:22: Using engine_name: torch
+[INFO] 2026-01-29 21:52:34,164 [RapidOCR] device_config.py:50: Using CPU device
+[INFO] 2026-01-29 21:52:34,176 [RapidOCR] download_file.py:60: File exists and is valid: C:\G\Maclens chatbot w api\backend\venv\Lib\site-packages\rapidocr\models\ch_PP-OCRv4_det_infer.pth
+[INFO] 2026-01-29 21:52:34,176 [RapidOCR] main.py:50: Using C:\G\Maclens chatbot w api\backend\venv\Lib\site-packages\rapidocr\models\ch_PP-OCRv4_det_infer.pth
+[INFO] 2026-01-29 21:52:34,343 [RapidOCR] base.py:22: Using engine_name: torch
+[INFO] 2026-01-29 21:52:34,343 [RapidOCR] device_config.py:50: Using CPU device
+[INFO] 2026-01-29 21:52:34,345 [RapidOCR] download_file.py:60: File exists and is valid: C:\G\Maclens chatbot w api\backend\venv\Lib\site-packages\rapidocr\models\ch_ptocr_mobile_v2.0_cls_infer.pth
+[INFO] 2026-01-29 21:52:34,345 [RapidOCR] main.py:50: Using C:\G\Maclens chatbot w api\backend\venv\Lib\site-packages\rapidocr\models\ch_ptocr_mobile_v2.0_cls_infer.pth
+[INFO] 2026-01-29 21:52:34,401 [RapidOCR] base.py:22: Using engine_name: torch
+[INFO] 2026-01-29 21:52:34,401 [RapidOCR] device_config.py:50: Using CPU device
+[INFO] 2026-01-29 21:52:34,421 [RapidOCR] download_file.py:60: File exists and is valid: C:\G\Maclens chatbot w api\backend\venv\Lib\site-packages\rapidocr\models\ch_PP-OCRv4_rec_infer.pth
+[INFO] 2026-01-29 21:52:34,422 [RapidOCR] main.py:50: Using C:\G\Maclens chatbot w api\backend\venv\Lib\site-packages\rapidocr\models\ch_PP-OCRv4_rec_infer.pth
+2026-01-29 21:52:34,739 | INFO | docling.models.stages.ocr.auto_ocr_model | Auto OCR model selected rapidocr with torch.
+2026-01-29 21:52:34,746 | INFO | docling.models.factories.base_factory | Loading plugin 'docling_defaults'
+2026-01-29 21:52:34,750 | INFO | docling.models.factories | Registered layout engines: ['docling_layout_default', 'docling_experimental_table_crops_layout']
+2026-01-29 21:52:36,451 | INFO | docling.utils.accelerator_utils | Accelerator device: 'cpu'
+2026-01-29 21:52:36,451 | DEBUG | urllib3.connectionpool | Starting new HTTPS connection (1): huggingface.co:443
+2026-01-29 21:52:36,973 | DEBUG | urllib3.connectionpool | https://huggingface.co:443 "GET /api/models/docling-project/docling-layout-heron/revision/main HTTP/1.1" 200 982
+2026-01-29 21:52:37,657 | DEBUG | docling_ibm_models.layoutmodel.layout_predictor | LayoutPredictor settings: {'model_name': 'RTDetrV2ForObjectDetection', 'safe_tensors_file': 'C:\\Users\\sanji\\.cache\\huggingface\\hub\\models--docling-project--docling-layout-heron\\snapshots\\54100edecdceb65a9d8204d2478ac4cc8d4ca68b\\model.safetensors', 'device': 'cpu', 'num_threads': 4, 'image_size': {'height': 640, 'width': 640}, 'threshold': 0.3}
+2026-01-29 21:52:37,667 | INFO | docling.models.factories.base_factory | Loading plugin 'docling_defaults'
+2026-01-29 21:52:37,671 | INFO | docling.models.factories | Registered table structure engines: ['docling_tableformer']
+2026-01-29 21:52:37,904 | DEBUG | urllib3.connectionpool | https://huggingface.co:443 "GET /api/models/docling-project/docling-models/revision/v2.3.0 HTTP/1.1" 200 1110
+2026-01-29 21:52:37,949 | INFO | docling.utils.accelerator_utils | Accelerator device: 'cpu'
+2026-01-29 21:52:38,439 | INFO | docling.pipeline.base_pipeline | Processing document 00062205.pdf
+2026-01-29 21:52:38,456 | DEBUG | pypdfium2._lazy | Evaluating lazy import 'PIL.Image' ...
+2026-01-29 21:53:27,779 | INFO | docling.document_converter | Finished converting document 00062205.pdf in 54.08 sec.
+2026-01-29 21:53:27,867 | WARNING | docling_core.types.doc.document | Parameter `strict_text` has been deprecated and will be ignored.
+2026-01-29 21:53:27,867 | INFO | app.ingestion.docling_utils | Successfully parsed 00062205.pdf: 64623 chars, 0 images, 27 pages
+2026-01-29 21:53:27,871 | INFO | __main__ | Γ£à PDF parsed successfully
+2026-01-29 21:53:27,871 | INFO | __main__ |    - Pages: 27
+2026-01-29 21:53:27,871 | INFO | __main__ |    - Content length: 64623 chars
+2026-01-29 21:53:27,871 | INFO | __main__ |    - Hash: c72295bca23ddfe7...
+2026-01-29 21:53:27,871 | INFO | __main__ | ============================================================
+2026-01-29 21:53:27,871 | INFO | __main__ | STEP 4: Testing metadata extraction...
+2026-01-29 21:53:27,871 | DEBUG | httpx | load_ssl_context verify=True cert=None trust_env=True http2=False
+2026-01-29 21:53:27,873 | DEBUG | httpx | load_verify_locations cafile='C:\\G\\Maclens chatbot w api\\backend\\venv\\Lib\\site-packages\\certifi\\cacert.pem'
+2026-01-29 21:53:28,488 | DEBUG | openai._base_client | Request options: {'method': 'post', 'url': '/deployments/gpt-4o-agent/chat/completions', 'headers': {'api-key': '<redacted>'}, 'files': None, 'idempotency_key': 'stainless-python-retry-c995a7fe-f53f-45e2-9dbd-13de1dceace8', 'content': None, 'json_data': {'messages': [{'role': 'user', 'content': 'You are a pharmaceutical data extractor.\n\nAnalyze this text from the first page of a drug monograph and extract:\n1. Brand Name (the trademarked commercial name)\n2. Generic Name (the chemical/scientific name)\n\nText:\n## PRODUCT MONOGRAPH\n\n## INCLUDING PATIENT MEDICATION INFORMATION\n\n## Pr AXID┬«\n\nNizatidine Capsules Capsules 150 mg, 300  mg, Oral USP\n\nHistamine H2 Receptor Antagonist\n\nPENDOPHARM, Division of Pharmascience Inc. 6111 Royalmount Avenue, Suite 100 Montr├⌐al, QC, Canada H4P 2T4 Date of Revision: July 20, 2021\n\nSubmission Control Number: 247715\n\n┬« Registered trademark of Pharmascience Inc.\n\n## TABLE OF CONTENTS\n\nSections or subsections that are not applicable at the time of authorization are not listed .\n\n| TABLEOF CONTENTS................................................................................................................2   | TABLEOF CONTENTS................................................................................................................2                           | TABLEOF CONTENTS................................................................................................................2   |\n|-------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------|\n| PARTI: 1                                                                                                                            | HEALTHPROFESSIONALINFORMATION INDICATIONS ................................................................................................................4 | .......................................................................4                                                            |\n|                                                                                                                                     | 1.1                                                                      \n\nRespond in this exact format:\nBRAND: [brand name or UNKNOWN]\nGENERIC: [generic name or UNKNOWN]\n\nRules:\n- If multiple brand names exist, use the primary one\n- Normalize to lowercase\n- Remove trademark symbols (┬«, Γäó)\n- If a name is not found, use UNKNOWN'}], 'model': 'gpt-4o-agent', 'max_tokens': 100, 'temperature': 0}}
+2026-01-29 21:53:28,490 | DEBUG | openai._base_client | Sending HTTP Request: POST https://jason-mj5zxtab-canadaeast.cognitiveservices.azure.com/openai/deployments/gpt-4o-agent/chat/completions?api-version=2024-12-01-preview
+2026-01-29 21:53:28,490 | DEBUG | httpcore.connection | connect_tcp.started host='jason-mj5zxtab-canadaeast.cognitiveservices.azure.com' port=443 local_address=None timeout=5.0 socket_options=None
+2026-01-29 21:53:28,754 | DEBUG | httpcore.connection | connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000001748284D050>
+2026-01-29 21:53:28,754 | DEBUG | httpcore.connection | start_tls.started ssl_context=<ssl.SSLContext object at 0x0000017485D84050> server_hostname='jason-mj5zxtab-canadaeast.cognitiveservices.azure.com' timeout=5.0
+2026-01-29 21:53:29,217 | DEBUG | httpcore.connection | start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x0000017482A63810>
+2026-01-29 21:53:29,217 | DEBUG | httpcore.http11 | send_request_headers.started request=<Request [b'POST']>
+2026-01-29 21:53:29,217 | DEBUG | httpcore.http11 | send_request_headers.complete
+2026-01-29 21:53:29,217 | DEBUG | httpcore.http11 | send_request_body.started request=<Request [b'POST']>
+2026-01-29 21:53:29,217 | DEBUG | httpcore.http11 | send_request_body.complete
+2026-01-29 21:53:29,217 | DEBUG | httpcore.http11 | receive_response_headers.started request=<Request [b'POST']>
+2026-01-29 21:53:30,237 | DEBUG | httpcore.http11 | receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Content-Length', b'1072'), (b'Content-Type', b'application/json'), (b'apim-request-id', b'793fcd31-6cc6-4b6b-9d3b-6922f419176e'), (b'Strict-Transport-Security', b'max-age=31536000; includeSubDomains; preload'), (b'x-content-type-options', b'nosniff'), (b'x-ms-region', b'Canada East'), (b'x-ratelimit-remaining-requests', b'49'), (b'x-ratelimit-limit-requests', b'50'), (b'x-ratelimit-remaining-tokens', b'49382'), (b'x-ratelimit-limit-tokens', b'50000'), (b'azureml-model-session', b'd20251215040858-e4bbb8d1462a4164'), (b'x-accel-buffering', b'no'), (b'x-ms-rai-invoked', b'true'), (b'x-request-id', b'f7945ff0-a713-4585-86eb-a8d353656bb9'), (b'x-ms-deployment-name', b'gpt-4o-agent'), (b'Date', b'Thu, 29 Jan 2026 16:23:29 GMT')])
+2026-01-29 21:53:30,237 | INFO | httpx | HTTP Request: POST https://jason-mj5zxtab-canadaeast.cognitiveservices.azure.com/openai/deployments/gpt-4o-agent/chat/completions?api-version=2024-12-01-preview "HTTP/1.1 200 OK"
+2026-01-29 21:53:30,238 | DEBUG | httpcore.http11 | receive_response_body.started request=<Request [b'POST']>
+2026-01-29 21:53:30,238 | DEBUG | httpcore.http11 | receive_response_body.complete
+2026-01-29 21:53:30,238 | DEBUG | httpcore.http11 | response_closed.started
+2026-01-29 21:53:30,238 | DEBUG | httpcore.http11 | response_closed.complete
+2026-01-29 21:53:30,238 | DEBUG | openai._base_client | HTTP Response: POST https://jason-mj5zxtab-canadaeast.cognitiveservices.azure.com/openai/deployments/gpt-4o-agent/chat/completions?api-version=2024-12-01-preview "200 OK" Headers({'content-length': '1072', 'content-type': 'application/json', 'apim-request-id': '793fcd31-6cc6-4b6b-9d3b-6922f419176e', 'strict-transport-security': 'max-age=31536000; includeSubDomains; preload', 'x-content-type-options': 'nosniff', 'x-ms-region': 'Canada East', 'x-ratelimit-remaining-requests': '49', 'x-ratelimit-limit-requests': '50', 'x-ratelimit-remaining-tokens': '49382', 'x-ratelimit-limit-tokens': '50000', 'azureml-model-session': 'd20251215040858-e4bbb8d1462a4164', 'x-accel-buffering': 'no', 'x-ms-rai-invoked': 'true', 'x-request-id': 'f7945ff0-a713-4585-86eb-a8d353656bb9', 'x-ms-deployment-name': 'gpt-4o-agent', 'date': 'Thu, 29 Jan 2026 16:23:29 GMT'})
+2026-01-29 21:53:30,238 | DEBUG | openai._base_client | request_id: f7945ff0-a713-4585-86eb-a8d353656bb9
+2026-01-29 21:53:30,241 | INFO | app.ingestion.ingest | Extracted drug: nizatidine (brand: axid, generic: nizatidine)
+2026-01-29 21:53:30,243 | INFO | __main__ | Γ£à Metadata extracted
+2026-01-29 21:53:30,243 | INFO | __main__ |    - Drug: nizatidine
+2026-01-29 21:53:30,243 | INFO | __main__ |    - Brand: axid
+2026-01-29 21:53:30,243 | INFO | __main__ |    - Generic: nizatidine
+2026-01-29 21:53:30,243 | INFO | __main__ | ============================================================
+2026-01-29 21:53:30,243 | INFO | __main__ | STEP 5: Testing header-based chunking...
+2026-01-29 21:53:30,243 | INFO | app.ingestion.ingest | Chunked into 63 sections
+2026-01-29 21:53:30,243 | INFO | __main__ | Γ£à Content chunked into 63 sections
+2026-01-29 21:53:30,244 | INFO | __main__ |    - First section: Pr AXID┬«
+2026-01-29 21:53:30,244 | INFO | __main__ |    - First section length: 308 chars
+2026-01-29 21:53:30,244 | INFO | __main__ | ============================================================
+2026-01-29 21:53:30,244 | INFO | __main__ | STEP 6: Testing section mapping creation...
+2026-01-29 21:53:30,244 | INFO | __main__ | Session created, testing mapping...
+2026-01-29 21:53:30,244 | INFO | __main__ | Creating mapping for: pr axid
+2026-01-29 21:53:30,255 | INFO | __main__ | Γ£à Mapping created: pr_axid
+2026-01-29 21:53:30,262 | INFO | __main__ | Γ£à Mapping committed to database
+2026-01-29 21:53:30,262 | INFO | __main__ | ============================================================
+2026-01-29 21:53:30,262 | INFO | __main__ | STEP 7: Testing section storage...
+2026-01-29 21:53:30,262 | INFO | __main__ | Creating test section...
+2026-01-29 21:53:30,262 | INFO | __main__ | Adding section to session...
+2026-01-29 21:53:30,263 | INFO | __main__ | Committing section...
+2026-01-29 21:53:30,281 | INFO | __main__ | Γ£à Test section stored successfully!
+2026-01-29 21:53:30,282 | INFO | __main__ | ============================================================
+2026-01-29 21:53:30,282 | INFO | __main__ | STEP 8: Verifying data in database...
+2026-01-29 21:53:30,288 | INFO | __main__ | Γ£à Sections in database: 1
+2026-01-29 21:53:30,288 | INFO | __main__ | Γ£à Mappings in database: 1
+2026-01-29 21:53:30,288 | INFO | __main__ | ============================================================
+2026-01-29 21:53:30,288 | INFO | __main__ | ≡ƒÄë ALL TESTS PASSED!
+2026-01-29 21:53:30,288 | INFO | __main__ | ============================================================

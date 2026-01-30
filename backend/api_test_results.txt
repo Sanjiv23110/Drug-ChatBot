@@ -1,0 +1,12 @@
+
+Testing API with query: 'what are the contraindications of axid?'
+Status Code: 200
+Time taken: 4.24s
+✅ SUCCESS for 'what are the contraindications of axid?'
+Retrieval Path: SQL_EXACT
+Sources: ['contraindications']
+
+Testing API with query: 'contraindications of APO-METOPROLOL'
+Status Code: 200
+Time taken: 3.09s
+❌ FAILURE: No answer for 'contraindications of APO-METOPROLOL'
