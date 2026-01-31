@@ -1,0 +1,136 @@
+--- 1. RESEARCHING 'ALL CONTRAINDICATIONS' FAILURE ---
+Query: 'all contraindications of APO-METOPROLOL'
+Extracted Drug: 'all'
+Extracted Section: 'contraindications'
+
+Query: 'contraindications of APO-METOPROLOL'
+Extracted Drug: 'apo-metoprolol'
+Extracted Section: 'contraindications'
+
+--- 2. RESEARCHING 'PARTIAL ANSWER' (DATABASE INSPECTION) ---
+Found related drugs in DB: [('metoprolol tartrate', 'apo-metoprolol', 'metoprolol tartrate')]
+
+Inspecting sections for drug: 'metoprolol tartrate'
+
+Total Sections Found: 95
+Sections sequence:
+   Header: 'Pr APO-METOPROLOL' | Norm: 'pr apo-metoprolol' | Len: 70 | Preview: Metoprolol Tartrate Tablets Tablets, 25 mg, 50 mg and 100 mg, Oral USP
+   Header: 'Pr APO-METOPROLOL (Type L)' | Norm: 'pr apo-metoprolol type l' | Len: 295 | Preview: Metoprolol Tartrate Film-Coated Tablets Film-Coated Tablets, 50 mg and 100 mg, Oral USP
+
+Beta-Adrene
+   Header: 'RECENT MAJOR LABEL CHANGES' | Norm: 'recent major label changes' | Len: 14 | Preview: Not applicable
+   Header: 'TABLE OF CONTENTS' | Norm: 'table of contents' | Len: 28316 | Preview: | Sections or subsections that are not applicable at the time of authorization are not listed.      
+   Header: 'Hypertension' | Norm: 'hypertension' | Len: 711 | Preview: APO-METOPROLOL / APO-METOPROLOL (Type L) (metoprolol tartrate) is indicated for mild or moderate hyp
+   Header: 'Angina Pectoris' | Norm: 'angina pectoris' | Len: 131 | Preview: APO-METOPROLOL / APO-METOPROLOL (Type L) is indicated for the long-term treatment of angina pectoris
+   Header: 'Myocardial Infarction' | Norm: 'myocardial infarction' | Len: 579 | Preview: APO-METOPROLOL / APO-METOPROLOL (Type L) is indicated in the treatment of hemodynamically stable pat
+   Header: '1.1 Pediatrics' | Norm: 'pediatrics' | Len: 143 | Preview: Pediatrics (&lt;18 years): No data are available to Health Canada; therefore, Health Canada has not 
+   Header: '1.2 Geriatrics' | Norm: 'geriatrics' | Len: 383 | Preview: Evidence from clinical studies and experience suggests that use in the geriatric population is assoc
+-> Header: '2 CONTRAINDICATIONS' | Norm: 'contraindications' | Len: 312 | Preview: Patients who are hypersensitive to this drug or to any ingredient in the formulation, including any 
+-> Header: 'APO-METOPROLOL / APO-METOPROLOL (Type L) (metoprolol tartrate) is contraindicated in patients with:' | Norm: 'apo-metoprolol apo-metoprolol type l metoprolol tartrate is contraindicated in patients with' | Len: 361 | Preview: - Sinus bradycardia
+- Sick sinus syndrome
+- Second and third degree A-V block
+- Right ventricular fa
+-> Header: 'Myocardial Infarction Patients - Additional Contraindications' | Norm: 'myocardial infarction patients - additional contraindications' | Len: 294 | Preview: APO-METOPROLOL / APO-METOPROLOL (Type L) is contraindicated in patients with a heart rate &lt; 45 be
+   Header: '4.1 Dosing Considerations' | Norm: 'dosing considerations' | Len: 154 | Preview: - For the 50 mg and 100 mg immediate release strengths and the 5 mL ampoules (1 mg/mL), only generic
+   Header: 'Hypertension' | Norm: 'hypertension' | Len: 1452 | Preview: APO-METOPROLOL / APO-METOPROLOL (Type L) (metoprolol tartrate) is usually used in conjunction with o
+   Header: 'Angina Pectoris' | Norm: 'angina pectoris' | Len: 703 | Preview: The recommended dosage range for APO-METOPROLOL / APO-METOPROLOL (Type L) in angina pectoris is 100 
+-> Header: 'In addition to the usual contraindications:' | Norm: 'in addition to the usual contraindications' | Len: 581 | Preview: ONLY PATIENTS WITH SUSPECTED ACUTE MYOCARDIAL INFARCTION WHO MEET THE FOLLOWING CRITERIA ARE SUITABL
+   Header: 'Early Treatment' | Norm: 'early treatment' | Len: 1671 | Preview: APO-METOPROLOL / APO-METOPROLOL (Type L) is not intended for early treatment.
+
+During the early phas
+   Header: 'Late Treatment (For proven myocardial infarction patients only)' | Norm: 'late treatment for proven myocardial infarction patients only' | Len: 682 | Preview: Patients with contraindications to treatment during the early phase of myocardial infarction, patien
+   Header: 'Pediatric patients' | Norm: 'pediatric patients' | Len: 137 | Preview: No pediatric studies have been performed. The safety and efficacy of metoprolol tartrate in pediatri
+   Header: 'Renal impairment' | Norm: 'renal impairment' | Len: 256 | Preview: No dose adjustment of APO-METOPROLOL / APO-METOPROLOL (Type L) is required in patients mild to moder
+   Header: 'Hepatic impairment' | Norm: 'hepatic impairment' | Len: 569 | Preview: Metoprolol tartrate blood levels are likely to increase substantially in patients with mild to moder
+   Header: 'Geriatric patients (&gt;65 years)' | Norm: 'geriatric patients gt65 years' | Len: 245 | Preview: APO-METOPROLOL / APO-METOPROLOL (Type L) should be given with caution in geriatric patients due to i
+   Header: '4.4 Administration' | Norm: 'administration' | Len: 229 | Preview: For oral use.
+
+APO-METOPROLOL / APO-METOPROLOL (Type L) tablets should be swallowed whole without be
+   Header: '4.5 Missed Dose' | Norm: 'missed dose' | Len: 232 | Preview: The missed dose of APO-METOPROLOL / APO-METOPROLOL (Type L) should be taken as soon as the patient r
+   Header: 'Symptoms' | Norm: 'symptoms' | Len: 600 | Preview: The most common signs to be expected with overdosage of a beta-adrenoreceptor agent are hypotension,
+   Header: 'Management' | Norm: 'management' | Len: 1443 | Preview: If overdosage occurs, in all cases therapy with APO-METOPROLOL / APO-METOPROLOL (Type L) should be d
+   Header: '6 DOSAGE FORMS, STRENGTHS, COMPOSITION AND PACKAGING' | Norm: 'dosage forms strengths composition and packaging' | Len: 3608 | Preview: Table 1 -Dosage Forms, Strengths, Composition and Packaging
+
+| Route of Administration   | Dosage Fo
+   Header: 'Abrupt withdrawal' | Norm: 'abrupt withdrawal' | Len: 1404 | Preview: Patients with angina or hypertension should be warned against abrupt discontinuation of APO-METOPROL
+   Header: 'Cardiovascular' | Norm: 'cardiovascular' | Len: 2168 | Preview: Cardiovascular system: Special caution should be exercised when administering APOMETOPROLOL / APO-ME
+   Header: 'Myocardial Infarction - Additional Warnings' | Norm: 'myocardial infarction - additional warnings' | Len: 2577 | Preview: Acute Intervention: During acute intervention in myocardial infarction, intravenous metoprolol shoul
+   Header: 'Driving and operating machinery' | Norm: 'driving and operating machinery' | Len: 434 | Preview: Dizziness, fatigue or visual impairment may occur during treatment with APO-METOPROLOL / APO-METOPRO
+   Header: 'Endocrine and Metabolism' | Norm: 'endocrine and metabolism' | Len: 1638 | Preview: Thyrotoxicosis: Although metoprolol has been used successfully for the symptomatic (adjuvant) therap
+   Header: 'Hepatic/Biliary/Pancreatic' | Norm: 'hepaticbiliarypancreatic' | Len: 1032 | Preview: Metoprolol tartrate is mainly eliminated by means of hepatic metabolism (see 10.3 Pharmacokinetics).
+   Header: 'Immune' | Norm: 'immune' | Len: 1069 | Preview: Anaphylactic reactions : There may be increased difficulty in treating an allergic type reaction in 
+   Header: 'Interactions' | Norm: 'interactions' | Len: 530 | Preview: Calcium channel blocker of the verapamil (phenylalkylamine) type should not be given intravenously t
+   Header: 'Peripheral vascular disease:' | Norm: 'peripheral vascular disease' | Len: 137 | Preview: Beta-blockade may impair the peripheral circulation and exacerbate the symptoms of peripheral vascul
+   Header: 'Peri-Operative Considerations' | Norm: 'peri-operative considerations' | Len: 1990 | Preview: Anesthesia and Surgery : The necessity or desirability of withdrawing beta-blocking agents prior to 
+   Header: 'Renal' | Norm: 'renal' | Len: 316 | Preview: Renal impairment: In patients with severe renal disease, haemodynamic changes following beta-blockad
+   Header: 'Respiratory' | Norm: 'respiratory' | Len: 1500 | Preview: Bronchospastic Diseases: In general, patients with bronchospastic diseases should not receive beta-b
+   Header: 'Skin' | Norm: 'skin' | Len: 656 | Preview: Oculomucocutaneous Syndrome: Various skin rashes and conjunctival xerosis have been reported with be
+   Header: '7.1.1   Pregnant Women' | Norm: 'pregnant women' | Len: 496 | Preview: Upon confirming the diagnosis of pregnancy, women should immediately inform the doctor and stop grad
+   Header: '7.1.2   Breast-feeding' | Norm: 'breast-feeding' | Len: 94 | Preview: Metoprolol is excreted in breast milk. If drug use is essential, patients should stop nursing.
+   Header: '7.1.3 Pediatrics' | Norm: 'pediatrics' | Len: 144 | Preview: Pediatrics (0 to 18 years): No data are available to Health Canada; therefore, Health Canada has not
+   Header: '7.1.4 Geriatrics' | Norm: 'geriatrics' | Len: 584 | Preview: Evidence from clinical studies and experience suggests that use in the geriatric population is assoc
+   Header: '8.1 Adverse Reaction Overview' | Norm: 'adverse reaction overview' | Len: 6239 | Preview: The most common adverse events reported are exertional tiredness, gastrointestinal disorders, and di
+   Header: '8.2 Clinical Trial Adverse Reactions' | Norm: 'clinical trial adverse reactions' | Len: 1299 | Preview: Clinical trials are conducted under very specific conditions. The adverse reaction rates observed in
+   Header: 'Clinical Laboratory' | Norm: 'clinical laboratory' | Len: 129 | Preview: The following laboratory parameters have been elevated on rare occasions: transaminases, BUN, alkali
+   Header: 'Hematology' | Norm: 'hematology' | Len: 50 | Preview: Isolated cases of thrombocytopenia and leucopenia.
+   Header: '8.5 Post-Market Adverse Reactions' | Norm: 'post-market adverse reactions' | Len: 547 | Preview: The following adverse reactions have been derived from post-marketing experience with metoprolol tar
+   Header: 'Nervous system disorders' | Norm: 'nervous system disorders' | Len: 17 | Preview: Confusional state
+   Header: 'Investigations' | Norm: 'investigations' | Len: 72 | Preview: Blood triglycerides increased, High Density Lipoprotein (HDL) decreased.
+   Header: 'Serious Drug Interactions' | Norm: 'serious drug interactions' | Len: 554 | Preview: - Concomitant administration of APO-METOPROLOL / APO-METOPROLOL (Type L) and intravenous calcium cha
+   Header: '9.2 Drug-Interactions Overview' | Norm: 'drug-interactions overview' | Len: 629 | Preview: Metoprolol is a substrate of CYP2D6 enzyme, therefore potent inhibitors of this enzyme may increase 
+   Header: '9.4 Drug-Drug Interactions' | Norm: 'drug-drug interactions' | Len: 21926 | Preview: The drugs listed in this table are based on either drug interaction case reports or studies, or pote
+   Header: '9.5 Drug-Food Interactions' | Norm: 'drug-food interactions' | Len: 806 | Preview: Food enhances the bioavailability of an oral dose of metoprolol by approximately 20 to 40%. Indeed, 
+   Header: '9.6 Drug-Herb Interactions' | Norm: 'drug-herb interactions' | Len: 90 | Preview: The interaction of metoprolol with herbal medications or supplements has not been studied.
+   Header: '9.7 Drug-Laboratory Test Interactions' | Norm: 'drug-laboratory test interactions' | Len: 65 | Preview: No data suggest that metoprolol interferes with laboratory tests.
+   Header: '10.1  Mechanism of Action' | Norm: 'mechanism of action' | Len: 1609 | Preview: Metoprolol is a beta-adrenergic receptor-blocking agent. In vitro and in vivo animal studies have sh
+   Header: '10.2  Pharmacodynamics' | Norm: 'pharmacodynamics' | Len: 1732 | Preview: Significant beta-blocking effect (as measured by reduction of exercise heart rate) occurs within one
+   Header: 'Effects on Pulmonary Function' | Norm: 'effects on pulmonary function' | Len: 648 | Preview: The effects on specific airways resistance (SRaw) of single oral doses of 100 mg of metoprolol were 
+   Header: 'Pharmacokinetic and pharmacodynamic relationship' | Norm: 'pharmacokinetic and pharmacodynamic relationship' | Len: 1734 | Preview: Following intravenous administration of metoprolol tartrate, the half-life of the distribution phase
+   Header: '10.3  Pharmacokinetics' | Norm: 'pharmacokinetics' | Len: 87 | Preview: The drug is available in racemic form and it exhibits stereo-specific pharmacokinetics.
+   Header: 'Absorption:' | Norm: 'absorption' | Len: 952 | Preview: In humans, following oral administration of conventional tablet, metoprolol is rapidly and almost co
+   Header: 'Distribution:' | Norm: 'distribution' | Len: 518 | Preview: Metoprolol is rapidly and extensively distributed to the extra-vascular tissue. The mean volume of d
+   Header: 'Metabolism:' | Norm: 'metabolism' | Len: 1626 | Preview: Biotransformation / Metabolism: Metoprolol is not a significant P-glycoprotein substrate but is exte
+   Header: 'Elimination:' | Norm: 'elimination' | Len: 644 | Preview: Elimination is mainly by biotransformation in the liver, and the plasma half-life averages 3.5 hours
+   Header: 'Special Populations and Conditions' | Norm: 'special populations and conditions' | Len: 2315 | Preview: - Geriatrics: The elderly population show higher plasma concentrations of metoprolol (up to 28% AUC 
+   Header: '11 STORAGE, STABILITY AND DISPOSAL' | Norm: 'storage stability and disposal' | Len: 106 | Preview: APO-METOPROLOL / APO-METOPROLOL (Type L): Store at room temperature (15┬░C to 30┬░C) and protect from 
+   Header: 'Drug Substance' | Norm: 'drug substance' | Len: 33 | Preview: Proper name:  Metoprolol tartrate
+   Header: 'Chemical name:' | Norm: 'chemical name' | Len: 384 | Preview: 1. 2-Propanol, 1-[4-(2-methoxyethyl)phenoxyl]-3-[(1-methylethyl)amino]-, ( ∩Çó )-, [R-(R*,R*)]-2,3-dih
+   Header: 'Structural formula:' | Norm: 'structural formula' | Len: 242 | Preview: <!-- image -->
+
+Physicochemical properties: Metoprolol is the tartrate salt of an organic base. It i
+   Header: '14.2 Comparative Bioavailability Studies' | Norm: 'comparative bioavailability studies' | Len: 6339 | Preview: A randomized, two-way, single-dose, crossover comparative bioavailability study of APO-METOPROLOL 10
+   Header: 'Table 6 -Acute Toxicity' | Norm: 'table 6 -acute toxicity' | Len: 4240 | Preview: | Species   | Sex    | Route   | Solutions   | LD 50 (mg/kg)   |
+|-----------|--------|---------|---
+   Header: 'Table 8 -Long-Term Toxicity (Subacute)' | Norm: 'table 8 -long-term toxicity subacute' | Len: 2048 | Preview: | Strain Species      | No. Of Groups   | N per Group   | Dose (mg/kg)                              
+   Header: 'Carcinogenicity:' | Norm: 'carcinogenicity' | Len: 933 | Preview: Metoprolol was administered to 3 groups of 60 male and 60 female Charles River SpragueDawley rats at
+   Header: 'Reproductive and Developmental Toxicology:' | Norm: 'reproductive and developmental toxicology' | Len: 1402 | Preview: Rat : (Sprague-Dawley strain) Doses of 10, 50 and 200 mg/kg were administered orally to groups of 20
+   Header: '17  SUPPORTING PRODUCT MONOGRAPHS' | Norm: 'supporting product monographs' | Len: 154 | Preview: 1. LOPRESOR SR┬« slow-release tablets, 100 mg and 200 mg, submission control 256174, Product Monograp
+   Header: 'Pr APO-METOPROLOL' | Norm: 'pr apo-metoprolol' | Len: 27 | Preview: Metoprolol Tartrate Tablets
+   Header: 'Metoprolol Tartrate Film-Coated Tablets' | Norm: 'metoprolol tartrate film-coated tablets' | Len: 360 | Preview: Read this carefully before you start taking APO-METOPROLOL / APO-METOPROLOL (Type L) and each time y
+   Header: 'What is APO-METOPROLOL / APO-METOPROLOL (Type L) used for?' | Norm: 'what is apo-metoprolol apo-metoprolol type l used for' | Len: 336 | Preview: APO-METOPROLOL / APO-METOPROLOL (Type L) is used in adults for the following conditions:
+
+- to treat
+   Header: 'How does APO-METOPROLOL / APO-METOPROLOL (Type L) work?' | Norm: 'how does apo-metoprolol apo-metoprolol type l work' | Len: 237 | Preview: APO-METOPROLOL / APO-METOPROLOL (Type L) belongs to a group of medicines known as 'beta -blockers'. 
+   Header: 'What are the ingredients in APO-METOPROLOL / APO-METOPROLOL (Type L)?' | Norm: 'what are the ingredients in apo-metoprolol apo-metoprolol type l' | Len: 818 | Preview: Medicinal ingredients: metoprolol tartrate.
+
+Non-medicinal ingredients:
+
+APO-METOPROLOL: colloidal s
+   Header: 'APO-METOPROLOL / APO-METOPROLOL (Type L) comes in the following dosage forms:' | Norm: 'apo-metoprolol apo-metoprolol type l comes in the following dosage forms' | Len: 61 | Preview: Tablets, 25, 50 and 100 mg Film-Coated Tablets, 50 and 100 mg
+   Header: 'Do not use APO-METOPROLOL / APO-METOPROLOL (Type L) if:' | Norm: 'do not use apo-metoprolol apo-metoprolol type l if' | Len: 2077 | Preview: - you are allergic to metoprolol tartrate or to any other ingredients in APO-METOPROLOL / APO-METOPR
+   Header: 'Other warnings you should know about:' | Norm: 'other warnings you should know about' | Len: 3996 | Preview: Stopping your medication : Do not suddenly stop taking APO-METOPROLOL / APOMETOPROLOL (Type L). This
+   Header: 'The following may also interact with APO-METOPROLOL / APO-METOPROLOL (Type L):' | Norm: 'the following may also interact with apo-metoprolol apo-metoprolol type l' | Len: 1758 | Preview: - aldesleukin, a medicine used to treat kidney cancer
+- alcohol
+- medicines that lower blood pressur
+   Header: 'How to take APO-METOPROLOL / APO-METOPROLOL (Type L):' | Norm: 'how to take apo-metoprolol apo-metoprolol type l' | Len: 862 | Preview: Once your healthcare professional has identified the correct dosage for you using the regular metopr
+   Header: 'Usual dose:' | Norm: 'usual dose' | Len: 243 | Preview: Your healthcare professional will decide how much APO-METOPROLOL / APO-METOPROLOL (Type L) you shoul
+   Header: 'The usual adult maintenance doses are:' | Norm: 'the usual adult maintenance doses are' | Len: 355 | Preview: - To treat high blood pressure: 100 to 200 mg daily. Your healthcare professional may add another me
+   Header: 'Overdose:' | Norm: 'overdose' | Len: 1006 | Preview: Some of the effects of an overdose of APO-METOPROLOL / APO-METOPROLOL (Type L) are:
+
+- very low bloo
+   Header: 'Missed Dose:' | Norm: 'missed dose' | Len: 223 | Preview: If you missed a dose of this medication, take it as soon as you remember. But if it is almost time f
+   Header: 'What are possible side effects from using APO-METOPROLOL / APO-METOPROLOL (Type L)?' | Norm: 'what are possible side effects from using apo-metoprolol apo-metoprolol type l' | Len: 19273 | Preview: These are not all the possible side effects you may have when taking APO-METOPROLOL / APOMETOPROLOL 
+   Header: 'Reporting Side Effects' | Norm: 'reporting side effects' | Len: 547 | Preview: You can report any suspected side effects associated with the use of health products to Health Canad
+   Header: 'Storage:' | Norm: 'storage' | Len: 106 | Preview: APO-METOPROLOL / APO-METOPROLOL (Type L): Store at room temperature (15┬░C to 30┬░C) and protect from 
+   Header: 'If you want more information about APO-METOPROLOL / APO-METOPROLOL (Type L):' | Norm: 'if you want more information about apo-metoprolol apo-metoprolol type l' | Len: 507 | Preview: - Talk to your healthcare professional
+- Find the full product monograph that is prepared for health

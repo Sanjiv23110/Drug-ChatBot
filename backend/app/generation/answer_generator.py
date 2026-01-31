@@ -232,6 +232,31 @@ class AnswerGenerator:
         context_text, context_sources = self._format_context(context_chunks)
         user_prompt = format_user_prompt(query, context_text)
         
+        # NEW: Check for attribute-specific extraction mode
+        # Re-detect attribute from query for strict extraction prompting
+        from app.retrieval.intent_classifier import IntentClassifier
+        
+        attr_match = None
+        for key, data in IntentClassifier.ATTRIBUTE_MAP.items():
+            for kw in data["keywords"]:
+                if re.search(r'\b' + re.escape(kw) + r'\b', query, re.IGNORECASE):
+                    attr_match = key
+                    break
+            if attr_match:
+                break
+        
+        if attr_match:
+            # Inject strict extraction instruction
+            extraction_instruction = (
+                f"\n\nCRITICAL INSTRUCTION: The user is asking for the specific attribute '{attr_match}'.\n"
+                f"You must COPY ONLY the sentence(s) from the provided sections that explicitly mention '{attr_match}'.\n"
+                f"Do NOT summarize. Do NOT infer. Do NOT calculate.\n"
+                f"If the text does not explicitly state the {attr_match}, you MUST respond exactly with:\n"
+                f"'Information not found in available monographs.'"
+            )
+            user_prompt += extraction_instruction
+            logging.info(f"Injected strict extraction prompt for attribute: {attr_match}")
+        
         # Generate response with GPT-4 using dynamic tokens
         try:
             response = self._call_llm(user_prompt, max_tokens=dynamic_max_tokens)
@@ -272,12 +297,15 @@ class AnswerGenerator:
             file = Path(chunk.get('file_path', 'Unknown')).name
             page = chunk.get('page_num', 'Unknown')
             section = chunk.get('section_name', 'Unknown')
-            drug = chunk.get('drug_generic', chunk.get('file_path', 'Unknown drug'))
+            drug = chunk.get('drug_generic', chunk.get('drug_name', 'Unknown drug'))
+            
+            # Handle both 'chunk_text' and 'content_text' (schema compatibility)
+            text_content = chunk.get('chunk_text') or chunk.get('content_text', '')
             
             # Format chunk with source
             context_parts.append(
                 f"{source_label} {drug}, Page {page}, Section: {section}\n"
-                f"{chunk['chunk_text']}\n"
+                f"{text_content}\n"
             )
             
             sources.append({

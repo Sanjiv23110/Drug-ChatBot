@@ -33,6 +33,8 @@ class RetrievalPath(str, Enum):
     """Which retrieval strategy was used."""
     SQL_EXACT = "SQL_EXACT"           # Path A: SQL exact match
     SQL_FUZZY = "SQL_FUZZY"           # Path A+: SQL fuzzy match
+    SECTION_LOOKUP = "SECTION_LOOKUP"   # Path A: SQL exact/fuzzy
+    ATTRIBUTE_LOOKUP = "ATTRIBUTE_LOOKUP" # Path A++: Attribute scoped
     IMAGE_LOOKUP = "IMAGE_LOOKUP"     # Path B: Image retrieval
     VECTOR_SCOPED = "VECTOR_SCOPED"   # Path C: Scoped vector search
     NO_RESULT = "NO_RESULT"           # Nothing found
@@ -49,6 +51,7 @@ class RetrievalResult:
     path_used: RetrievalPath = RetrievalPath.NO_RESULT
     drug_name: Optional[str] = None
     section_name: Optional[str] = None  # DYNAMIC section name
+    attribute_name: Optional[str] = None # NEW
     
     # Query info
     original_query: str = ""
@@ -66,6 +69,7 @@ class RetrievalEngine:
     Routing:
     - Path A: SQL exact match when drug+section are known
     - Path A+: SQL fuzzy match using pg_trgm
+    - Path A++: Attribute lookup (NEW) - maps attribute to section(s)
     - Path B: Image lookup when structure is requested
     - Path C: Vector fallback ONLY when SQL returns nothing
     
@@ -124,7 +128,8 @@ class RetrievalEngine:
             original_query=query,
             intent=intent,
             drug_name=intent.target_drug,
-            section_name=intent.target_section  # DYNAMIC - string, not enum
+            section_name=intent.target_section,
+            attribute_name=intent.target_attribute
         )
         
         # Step 2: Route to appropriate path
@@ -146,10 +151,22 @@ class RetrievalEngine:
             if result.sections:
                 return result
             
-            # Otherwise fall through to Path C
-        
+            # Otherwise fall through to Path A++ or C
+            
+        # Path A++: Attribute Lookup (NEW)
+        # Only if drug is known and specific attribute detected
+        if intent.target_drug and intent.target_attribute:
+            logger.info(
+                f"Routing to Path A++: Attribute Lookup "
+                f"({intent.target_drug}, {intent.target_attribute})"
+            )
+            result = await self._path_a_attribute_lookup(intent, result)
+            
+            if result.sections:
+                return result
+
         # Path A (partial): Drug known, section unknown
-        if intent.target_drug and not intent.target_section:
+        if intent.target_drug and not intent.target_section and not intent.target_attribute:
             logger.info(f"Routing to Path A (partial): All sections for {intent.target_drug}")
             result = await self._path_a_sql_drug_only(intent, result)
             
@@ -160,6 +177,7 @@ class RetrievalEngine:
         if self.enable_vector_fallback and intent.target_drug:
             logger.info(f"Routing to Path C: Vector Fallback for {intent.target_drug}")
             return await self._path_c_vector_scoped(intent, result)
+
         
         # No drug identified - cannot proceed
         if not intent.target_drug:
@@ -183,10 +201,16 @@ class RetrievalEngine:
         """
         async with get_session() as session:
             # First try: Exact match
-            # IMPORTANT: Check brand_name, generic_name, AND drug_name for flexible matching
+            # Check ALL name fields: drug_name, brand_name, generic_name
             stmt = (
                 select(MonographSection)
-                .where(MonographSection.drug_name == intent.target_drug)
+                .where(
+                    or_(
+                        MonographSection.drug_name == intent.target_drug,
+                        MonographSection.brand_name == intent.target_drug,
+                        MonographSection.generic_name == intent.target_drug
+                    )
+                )
                 .where(MonographSection.section_name == intent.target_section)
                 .order_by(MonographSection.page_start)
             )
@@ -209,12 +233,52 @@ class RetrievalEngine:
                 logger.info(f"Path A (exact) returned {len(sections)} sections")
                 return result
             
-            # Second try: Fuzzy match using pg_trgm
+            # Second try: Enhanced fuzzy match using pg_trgm + keyword fallback
             if self.use_fuzzy_matching:
+                # Try fuzzy with LOWER threshold for better recall
                 fuzzy_stmt = text("""
-                    SELECT * FROM monograph_sections
-                    WHERE drug_name = :drug_name
-                    AND similarity(section_name, :section_query) > 0.3
+                    SELECT *, similarity(section_name, :section_query) as sim_score
+                    FROM monograph_sections
+                    WHERE (
+                        drug_name = :drug_name 
+                        OR brand_name = :drug_name 
+                        OR generic_name = :drug_name
+                    )
+                    AND (
+                        -- Fuzzy similarity (lowered threshold for 19k PDFs)
+                        similarity(section_name, :section_query) > 0.2
+                        OR 
+                        -- Keyword fallback for common patterns
+                        (
+                            -- "indications" matches "what is X used for"
+                            (:section_query = 'indications' AND (
+                                section_name ILIKE '%used%for%' OR 
+                                section_name ILIKE '%indication%' OR
+                                section_name ILIKE '%therapeutic%'
+                            ))
+                            OR
+                            -- "contraindications" matches "when not to use"
+                            (:section_query = 'contraindications' AND (
+                                section_name ILIKE '%contraindication%' OR
+                                section_name ILIKE '%not%use%' OR
+                                section_name ILIKE '%should not%'
+                            ))
+                            OR
+                            -- "dosage" matches "how to take"
+                            (:section_query = 'dosage' AND (
+                                section_name ILIKE '%dosage%' OR
+                                section_name ILIKE '%how%take%' OR
+                                section_name ILIKE '%administration%'
+                            ))
+                            OR
+                            -- "side_effects" matches various forms
+                            (:section_query = 'side_effects' AND (
+                                section_name ILIKE '%side%effect%' OR
+                                section_name ILIKE '%adverse%' OR
+                                section_name ILIKE '%unwanted%'
+                            ))
+                        )
+                    )
                     ORDER BY similarity(section_name, :section_query) DESC
                     LIMIT 10
                 """)
@@ -245,7 +309,73 @@ class RetrievalEngine:
                     result.path_used = RetrievalPath.SQL_FUZZY
                     result.total_results = len(rows)
                     
-                    logger.info(f"Path A (fuzzy) returned {len(rows)} sections")
+                    logger.info(f"Path A (enhanced fuzzy) returned {len(rows)} sections")
+        
+        
+        return result
+
+    async def _path_a_attribute_lookup(
+        self,
+        intent: QueryIntent,
+        result: RetrievalResult
+    ) -> RetrievalResult:
+        """
+        Path A++: Attribute-Scoped Section Retrieval.
+        
+        Behavior:
+        1. Map attribute to allowed sections (from IntentClassifier.ATTRIBUTE_MAP)
+        2. Retrieve ALL matching sections for the drug using SQL (ILIKE)
+        3. No vector search, no inferencing.
+        """
+        if not intent.target_attribute:
+            return result
+
+        # Get allowed sections for this attribute
+        # We need to access the map from IntentClassifier class or instance
+        attr_data = IntentClassifier.ATTRIBUTE_MAP.get(intent.target_attribute)
+        if not attr_data:
+            logger.warning(f"Attribute {intent.target_attribute} not found in map")
+            return result
+        
+        allowed_sections = attr_data["sections"]
+        logger.info(f"Path A++ looking for attribute '{intent.target_attribute}' in sections: {allowed_sections}")
+        
+        async with get_session() as session:
+            # Build query to meaningful sections
+            # We use ILIKE ANY for section matching
+            stmt = (
+                select(MonographSection)
+                .where(
+                    or_(
+                        MonographSection.drug_name == intent.target_drug,
+                        MonographSection.brand_name == intent.target_drug,
+                        MonographSection.generic_name == intent.target_drug
+                    )
+                )
+                .where(
+                    # Check if section_name contains ANY of the allowed keywords
+                    # Or simpler: just fuzzy match the allowed section names
+                    # We'll use a robust ILIKE check against the list
+                    or_(*[MonographSection.section_name.ilike(f"%{s}%") for s in allowed_sections])
+                )
+                .order_by(MonographSection.page_start)
+            )
+            
+            result.sql_executed = str(stmt)
+            
+            db_result = await session.execute(stmt)
+            sections = db_result.scalars().all()
+            
+            if sections:
+                result.sections = [self._section_to_dict(s) for s in sections]
+                result.path_used = RetrievalPath.ATTRIBUTE_LOOKUP
+                result.total_results = len(sections)
+                # Set the attribute name in result for later use by generator
+                result.attribute_name = intent.target_attribute
+                
+                logger.info(f"Path A++ returned {len(sections)} sections for attribute '{intent.target_attribute}'")
+            else:
+                logger.info(f"Path A++ found NO sections for attribute '{intent.target_attribute}'")
         
         return result
     
@@ -260,7 +390,13 @@ class RetrievalEngine:
         async with get_session() as session:
             stmt = (
                 select(MonographSection)
-                .where(MonographSection.drug_name == intent.target_drug)
+                .where(
+                    or_(
+                        MonographSection.drug_name == intent.target_drug,
+                        MonographSection.brand_name == intent.target_drug,
+                        MonographSection.generic_name == intent.target_drug
+                    )
+                )
                 .order_by(MonographSection.section_name, MonographSection.page_start)
             )
             
@@ -292,7 +428,11 @@ class RetrievalEngine:
             # Find sections with chemical structures using fuzzy match
             stmt = text("""
                 SELECT * FROM monograph_sections
-                WHERE drug_name = :drug_name
+                WHERE (
+                    drug_name = :drug_name 
+                    OR brand_name = :drug_name 
+                    OR generic_name = :drug_name
+                )
                 AND has_chemical_structure = TRUE
                 ORDER BY 
                     CASE WHEN section_name ILIKE '%structure%' THEN 1
@@ -365,7 +505,11 @@ class RetrievalEngine:
                         content_text, image_paths, has_chemical_structure,
                         embedding <-> :query_vector AS distance
                     FROM monograph_sections
-                    WHERE drug_name = :drug_name
+                    WHERE (
+                        drug_name = :drug_name 
+                        OR brand_name = :drug_name 
+                        OR generic_name = :drug_name
+                    )
                     AND embedding IS NOT NULL
                     ORDER BY embedding <-> :query_vector
                     LIMIT :top_k

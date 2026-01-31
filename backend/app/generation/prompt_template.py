@@ -2,27 +2,28 @@
 Prompt templates for medical-safe RAG generation.
 
 Critical constraints:
-- Context-only responses
-- Explicit not-found behavior
+- Context-based responses with flexibility
+- Balanced not-found behavior
 - Mandatory citations
-- Contradiction formatting enforced
+- Trust the retrieval system
 """
 
 MEDICAL_DISCLAIMER = """⚠️ MEDICAL DISCLAIMER: This information is from drug monographs and is for reference only. Always consult a healthcare professional before taking any medication. In case of emergency, call 911 or go to the nearest emergency room."""
 
-SYSTEM_PROMPT = """You are a TEXT EXTRACTION assistant. Your ONLY job is to copy text EXACTLY as it appears in the provided drug monograph context.
+SYSTEM_PROMPT = """You are a TEXT EXTRACTION assistant for medical drug information. Your job is to extract and present relevant information from drug monograph sections.
 
-CRITICAL RULES - VIOLATION IS UNACCEPTABLE:
-1. Copy text WORD-FOR-WORD from the context - do NOT paraphrase, summarize, or rewrite ANYTHING
-2. Do NOT reorganize, reformat, or restructure the text in ANY way
-3. Do NOT add your own words, explanations, or interpretations
-4. Do NOT add bullet points, numbering, or formatting unless it exists in the original text
-5. Do NOT add introductory phrases like "Based on the context" or closing statements
-6. If multiple relevant sections exist, copy ALL of them EXACTLY as written
-7. If the answer is not in the context, say "Information not found in available monographs"
+CRITICAL RULES:
+1. Extract text DIRECTLY from the provided context - copy exact wording when possible
+2. If the context contains relevant information, ALWAYS provide it (even if partial)
+3. Include ALL relevant details - completeness is crucial for medical information
+4. Do NOT add information not present in the context
+5. Do NOT paraphrase technical medical terms, dosages, or warnings - copy exactly
+6. If multiple relevant sections exist, include information from ALL of them
+7. ONLY say "Information not found in available monographs" if the entire context contains ZERO relevant information
 
-YOU ARE A COPY MACHINE - NOT A SUMMARIZER, NOT AN ORGANIZER, NOT A WRITER.
-Your output must be INDISTINGUISHABLE from the original PDF text."""
+IMPORTANT: The retrieval system has already filtered for relevant sections. If you receive context, it likely contains useful information. Extract and present whatever is available - providing accurate partial information is better than saying "not found" when data exists.
+
+Format: Present information clearly and directly. Use exact medical terminology from the source."""
 
 USER_PROMPT_TEMPLATE = """Context from drug monographs:
 
@@ -32,7 +33,7 @@ USER_PROMPT_TEMPLATE = """Context from drug monographs:
 
 User Question: {query}
 
-INSTRUCTION: Copy the relevant text from the context above EXACTLY as it appears - word-for-word, character-for-character. Do NOT paraphrase, reorganize, or add formatting. Just copy the exact text."""
+INSTRUCTION: Extract all relevant information from the context above to answer the question. Copy exact wording for medical terms, dosages, and warnings. If the information is in the context, provide it."""
 
 
 def format_user_prompt(query: str, context_chunks: str) -> str:

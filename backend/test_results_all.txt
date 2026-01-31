@@ -1,0 +1,115 @@
+
+######################################################################
+# COMPREHENSIVE END-TO-END TEST: Solutions 1D + 2A + 3C
+######################################################################
+
+Testing hybrid retrieval system with uvicorn running...
+Ensure: docker containers running, database populated
+
+
+======================================================================
+Query: 'contraindications of APO-METOPROLOL'
+Solution: 1D (Regex)
+Expected: Extracts hyphenated name correctly
+======================================================================
+Γ£à SUCCESS (4558ms)
+   Chunks: 1, Path: SQL_EXACT
+   Answer: Patients who are hypersensitive to this drug or to any ingredient in the formulation, including any non-medicinal ingred...
+
+======================================================================
+Query: 'what is Metoprolol Tartrate used for'
+Solution: 1D (Regex)
+Expected: Extracts multi-word name
+======================================================================
+Γ£à SUCCESS (5369ms)
+   Chunks: 9, Path: SQL_FUZZY
+   Answer: APO-METOPROLOL / APO-METOPROLOL (Type L) is used in adults for the following conditions:
+
+- to treat high blood pressure...
+
+======================================================================
+Query: 'what is Axid used for'
+Solution: 2A (OR Query)
+Expected: Matches brand_name='axid'
+======================================================================
+Γ£à SUCCESS (3939ms)
+   Chunks: 6, Path: SQL_FUZZY
+   Answer: AXID (nizatidine capsules) is indicated for:
+
+- ∩é╖ the treatment of conditions where a controlled reduction of gastric ac...
+
+======================================================================
+Query: 'contraindications of Axid'
+Solution: 2A (OR Query)
+Expected: Matches brand name
+======================================================================
+Γ£à SUCCESS (3644ms)
+   Chunks: 1, Path: SQL_EXACT
+   Answer: - ∩é╖ AXID is contraindicated in patients who are hypersensitive to this drug or to any ingredient in the formulation, inc...
+
+======================================================================
+Query: 'indications of nizatidine'
+Solution: 2A (OR Query)
+Expected: Matches drug_name
+======================================================================
+Γ£à SUCCESS (4520ms)
+   Chunks: 6, Path: SQL_FUZZY
+   Answer: AXID (nizatidine capsules) is indicated for:
+
+- ∩é╖ the treatment of conditions where a controlled reduction of gastric ac...
+
+======================================================================
+Query: 'indications of axid'
+Solution: 3C (Fuzzy)
+Expected: Keyword fallback matches 'used for'
+======================================================================
+Γ£à SUCCESS (4527ms)
+   Chunks: 6, Path: SQL_FUZZY
+   Answer: AXID (nizatidine capsules) is indicated for:
+
+- ∩é╖ the treatment of conditions where a controlled reduction of gastric ac...
+
+======================================================================
+Query: 'side effects of axid'
+Solution: 3C (Fuzzy)
+Expected: Fuzzy/keyword matching
+======================================================================
+Γ£à SUCCESS (8597ms)
+   Chunks: 2, Path: SQL_FUZZY
+   Answer: The following common adverse events were reported by patients taking nizatidine in clinical trials: sweating, urticaria ...
+
+======================================================================
+Query: 'what are the contraindications of APO-METOPROLOL'
+Solution: 1D+2A+3C
+Expected: Regex extraction + OR query + fuzzy
+======================================================================
+Γ£à SUCCESS (3472ms)
+   Chunks: 1, Path: SQL_EXACT
+   Answer: Patients who are hypersensitive to this drug or to any ingredient in the formulation, including any non-medicinal ingred...
+
+######################################################################
+# FINAL RESULTS
+######################################################################
+
+8/8 tests passed
+
+Γ£à contraindications of APO-METOPROLOL
+Γ£à what is Metoprolol Tartrate used for
+Γ£à what is Axid used for
+Γ£à contraindications of Axid
+Γ£à indications of nizatidine
+Γ£à indications of axid
+Γ£à side effects of axid
+Γ£à what are the contraindications of APO-METOPROLOL
+
+≡ƒÄë ALL TESTS PASSED!
+
+System Status:
+  Γ£à Solution 1D: Hyphenated/multi-word extraction working
+  Γ£à Solution 2A: Brand/generic name matching working
+  Γ£à Solution 3C: Enhanced fuzzy matching working
+
+≡ƒÜÇ Ready for 19,000 PDF ingestion!
+
+######################################################################
+

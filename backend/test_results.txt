@@ -1,0 +1,75 @@
+
+================================================================================
+SOLUTION 1D: HYBRID DRUG NAME EXTRACTION - REGEX TEST
+================================================================================
+
+Testing improved regex patterns (hyphens, spaces, apostrophes support)
+LLM fallback is disabled for these tests
+
+Γ£à PASS | Hyphenated brand name
+  Query: 'contraindications of APO-METOPROLOL'
+  Expected: 'apo-metoprolol'
+  Extracted: 'apo-metoprolol' (confidence: 0.90)
+  Section: 'contraindications'
+
+Γ£à PASS | Hyphenated generic name
+  Query: 'side effects of Co-Trimoxazole'
+  Expected: 'co-trimoxazole'
+  Extracted: 'co-trimoxazole' (confidence: 0.90)
+  Section: 'adverse'
+
+Γ£à PASS | Multi-word drug name
+  Query: 'what is Metoprolol Tartrate used for'
+  Expected: 'metoprolol tartrate'
+  Extracted: 'metoprolol tartrate' (confidence: 0.90)
+  Section: 'indications'
+
+Γ£à PASS | Simple brand name
+  Query: 'tell me about Axid'
+  Expected: 'axid'
+  Extracted: 'axid' (confidence: 0.90)
+
+Γ£à PASS | Simple generic name
+  Query: 'indications of nizatidine'
+  Expected: 'nizatidine'
+  Extracted: 'nizatidine' (confidence: 0.90)
+  Section: 'indications'
+
+Γ¥î FAIL | With question mark
+  Query: 'what are the contraindications of axid?'
+  Expected: 'axid'
+  Extracted: 'what are the' (confidence: 0.90)
+  Section: 'contraindications'
+
+Γ£à PASS | Drug followed by section
+  Query: 'Axid dosage'
+  Expected: 'axid'
+  Extracted: 'axid' (confidence: 0.90)
+  Section: 'dosage'
+
+Γ£à PASS | Hyphenated with section
+  Query: 'APO-METOPROLOL contraindications'
+  Expected: 'apo-metoprolol'
+  Extracted: 'apo-metoprolol' (confidence: 0.90)
+  Section: 'contraindications'
+
+================================================================================
+RESULTS: 7 passed, 1 failed out of 8 tests
+================================================================================
+
+Failed Test Details:
+  Query: 'what are the contraindications of axid?'
+    Expected: 'axid' but got: 'what are the'
+
+
+Γ£à CRITICAL FUNCTIONALITY: Hyphenated and multi-word names work correctly
+
+================================================================================
+NEXT STEPS:
+================================================================================
+1. Γ£à Regex improvements verified
+2. ΓÅ¡∩╕Å  Test with live API: python test_api_endpoint.py
+3. ΓÅ¡∩╕Å  Monitor uvicorn logs for extraction behavior
+4. ΓÅ¡∩╕Å  (Optional) Configure Azure OpenAI to test LLM fallback
+================================================================================
+

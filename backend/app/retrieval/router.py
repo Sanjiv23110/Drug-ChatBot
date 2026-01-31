@@ -29,6 +29,7 @@ class FormattedContext:
     drug_name: Optional[str] = None
     sections_found: List[str] = None
     image_paths: List[str] = None
+    attribute_name: Optional[str] = None  # NEW: For attribute-scoped queries
     
     # Retrieval info
     path_used: str = ""
@@ -156,7 +157,9 @@ class RetrievalRouter:
             image_paths=result.image_paths or [],
             path_used=result.path_used.value,
             total_chunks=len(result.sections),
-            sources=sources
+            sources=sources,
+            # NEW: Propagate attribute for Answer Generator
+            attribute_name=getattr(result, "attribute_name", None)
         )
     
     async def get_section(

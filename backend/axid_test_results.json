@@ -1,0 +1,747 @@
+{
+  "1_BASIC_FACTS": [
+    {
+      "question": "What is the proper name and therapeutic class of AXID?",
+      "path_used": "NO_RESULT",
+      "sections_count": 0,
+      "sections_found": [],
+      "has_answer": false,
+      "answer_preview": "No sections retrieved",
+      "success": false
+    },
+    {
+      "question": "What dosage forms and strengths are available for AXID?",
+      "path_used": "SQL_FUZZY",
+      "sections_count": 1,
+      "sections_found": [
+        "dosage forms strengths composition and packaging"
+      ],
+      "has_answer": true,
+      "answer_preview": "The available dosage forms and strengths for AXID are:\n\n- **Capsules 150 mg**: Hard gelatin size #2 capsules with an opaque yellow cap and a lighter yellow opaque body. Capsules are printed in black i",
+      "success": true
+    },
+    {
+      "question": "What is the route of administration for AXID?",
+      "path_used": "SQL_FUZZY",
+      "sections_count": 1,
+      "sections_found": [
+        "dosage forms strengths composition and packaging"
+      ],
+      "has_answer": true,
+      "answer_preview": "The route of administration for AXID is **oral**. \n\n- Capsules 150 mg: \"Oral\"  \n- Capsules 300 mg: \"Oral\"",
+      "success": true
+    },
+    {
+      "question": "Who is the manufacturer of AXID?",
+      "path_used": "SQL_FUZZY",
+      "sections_count": 1,
+      "sections_found": [
+        "dosage forms strengths composition and packaging"
+      ],
+      "has_answer": true,
+      "answer_preview": "Information not found in available monographs",
+      "success": true
+    },
+    {
+      "question": "What is the date of last revision of the AXID product monograph?",
+      "path_used": "SQL_EXACT",
+      "sections_count": 63,
+      "sections_found": [
+        "how does axid work",
+        "reporting side effects",
+        "chronic toxicity",
+        "if you want more information about axid",
+        "overdosage",
+        "monitoring and laboratory tests",
+        "pharmacodynamics",
+        "storage stability and disposal",
+        "microbiology",
+        "table of contents",
+        "other warnings you should know about",
+        "gastrointestinal",
+        "drug-food interactions",
+        "pr axid",
+        "hepaticbiliarypancreatic",
+        "do not use axid if",
+        "dose adjustment in renal impairment",
+        "dosage forms strengths composition and packaging",
+        "carcinogenicity",
+        "drug interactions overview",
+        "reproductive and developmental toxicology",
+        "special populations and conditions",
+        "the following may interact with axid",
+        "subacute toxicity",
+        "how to take axid",
+        "clinical trials",
+        "indications",
+        "mechanism of action",
+        "what is axid used for",
+        "storage",
+        "administration",
+        "breast-feeding",
+        "clinical trial adverse reactions",
+        "pediatrics",
+        "pregnant women",
+        "geriatrics",
+        "acute toxicity",
+        "drug-laboratory test interactions",
+        "distribution",
+        "overdose",
+        "what are possible side effects from using axid",
+        "genotoxicity",
+        "teratology",
+        "elimination",
+        "endocrine and metabolism",
+        "adverse reaction overview",
+        "renal",
+        "what are the ingredients in axid",
+        "nizatidine capsules",
+        "adults",
+        "contraindications",
+        "metabolism",
+        "axid comes in the following dosage forms",
+        "absorption",
+        "drug substance",
+        "less common clinical trial adverse reactions",
+        "missed dose",
+        "recommended dose and dosage adjustment",
+        "drug-drug interactions",
+        "drug-herb interactions"
+      ],
+      "has_answer": true,
+      "answer_preview": "The date of last revision of the AXID product monograph is **July 20, 2021**.",
+      "success": true
+    }
+  ],
+  "2_INDICATIONS": [
+    {
+      "question": "What conditions is AXID indicated for?",
+      "path_used": "SQL_EXACT",
+      "sections_count": 1,
+      "sections_found": [
+        "indications"
+      ],
+      "has_answer": true,
+      "answer_preview": "AXID (nizatidine capsules) is indicated for:\n\n- the treatment of conditions where a controlled reduction of gastric acid secretion is required such as for ulcer healing and/or pain relief: acute duode",
+      "success": true
+    },
+    {
+      "question": "Is AXID indicated for gastroesophageal reflux disease?",
+      "path_used": "SQL_FUZZY",
+      "sections_count": 1,
+      "sections_found": [
+        "special populations and conditions"
+      ],
+      "has_answer": true,
+      "answer_preview": "Information not found in available monographs",
+      "success": true
+    },
+    {
+      "question": "Is AXID approved for pediatric use?",
+      "path_used": "SQL_FUZZY",
+      "sections_count": 1,
+      "sections_found": [
+        "special populations and conditions"
+      ],
+      "has_answer": true,
+      "answer_preview": "Information not found in available monographs",
+      "success": true
+    },
+    {
+      "question": "What is AXID used for in maintenance therapy?",
+      "path_used": "SQL_EXACT",
+      "sections_count": 1,
+      "sections_found": [
+        "indications"
+      ],
+      "has_answer": true,
+      "answer_preview": "Information not found in available monographs.",
+      "success": true
+    },
+    {
+      "question": "Is AXID indicated for prophylactic use in duodenal ulcers?",
+      "path_used": "SQL_EXACT",
+      "sections_count": 1,
+      "sections_found": [
+        "indications"
+      ],
+      "has_answer": true,
+      "answer_preview": "Yes, AXID (nizatidine capsules) is indicated for prophylactic use in duodenal ulcer. \n\nExact wording from the context: \"AXID (nizatidine capsules) is indicated for: ... prophylactic use in duodenal ul",
+      "success": true
+    }
+  ],
+  "3_CONTRAINDICATIONS": [
+    {
+      "question": "According to the AXID product monograph, which patients are contraindicated from receiving AXID?",
+      "path_used": "SQL_EXACT",
+      "sections_count": 1,
+      "sections_found": [
+        "contraindications"
+      ],
+      "has_answer": true,
+      "answer_preview": "- AXID is contraindicated in patients who are hypersensitive to this drug or to any ingredient in the formulation, including any non-medicinal ingredient, or component of the container.  \n- AXID is co",
+      "success": true
+    },
+    {
+      "question": "Is AXID contraindicated in patients with hypersensitivity to other H2-receptor antagonists?",
+      "path_used": "SQL_FUZZY",
+      "sections_count": 2,
+      "sections_found": [
+        "clinical trial adverse reactions",
+        "adverse reaction overview"
+      ],
+      "has_answer": true,
+      "answer_preview": "Information not found in available monographs.",
+      "success": true
+    },
+    {
+      "question": "Are renal impairment or hepatic impairment listed as contraindications?",
+      "path_used": "NO_RESULT",
+      "sections_count": 0,
+      "sections_found": [],
+      "has_answer": false,
+      "answer_preview": "No sections retrieved",
+      "success": false
+    },
+    {
+      "question": "Does AXID have any container-component related contraindications?",
+      "path_used": "NO_RESULT",
+      "sections_count": 0,
+      "sections_found": [],
+      "has_answer": false,
+      "answer_preview": "No sections retrieved",
+      "success": false
+    }
+  ],
+  "4_DOSAGE": [
+    {
+      "question": "What is the recommended adult dose for acute duodenal ulcer?",
+      "path_used": "NO_RESULT",
+      "sections_count": 0,
+      "sections_found": [],
+      "has_answer": false,
+      "answer_preview": "No sections retrieved",
+      "success": false
+    },
+    {
+      "question": "What dosing regimen is recommended for GERD?",
+      "path_used": "NO_RESULT",
+      "sections_count": 0,
+      "sections_found": [],
+      "has_answer": false,
+      "answer_preview": "No sections retrieved",
+      "success": false
+    },
+    {
+      "question": "How should AXID dosing be adjusted in patients with severe renal impairment?",
+      "path_used": "SQL_FUZZY",
+      "sections_count": 1,
+      "sections_found": [
+        "other warnings you should know about"
+      ],
+      "has_answer": true,
+      "answer_preview": "Information not found in available monographs.",
+      "success": true
+    },
+    {
+      "question": "What should a patient do if a dose of AXID is missed?",
+      "path_used": "SQL_FUZZY",
+      "sections_count": 6,
+      "sections_found": [
+        "overdosage",
+        "axid comes in the following dosage forms",
+        "how to take axid",
+        "recommended dose and dosage adjustment",
+        "dosage forms strengths composition and packaging",
+        "administration"
+      ],
+      "has_answer": true,
+      "answer_preview": "Information not found in available monographs.",
+      "success": true
+    },
+    {
+      "question": "Can AXID be taken with antacids?",
+      "path_used": "SQL_FUZZY",
+      "sections_count": 6,
+      "sections_found": [
+        "drug interactions overview",
+        "drug-laboratory test interactions",
+        "drug-food interactions",
+        "indications",
+        "drug-drug interactions",
+        "drug-herb interactions"
+      ],
+      "has_answer": true,
+      "answer_preview": "Information not found in available monographs",
+      "success": true
+    }
+  ],
+  "5_WARNINGS": [
+    {
+      "question": "Why should malignancy be excluded before initiating AXID therapy?",
+      "path_used": "SQL_FUZZY",
+      "sections_count": 1,
+      "sections_found": [
+        "other warnings you should know about"
+      ],
+      "has_answer": true,
+      "answer_preview": "Information not found in available monographs",
+      "success": true
+    },
+    {
+      "question": "What vitamin deficiency may occur with long-term AXID use?",
+      "path_used": "SQL_FUZZY",
+      "sections_count": 1,
+      "sections_found": [
+        "other warnings you should know about"
+      ],
+      "has_answer": true,
+      "answer_preview": "- Long-term use of AXID may lead to Vitamin B12 deficiency.",
+      "success": true
+    },
+    {
+      "question": "What laboratory test interference is associated with AXID?",
+      "path_used": "SQL_FUZZY",
+      "sections_count": 1,
+      "sections_found": [
+        "other warnings you should know about"
+      ],
+      "has_answer": true,
+      "answer_preview": "- AXID can cause abnormal urine test results (false-positive results) for a liver compound called urobilinogen.",
+      "success": true
+    },
+    {
+      "question": "Why should AXID dosage be adjusted in elderly patients?",
+      "path_used": "NO_RESULT",
+      "sections_count": 0,
+      "sections_found": [],
+      "has_answer": false,
+      "answer_preview": "No sections retrieved",
+      "success": false
+    },
+    {
+      "question": "What precautions are advised for patients with renal impairment?",
+      "path_used": "NO_RESULT",
+      "sections_count": 0,
+      "sections_found": [],
+      "has_answer": false,
+      "answer_preview": "No sections retrieved",
+      "success": false
+    }
+  ],
+  "6_SPECIAL_POPULATIONS": [
+    {
+      "question": "Is AXID safe for use during pregnancy?",
+      "path_used": "SQL_FUZZY",
+      "sections_count": 1,
+      "sections_found": [
+        "pregnant women"
+      ],
+      "has_answer": true,
+      "answer_preview": "The safety of nizatidine during pregnancy has not been established.",
+      "success": true
+    },
+    {
+      "question": "Should AXID be used during breastfeeding?",
+      "path_used": "SQL_FUZZY",
+      "sections_count": 1,
+      "sections_found": [
+        "pregnant women"
+      ],
+      "has_answer": true,
+      "answer_preview": "Information not found in available monographs.",
+      "success": true
+    },
+    {
+      "question": "What is Health Canada's position on pediatric use of AXID?",
+      "path_used": "SQL_FUZZY",
+      "sections_count": 1,
+      "sections_found": [
+        "special populations and conditions"
+      ],
+      "has_answer": true,
+      "answer_preview": "Information not found in available monographs",
+      "success": true
+    },
+    {
+      "question": "Are there safety differences in geriatric patients?",
+      "path_used": "NO_RESULT",
+      "sections_count": 0,
+      "sections_found": [],
+      "has_answer": false,
+      "answer_preview": "No sections retrieved",
+      "success": false
+    }
+  ],
+  "7_ADVERSE_REACTIONS": [
+    {
+      "question": "What are the most commonly reported adverse reactions to AXID?",
+      "path_used": "SQL_FUZZY",
+      "sections_count": 2,
+      "sections_found": [
+        "clinical trial adverse reactions",
+        "adverse reaction overview"
+      ],
+      "has_answer": true,
+      "answer_preview": "The most commonly reported adverse reactions to AXID (nizatidine) based on the provided context are as follows:\n\n1. **From Source 1**:  \n   - Sweating  \n   - Urticaria  \n   - Somnolence  \n\n2. **From S",
+      "success": true
+    },
+    {
+      "question": "Which adverse reactions occurred at a frequency of \u22651% in clinical trials?",
+      "path_used": "NO_RESULT",
+      "sections_count": 0,
+      "sections_found": [],
+      "has_answer": false,
+      "answer_preview": "No sections retrieved",
+      "success": false
+    },
+    {
+      "question": "What serious hematologic adverse effects have been reported?",
+      "path_used": "NO_RESULT",
+      "sections_count": 0,
+      "sections_found": [],
+      "has_answer": false,
+      "answer_preview": "No sections retrieved",
+      "success": false
+    },
+    {
+      "question": "What rare hypersensitivity reactions are associated with AXID?",
+      "path_used": "SQL_FUZZY",
+      "sections_count": 2,
+      "sections_found": [
+        "clinical trial adverse reactions",
+        "adverse reaction overview"
+      ],
+      "has_answer": true,
+      "answer_preview": "The context does not explicitly mention \"rare hypersensitivity reactions\" associated with AXID (nizatidine). However, the following information related to hypersensitivity reactions is provided:\n\n- \"U",
+      "success": true
+    },
+    {
+      "question": "Which adverse reactions may affect the nervous system?",
+      "path_used": "NO_RESULT",
+      "sections_count": 0,
+      "sections_found": [],
+      "has_answer": false,
+      "answer_preview": "No sections retrieved",
+      "success": false
+    }
+  ],
+  "8_DRUG_INTERACTIONS": [
+    {
+      "question": "Which drugs have no observed interactions with AXID?",
+      "path_used": "NO_RESULT",
+      "sections_count": 0,
+      "sections_found": [],
+      "has_answer": false,
+      "answer_preview": "No sections retrieved",
+      "success": false
+    },
+    {
+      "question": "Does AXID inhibit cytochrome P450 enzymes?",
+      "path_used": "SQL_FUZZY",
+      "sections_count": 6,
+      "sections_found": [
+        "drug interactions overview",
+        "drug-laboratory test interactions",
+        "drug-food interactions",
+        "indications",
+        "drug-drug interactions",
+        "drug-herb interactions"
+      ],
+      "has_answer": true,
+      "answer_preview": "Nizatidine does not inhibit the cytochrome P-450-linked drug-metabolizing enzyme system; therefore, drug interactions mediated by inhibition of hepatic metabolism are not expected to occur.",
+      "success": true
+    },
+    {
+      "question": "How does high-dose aspirin interact with AXID?",
+      "path_used": "NO_RESULT",
+      "sections_count": 0,
+      "sections_found": [],
+      "has_answer": false,
+      "answer_preview": "No sections retrieved",
+      "success": false
+    },
+    {
+      "question": "Are food interactions clinically significant for AXID?",
+      "path_used": "NO_RESULT",
+      "sections_count": 0,
+      "sections_found": [],
+      "has_answer": false,
+      "answer_preview": "No sections retrieved",
+      "success": false
+    },
+    {
+      "question": "Are herbal drug interactions established for AXID?",
+      "path_used": "NO_RESULT",
+      "sections_count": 0,
+      "sections_found": [],
+      "has_answer": false,
+      "answer_preview": "No sections retrieved",
+      "success": false
+    }
+  ],
+  "9_PHARMACOLOGY": [
+    {
+      "question": "What is the mechanism of action of nizatidine?",
+      "path_used": "SQL_FUZZY",
+      "sections_count": 2,
+      "sections_found": [
+        "teratology",
+        "pharmacodynamics"
+      ],
+      "has_answer": true,
+      "answer_preview": "The provided context does not explicitly describe the mechanism of action of nizatidine. However, it does provide related pharmacological information:\n\n- \"At equi-potent doses of cimetidine and nizati",
+      "success": true
+    },
+    {
+      "question": "How does AXID affect nocturnal gastric acid secretion?",
+      "path_used": "SQL_FUZZY",
+      "sections_count": 2,
+      "sections_found": [
+        "teratology",
+        "pharmacodynamics"
+      ],
+      "has_answer": true,
+      "answer_preview": "\"300 mg nizatidine suppressed acid secretion almost entirely early in the day, and the suppression persisted about 10 hours. Nocturnal acid was suppressed for 10 to 12 hours after 300 mg nizatidine.\"",
+      "success": true
+    },
+    {
+      "question": "What is the approximate elimination half-life of nizatidine?",
+      "path_used": "SQL_FUZZY",
+      "sections_count": 2,
+      "sections_found": [
+        "teratology",
+        "pharmacodynamics"
+      ],
+      "has_answer": true,
+      "answer_preview": "Information not found in available monographs.",
+      "success": true
+    },
+    {
+      "question": "How is nizatidine primarily eliminated from the body?",
+      "path_used": "SQL_FUZZY",
+      "sections_count": 2,
+      "sections_found": [
+        "teratology",
+        "pharmacodynamics"
+      ],
+      "has_answer": true,
+      "answer_preview": "Information not found in available monographs",
+      "success": true
+    },
+    {
+      "question": "What percentage of nizatidine is excreted unchanged in urine?",
+      "path_used": "SQL_FUZZY",
+      "sections_count": 1,
+      "sections_found": [
+        "special populations and conditions"
+      ],
+      "has_answer": true,
+      "answer_preview": "Information not found in available monographs",
+      "success": true
+    }
+  ],
+  "10_STORAGE": [
+    {
+      "question": "What are the recommended storage conditions for AXID?",
+      "path_used": "SQL_EXACT",
+      "sections_count": 1,
+      "sections_found": [
+        "storage"
+      ],
+      "has_answer": true,
+      "answer_preview": "The recommended storage conditions for AXID are:  \n- \"Store at room temperature (15\u00b0C to 30\u00b0C).\"  \n- \"Keep out of reach and sight of children.\"",
+      "success": true
+    },
+    {
+      "question": "How should unused AXID capsules be disposed of?",
+      "path_used": "SQL_EXACT",
+      "sections_count": 1,
+      "sections_found": [
+        "storage"
+      ],
+      "has_answer": true,
+      "answer_preview": "Information not found in available monographs.",
+      "success": true
+    }
+  ],
+  "11_OVERDOSAGE": [
+    {
+      "question": "What symptoms are associated with AXID overdose?",
+      "path_used": "SQL_EXACT",
+      "sections_count": 1,
+      "sections_found": [
+        "overdosage"
+      ],
+      "has_answer": true,
+      "answer_preview": "Symptoms associated with AXID (nizatidine) overdose include \"cholinergic-type effects, including lacrimation, salivation, emesis, miosis, and diarrhea.\"",
+      "success": true
+    },
+    {
+      "question": "Is AXID effectively removed by renal dialysis?",
+      "path_used": "SQL_EXACT",
+      "sections_count": 1,
+      "sections_found": [
+        "overdosage"
+      ],
+      "has_answer": true,
+      "answer_preview": "Renal dialysis does not substantially increase clearance of nizatidine due to its large volume of distribution.",
+      "success": true
+    },
+    {
+      "question": "What is the recommended management for suspected AXID overdose?",
+      "path_used": "SQL_EXACT",
+      "sections_count": 1,
+      "sections_found": [
+        "overdosage"
+      ],
+      "has_answer": true,
+      "answer_preview": "The recommended management for suspected AXID (nizatidine) overdose is as follows:\n\n- \"Should overdosage occur, use of activated charcoal, emesis, or lavage should be considered along with clinical mo",
+      "success": true
+    }
+  ],
+  "12_PATIENT_INFO": [
+    {
+      "question": "How is AXID explained to patients in the Patient Medication Information?",
+      "path_used": "SQL_FUZZY",
+      "sections_count": 2,
+      "sections_found": [
+        "indications",
+        "if you want more information about axid"
+      ],
+      "has_answer": true,
+      "answer_preview": "The context does not provide specific details on how AXID (nizatidine capsules) is explained to patients in the Patient Medication Information. However, the following relevant information is available",
+      "success": true
+    },
+    {
+      "question": "What side effects should patients report immediately?",
+      "path_used": "NO_RESULT",
+      "sections_count": 0,
+      "sections_found": [],
+      "has_answer": false,
+      "answer_preview": "No sections retrieved",
+      "success": false
+    },
+    {
+      "question": "What should patients tell their healthcare provider before taking AXID?",
+      "path_used": "SQL_FUZZY",
+      "sections_count": 1,
+      "sections_found": [
+        "other warnings you should know about"
+      ],
+      "has_answer": true,
+      "answer_preview": "Patients should tell their healthcare professional about all the medicines they take, including any drugs, vitamins, minerals, natural supplements, or alternative medicines.",
+      "success": true
+    }
+  ],
+  "13_HALLUCINATION_TESTS": [
+    {
+      "question": "Is AXID approved for treating bacterial infections?",
+      "path_used": "SQL_EXACT",
+      "sections_count": 1,
+      "sections_found": [
+        "indications"
+      ],
+      "has_answer": true,
+      "answer_preview": "The provided context does not mention AXID (nizatidine capsules) being approved for treating bacterial infections. It states that AXID is indicated for:\n\n- \"the treatment of conditions where a control",
+      "success": true
+    },
+    {
+      "question": "Does AXID contain any opioid ingredients?",
+      "path_used": "SQL_FUZZY",
+      "sections_count": 1,
+      "sections_found": [
+        "dosage forms strengths composition and packaging"
+      ],
+      "has_answer": true,
+      "answer_preview": "The context provided does not mention any opioid ingredients in AXID. The composition of AXID capsules is detailed as follows:\n\n- **Capsules 150 mg**: Contain 150 mg nizatidine. Non-medicinal ingredie",
+      "success": true
+    },
+    {
+      "question": "Is AXID indicated for cancer treatment?",
+      "path_used": "SQL_EXACT",
+      "sections_count": 1,
+      "sections_found": [
+        "indications"
+      ],
+      "has_answer": true,
+      "answer_preview": "The context states:  \n\"AXID (nizatidine capsules) is indicated for:  \n- the treatment of conditions where a controlled reduction of gastric acid secretion is required such as for ulcer healing and/or ",
+      "success": true
+    },
+    {
+      "question": "Does AXID have any FDA black-box warnings?",
+      "path_used": "SQL_FUZZY",
+      "sections_count": 1,
+      "sections_found": [
+        "other warnings you should know about"
+      ],
+      "has_answer": true,
+      "answer_preview": "Information not found in available monographs.",
+      "success": true
+    },
+    {
+      "question": "Is AXID approved for intravenous administration?",
+      "path_used": "SQL_FUZZY",
+      "sections_count": 6,
+      "sections_found": [
+        "overdosage",
+        "axid comes in the following dosage forms",
+        "how to take axid",
+        "recommended dose and dosage adjustment",
+        "dosage forms strengths composition and packaging",
+        "administration"
+      ],
+      "has_answer": true,
+      "answer_preview": "Information not found in available monographs.",
+      "success": true
+    }
+  ],
+  "14_CROSS_SECTION": [
+    {
+      "question": "Why does renal impairment require AXID dose adjustment based on its pharmacokinetics?",
+      "path_used": "SQL_FUZZY",
+      "sections_count": 2,
+      "sections_found": [
+        "teratology",
+        "pharmacodynamics"
+      ],
+      "has_answer": true,
+      "answer_preview": "Information not found in available monographs.",
+      "success": true
+    },
+    {
+      "question": "How do AXID's elimination pathway and geriatric warnings relate?",
+      "path_used": "SQL_FUZZY",
+      "sections_count": 2,
+      "sections_found": [
+        "teratology",
+        "pharmacodynamics"
+      ],
+      "has_answer": true,
+      "answer_preview": "Information not found in available monographs.",
+      "success": true
+    },
+    {
+      "question": "Why can long-term AXID use lead to vitamin B12 deficiency?",
+      "path_used": "SQL_EXACT",
+      "sections_count": 1,
+      "sections_found": [
+        "indications"
+      ],
+      "has_answer": true,
+      "answer_preview": "Information not found in available monographs.",
+      "success": true
+    },
+    {
+      "question": "Why is dialysis ineffective in clearing AXID overdose?",
+      "path_used": "SQL_EXACT",
+      "sections_count": 1,
+      "sections_found": [
+        "overdosage"
+      ],
+      "has_answer": true,
+      "answer_preview": "Dialysis is ineffective in clearing AXID (nizatidine) overdose because \"renal dialysis does not substantially increase clearance of nizatidine due to its large volume of distribution.\"",
+      "success": true
+    }
+  ]
+}

@@ -39,6 +39,8 @@ from app.db.models import (
 from app.db.session import get_session
 from app.ingestion.docling_utils import DoclingParser, ParsedDocument, ExtractedImage
 from app.ingestion.vision import VisionClassifier
+from app.ingestion.section_detector import SectionDetector, SectionCategory
+from app.ingestion.layout_extractor import fallback_blocks_from_markdown
 from app.utils.hashing import compute_file_hash
 
 logger = logging.getLogger(__name__)
@@ -295,9 +297,10 @@ class IngestionPipeline:
         )
         self.metadata_extractor = DrugMetadataExtractor()
         self.chunker = HeaderBasedChunker()
+        self.section_detector = SectionDetector(use_llm_fallback=True)  # NEW: Layout-aware detection
         self.vision_classifier = VisionClassifier() if not skip_vision else None
         
-        logger.info("IngestionPipeline initialized")
+        logger.info("IngestionPipeline initialized with SectionDetector")
     
     async def document_exists(self, document_hash: str) -> bool:
         """Check if document already exists in database."""
@@ -355,8 +358,23 @@ class IngestionPipeline:
                 parsed.markdown_content
             )
             
-            # Step 4: Chunk by headers
-            sections = self.chunker.chunk(parsed.markdown_content)
+            # Step 4: Chunk using SectionDetector (Deterministic 4-Layer Engine)
+            # Create pseudo-blocks from markdown (hybrid approach)
+            blocks = fallback_blocks_from_markdown(parsed.markdown_content)
+            
+            if blocks:
+                # Use the new engine
+                detected_boundaries = self.section_detector.detect_sections(blocks)
+                sections = self._convert_to_chunked_sections(detected_boundaries, blocks)
+                logger.info(f"SectionDetector findings: {len(sections)} sections")
+            else:
+                # Fallback to legacy chunker if something goes wrong
+                logger.warning("Block extraction failed, falling back to legacy chunker")
+                sections = self.chunker.chunk(parsed.markdown_content)
+            
+            # Step 4.5: Validation (Log-only, can be removed later)
+            # self._validate_sections_with_detector(sections, parsed.markdown_content) 
+
             
             # Step 5: Classify chemical structure images
             structure_images = []
@@ -451,6 +469,46 @@ class IngestionPipeline:
                 error_message=str(e),
                 processing_time_ms=processing_time
             )
+            
+    def _validate_sections_with_detector(
+        self,
+        sections: List[ChunkedSection],
+        markdown_content: str
+    ):
+        """
+        Validate chunked sections using SectionDetector.
+        
+        This provides quality metrics and logs potential issues without
+        requiring database schema changes.
+        """
+        try:
+            # Create pseudo-blocks from markdown for section detection
+            blocks = fallback_blocks_from_markdown(markdown_content)
+            
+            if not blocks:
+                logger.warning("No blocks extracted for section validation")
+                return
+            
+            # Run section detector
+            detected_sections = self.section_detector.detect_sections(blocks)
+            
+            # Compare results
+            logger.info(
+                f"Section validation: "
+                f"Markdown chunker found {len(sections)} sections, "
+                f"SectionDetector found {len(detected_sections)} sections"
+            )
+            
+            # Log detection method distribution
+            method_counts = {}
+            for section in detected_sections:
+                method = section.detection_method
+                method_counts[method] = method_counts.get(method, 0) + 1
+            
+            logger.info(f"Detection methods: {method_counts}")
+            
+        except Exception as e:
+            logger.error(f"Section validation failed: {e}")
     
     async def _store_sections(
         self,
