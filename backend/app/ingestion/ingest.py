@@ -42,6 +42,8 @@ from app.ingestion.vision import VisionClassifier
 from app.ingestion.section_detector import SectionDetector, SectionCategory
 from app.ingestion.layout_extractor import fallback_blocks_from_markdown
 from app.utils.hashing import compute_file_hash
+from app.ingestion.factspan_extractor import FactSpanExtractor
+from app.db.fact_span_model import FactSpan
 
 logger = logging.getLogger(__name__)
 
@@ -298,6 +300,7 @@ class IngestionPipeline:
         self.metadata_extractor = DrugMetadataExtractor()
         self.chunker = HeaderBasedChunker()
         self.section_detector = SectionDetector(use_llm_fallback=True)  # NEW: Layout-aware detection
+        self.fact_extractor = FactSpanExtractor() # NEW: Sentence-level extraction
         self.vision_classifier = VisionClassifier() if not skip_vision else None
         
         logger.info("IngestionPipeline initialized with SectionDetector")
@@ -329,7 +332,31 @@ class IngestionPipeline:
         
         try:
             # Step 1: Parse PDF with docling
-            parsed = self.parser.parse(pdf_path)
+            # Wrap parsing logic in try-except block for robustness
+            try:
+                parsed = self.parser.parse(pdf_path)
+            except Exception as e:
+                logger.error(f"Critical parsing error for {path.name}: {e}")
+                processing_time = int((datetime.utcnow() - start_time).total_seconds() * 1000)
+                await self._log_ingestion(
+                    file_path=pdf_path,
+                    document_hash=compute_file_hash(pdf_path) if path.exists() else "",
+                    status="failed",
+                    sections_created=0,
+                    images_extracted=0,
+                    new_section_types=0,
+                    processing_time_ms=processing_time,
+                    error_message=f"Critical parsing error: {e}"
+                )
+                return IngestionResult(
+                    file_path=pdf_path,
+                    file_name=path.name,
+                    document_hash="",
+                    drug_name="",
+                    success=False,
+                    error_message=f"Critical parsing error: {e}",
+                    processing_time_ms=processing_time
+                )
             
             if not parsed.parse_success:
                 return IngestionResult(
@@ -509,7 +536,41 @@ class IngestionPipeline:
             
         except Exception as e:
             logger.error(f"Section validation failed: {e}")
-    
+
+    def _convert_to_chunked_sections(
+        self, 
+        boundaries: List, 
+        blocks: List[Dict]
+    ) -> List[ChunkedSection]:
+        """Convert detected boundaries to ChunkedSections."""
+        sections = []
+        for bound in boundaries:
+            # Extract content blocks
+            section_blocks = blocks[bound.start_block_id : bound.end_block_id]
+            content_text = "\n".join([b.get("text", "") for b in section_blocks]).strip()
+            
+            # Skip empty sections
+            if not content_text:
+                continue
+                
+            # Get pages
+            page_nums = [b.get("page_no", 1) for b in section_blocks]
+            page_start = min(page_nums) if page_nums else None
+            page_end = max(page_nums) if page_nums else None
+            
+            # Use detected category as the cleaned header 
+            # (Ensures all 'Contraindications' map to 'contraindications')
+            cleaned_header = bound.category.value if hasattr(bound.category, 'value') else str(bound.category)
+            
+            sections.append(ChunkedSection(
+                header=bound.original_header,
+                header_cleaned=cleaned_header,
+                content=content_text,
+                page_start=page_start,
+                page_end=page_end
+            ))
+        return sections
+
     async def _store_sections(
         self,
         sections: List[ChunkedSection],
@@ -575,6 +636,26 @@ class IngestionPipeline:
                 )
                 
                 session.add(monograph_section)
+                await session.flush() # Generate ID
+                
+                # NEW: Extract FactSpans (Lossless Sentence-Level Ingestion)
+                spans = self.fact_extractor.extract(section.content, section_id=monograph_section.id)
+                for span in spans:
+                    db_span = FactSpan(
+                        drug_name=drug_name,
+                        section_id=monograph_section.id,
+                        section_enum=monograph_section.section_name,
+                        original_header=monograph_section.original_header,
+                        sentence_text=span.text,
+                        source_type=span.text_type,
+                        sentence_index=span.sequence_num,
+                        document_hash=parsed.document_hash,
+                        original_filename=parsed.file_name,
+                        attribute_tags=[],
+                        page_number=section.page_start # Use section start page as approximation
+                    )
+                    session.add(db_span)
+                
                 created_count += 1
             
             await session.commit()

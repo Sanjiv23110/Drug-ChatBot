@@ -120,10 +120,19 @@ class FactSpanExtractor:
         
         sentences = []
         
+        # Regex for TOC lines (ends with dots and number, e.g. "...... 6")
+        toc_pattern = re.compile(r'\.{3,}\s*\d+$')
+
         if self._nlp:
             # Use spacy for accurate sentence splitting
             doc = self._nlp(text)
             for i, sent in enumerate(doc.sents):
+                sent_text = sent.text.strip()
+                
+                # SKIP TOC LINES
+                if toc_pattern.search(sent_text):
+                    continue
+                    
                 sentences.append(ExtractedSpan(
                     text=sent.text,  # VERBATIM
                     text_type='sentence',
@@ -138,7 +147,9 @@ class FactSpanExtractor:
             
             for i, match in enumerate(matches):
                 sentence_text = match.group(1).strip()
-                if len(sentence_text) > 10:  # Filter very short fragments
+                
+                # SKIP TOC LINES AND SHORT FRAGMENTS
+                if len(sentence_text) > 10 and not toc_pattern.search(sentence_text):
                     sentences.append(ExtractedSpan(
                         text=sentence_text,
                         text_type='sentence',

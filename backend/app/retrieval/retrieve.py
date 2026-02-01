@@ -25,6 +25,10 @@ from app.db.models import MonographSection, SectionMapping, find_similar_section
 from app.db.session import get_session
 from app.retrieval.intent_classifier import QueryIntent, IntentClassifier
 from app.ingestion.embedder import AzureEmbedder  # Reuse existing embedder
+from app.db.fact_span_model import FactSpan
+from app.retrieval.attribute_aggregator import AttributeAggregator, CandidateSentence
+from app.retrieval.query_planner import QueryPlanner, RetrievalPlan
+from sqlalchemy import func, desc
 
 logger = logging.getLogger(__name__)
 
@@ -35,6 +39,8 @@ class RetrievalPath(str, Enum):
     SQL_FUZZY = "SQL_FUZZY"           # Path A+: SQL fuzzy match
     SECTION_LOOKUP = "SECTION_LOOKUP"   # Path A: SQL exact/fuzzy
     ATTRIBUTE_LOOKUP = "ATTRIBUTE_LOOKUP" # Path A++: Attribute scoped
+    BM25_FACTSPAN = "BM25_FACTSPAN"       # Path D: BM25 FactSpan
+    GLOBAL_FACTSPAN_SCAN = "GLOBAL_FACTSPAN_SCAN" # Path E: Global Scan
     IMAGE_LOOKUP = "IMAGE_LOOKUP"     # Path B: Image retrieval
     VECTOR_SCOPED = "VECTOR_SCOPED"   # Path C: Scoped vector search
     NO_RESULT = "NO_RESULT"           # Nothing found
@@ -98,6 +104,7 @@ class RetrievalEngine:
         self.use_fuzzy_matching = use_fuzzy_matching
         
         self.intent_classifier = IntentClassifier()
+        self.planner = QueryPlanner()
         
         # Initialize embedder for vector fallback
         if enable_vector_fallback:
@@ -110,6 +117,34 @@ class RetrievalEngine:
         logger.info(
             f"RetrievalEngine initialized (vector_fallback: {enable_vector_fallback})"
         )
+
+    def _is_junk_section(self, content: str) -> bool:
+        """
+        Detect junk/TOC sections.
+        
+        Criteria:
+        - Length < 50 chars
+        - Contains TOC indicators ("......")
+        """
+        import re
+        content = content.strip()
+        
+        # 1. Too short to be useful section
+        if len(content) < 50:
+            # But allow if it's purely a table reference or "See X" 
+            # actually, strictly filtering short content is safer for "Dosage" which is usually long.
+            # Use regex to detect navigation junk specifically
+            if re.search(r'\.{3,}\s*\d+', content): # "...... 6"
+                return True
+            if re.match(r'^[\d\s\.]+$', content): # Just numbers and dots
+                return True
+            
+            # If it's just "Dosage......6", it's junk.
+            # If it's "Capsules 150mg", it's distinct content.
+            # Let's rely mainly on the TOC pattern for now to be safe.
+            return False
+            
+        return False
     
     async def retrieve(self, query: str) -> RetrievalResult:
         """
@@ -172,9 +207,69 @@ class RetrievalEngine:
             
             if result.sections:
                 return result
-        
-        # Path C: Vector Fallback (LAST RESORT)
-        if self.enable_vector_fallback and intent.target_drug:
+
+        # Path A++: Attribute Lookup (if attribute identified)
+        if intent.target_attribute:
+            result = await self._path_a_attribute_lookup(intent, result)
+            if result.sections:
+                return result
+
+        # NEW: Recall Amplification Paths (BM25 / Global Scan)
+        # Only activated if exact/fuzzy/attribute lookups failed
+        if not result.sections:
+            logger.info("Primary paths empty. Invoking QueryPlanner for recall amplification...")
+            try:
+                plan = await self.planner.plan(query)
+
+                # ISSUE 4 FIX: Deterministic Override
+                # If planner suggests core sections, force SQL lookup (Path A) instead of BM25.
+                # This fixes "dosage forms" being processed as a keyword search instead of section lookup.
+                core_overrides = {"dosage", "administration", "description", "indications", "composition", "contraindications", "warnings"}
+                candidates = [s.lower() for s in (plan.candidate_sections or [])]
+                
+                # Check intersection
+                force_sql = False
+                for cand in candidates:
+                    if any(core in cand for core in core_overrides):
+                        force_sql = True
+                        break
+                
+                if force_sql:
+                    logger.info(f"Deterministic Override: Enforcing SQL lookup for planner sections: {candidates}")
+                    
+                    found_any = False
+                    for sec in candidates:
+                        # Reuse Path A logic for each suggested section
+                        temp_intent = QueryIntent(target_drug=plan.drug, target_section=sec)
+                        # We pass a fresh result object to avoid pollution, then merge
+                        sub_result = await self._path_a_sql_match(temp_intent, RetrievalResult())
+                        
+                        if sub_result.sections:
+                            for s in sub_result.sections:
+                                # Simple dedup by ID
+                                if not any(existing['id'] == s['id'] for existing in result.sections):
+                                    result.sections.append(s)
+                            found_any = True
+                    
+                    if found_any:
+                        result.path_used = RetrievalPath.SECTION_LOOKUP
+                        return result
+
+                # Path D: BM25 FactSpan
+                result = await self._path_d_bm25_factspan(plan, result)
+                if result.sections:
+                    return result
+                    
+                # Path E: Global FactSpan Scan fallback
+                result = await self._path_e_global_scan(plan, result)
+                if result.sections:
+                    return result
+                    
+            except Exception as e:
+                logger.error(f"Planning/Recall paths failed: {e}")
+
+        # Path C: Vector Fallback (Last Resort)
+        if self.enable_vector_fallback and not result.sections and intent.target_drug:
             logger.info(f"Routing to Path C: Vector Fallback for {intent.target_drug}")
             return await self._path_c_vector_scoped(intent, result)
 
@@ -221,17 +316,24 @@ class RetrievalEngine:
             sections = db_result.scalars().all()
             
             if sections:
-                result.sections = [self._section_to_dict(s) for s in sections]
-                result.path_used = RetrievalPath.SQL_EXACT
-                result.total_results = len(sections)
+                # Filter out junk/TOC sections
+                valid_sections = [
+                    s for s in sections 
+                    if not self._is_junk_section(s.content_text or "")
+                ]
                 
-                # Include images if section has them
-                for section in sections:
-                    if section.image_paths:
-                        result.image_paths.extend(section.image_paths)
-                
-                logger.info(f"Path A (exact) returned {len(sections)} sections")
-                return result
+                if valid_sections:
+                    result.sections = [self._section_to_dict(s) for s in valid_sections]
+                    result.path_used = RetrievalPath.SQL_EXACT
+                    result.total_results = len(valid_sections)
+                    
+                    # Include images if section has them
+                    for section in valid_sections:
+                        if section.image_paths:
+                            result.image_paths.extend(section.image_paths)
+                    
+                    logger.info(f"Path A (exact) returned {len(valid_sections)} sections (original: {len(sections)})")
+                    return result
             
             # Second try: Enhanced fuzzy match using pg_trgm + keyword fallback
             if self.use_fuzzy_matching:
@@ -331,7 +433,6 @@ class RetrievalEngine:
             return result
 
         # Get allowed sections for this attribute
-        # We need to access the map from IntentClassifier class or instance
         attr_data = IntentClassifier.ATTRIBUTE_MAP.get(intent.target_attribute)
         if not attr_data:
             logger.warning(f"Attribute {intent.target_attribute} not found in map")
@@ -341,8 +442,112 @@ class RetrievalEngine:
         logger.info(f"Path A++ looking for attribute '{intent.target_attribute}' in sections: {allowed_sections}")
         
         async with get_session() as session:
+            # NEW: Attribute Evidence Aggregation (FactSpan + LLM Filter)
+            
+            # RETRIEVAL INVARIANT (PRIORITY 1)
+            # IF authoritative FactSpans exist, return them ALL verbatim.
+            try:
+                invariant_stmt = select(FactSpan).where(
+                    FactSpan.drug_name == intent.target_drug,
+                    FactSpan.assertion_type.in_(['FACT', 'CONDITIONAL']),
+                    or_(*[FactSpan.section_enum.ilike(f"%{s}%") for s in allowed_sections])
+                )
+                inv_result = await session.execute(invariant_stmt)
+                inv_spans = inv_result.scalars().all()
+
+                if inv_spans:
+                    logger.info(f"Retrieval Invariant Triggered: Found {len(inv_spans)} authoritative spans for {intent.target_attribute}.")
+                    # Return ALL spans verbatim. never "not found".
+                    formatted_content = "\n".join([f"- {s.sentence_text}" for s in inv_spans])
+                    
+                    synthetic_section = {
+                        "section_name": f"Authoritative Facts: {intent.target_attribute}",
+                        "content_text": formatted_content,
+                        "drug_name": intent.target_drug,
+                        "attribute_provenance": True,
+                        "is_aggregated": True
+                    }
+                    
+                    result.sections = [synthetic_section]
+                    result.path_used = RetrievalPath.ATTRIBUTE_LOOKUP 
+                    result.attribute_name = intent.target_attribute
+                    return result
+            except Exception as e:
+                logger.error(f"Invariant check failed: {e}")
+
+            try:
+                # 1. Deterministically retrieve candidate FactSpans
+                # We want sentences that contain attribute keywords AND are in allowed sections
+                
+                # Derive keywords from attribute name (simple heuristic)
+                keywords = intent.target_attribute.replace('_', ' ').split()
+                
+                # Build FactSpan query
+                fact_stmt = select(FactSpan).where(
+                    FactSpan.drug_name == intent.target_drug,
+                    FactSpan.source_type == 'sentence',
+                    or_(*[FactSpan.section_enum.ilike(f"%{s}%") for s in allowed_sections])
+                )
+                
+                # Apply keyword filter if keywords exist
+                if keywords:
+                    keyword_filters = [FactSpan.sentence_text.ilike(f"%{kw}%") for kw in keywords]
+                    fact_stmt = fact_stmt.where(or_(*keyword_filters))
+                
+                # Execute query
+                span_result = await session.execute(fact_stmt)
+                spans = span_result.scalars().all()
+                
+                logger.info(f"Path A++ found {len(spans)} candidate FactSpans for aggregation.")
+                
+                if spans:
+                    # 2. Prepare candidates
+                    candidates = [
+                        CandidateSentence(
+                            index=i+1,
+                            text=span.sentence_text,
+                            section_name=span.section_enum,
+                            ids=span.fact_span_id
+                        )
+                        for i, span in enumerate(spans)
+                    ]
+                    
+                    # 3. Aggregation via LLM
+                    aggregator = AttributeAggregator()
+                    selected = await aggregator.filter_sentences(
+                        attribute=intent.target_attribute, 
+                        question=result.original_query,
+                        candidates=candidates
+                    )
+                    
+                    logger.info(f"Path A++ selected {len(selected)} sentences after LLM filtering.")
+                    
+                    if selected:
+                        # 4. Return Verbatim Result
+                        formatted_content = aggregator.format_verbatim_response(selected)
+                        
+                        synthetic_section = {
+                            "section_name": f"Attribute Evidence: {intent.target_attribute}",
+                            "content_text": formatted_content,
+                            "drug_name": intent.target_drug,
+                            "attribute_provenance": True
+                        }
+                        
+                        result.sections = [synthetic_section]
+                        result.path_used = RetrievalPath.ATTRIBUTE_LOOKUP
+                        result.total_results = len(selected)
+                        result.attribute_name = intent.target_attribute
+                        return result
+                    else:
+                        # LLM found candidates irrelevant -> Fallback or NO_RESULT
+                        logger.info("Path A++ candidates rejected by LLM. Falling back to section lookup.")
+                
+            except Exception as e:
+                logger.error(f"Attribute Aggregation failed: {e}")
+                # Continue to fallback
+            
+            # FALLBACK: Original Section-Based Lookup
             # Build query to meaningful sections
-            # We use ILIKE ANY for section matching
             stmt = (
                 select(MonographSection)
                 .where(
@@ -353,9 +558,6 @@ class RetrievalEngine:
                     )
                 )
                 .where(
-                    # Check if section_name contains ANY of the allowed keywords
-                    # Or simpler: just fuzzy match the allowed section names
-                    # We'll use a robust ILIKE check against the list
                     or_(*[MonographSection.section_name.ilike(f"%{s}%") for s in allowed_sections])
                 )
                 .order_by(MonographSection.page_start)
@@ -370,7 +572,6 @@ class RetrievalEngine:
                 result.sections = [self._section_to_dict(s) for s in sections]
                 result.path_used = RetrievalPath.ATTRIBUTE_LOOKUP
                 result.total_results = len(sections)
-                # Set the attribute name in result for later use by generator
                 result.attribute_name = intent.target_attribute
                 
                 logger.info(f"Path A++ returned {len(sections)} sections for attribute '{intent.target_attribute}'")
@@ -551,6 +752,152 @@ class RetrievalEngine:
             logger.error(f"Vector search failed: {e}")
             result.path_used = RetrievalPath.NO_RESULT
         
+        return result
+
+    async def _path_d_bm25_factspan(
+        self,
+        plan: RetrievalPlan,
+        result: RetrievalResult
+    ) -> RetrievalResult:
+        """
+        Path D: BM25 FactSpan Retrieval.
+        Uses PostgreSQL ts_rank to find relevant fact spans.
+        """
+        if not plan.search_phrases:
+            return result
+            
+        logger.info(f"Routing to Path D: BM25 Search. Phrases: {plan.search_phrases}")
+        
+        async with get_session() as session:
+            try:
+                # Construct safe tsquery string (phrase1 | phrase2 | ...)
+                # Remove special characters that might break tsquery syntax
+                import re
+                sanitized = [re.sub(r"[^\w\s\-]", "", p).strip() for p in plan.search_phrases if p.strip()]
+                query_str = " ".join(sanitized)
+                
+                if not query_str:
+                    return result
+                
+                # BM25 Ranking Query
+                ts_query = func.plainto_tsquery('english', query_str)
+                stmt = (
+                    select(FactSpan, func.ts_rank(FactSpan.search_vector, ts_query).label('rank'))
+                    .where(
+                        FactSpan.drug_name == plan.drug,
+                        FactSpan.search_vector.op('@@')(ts_query)
+                    )
+                    .order_by(desc('rank'))
+                    .limit(20)
+                )
+                
+                db_result = await session.execute(stmt)
+                rows = db_result.all()  # List of (FactSpan, rank)
+                
+                if rows:
+                    # Create synthetic section from fact spans
+                    spans_content = []
+                    valid_rows = []
+                    
+                    for span, rank in rows:
+                        # FILTER: Skip TOC-like spans using strict regex
+                        if self._is_junk_section(span.sentence_text):
+                            continue
+                        spans_content.append(f"[{span.section_enum}] {span.sentence_text}")
+                        valid_rows.append(span)
+                    
+                    if not valid_rows:
+                        logger.info("Path D (BM25) returned results but all were filtered as junk.")
+                        return result
+
+                    content_text = "\n\n".join(spans_content)
+                    
+                    synthetic_section = {
+                        "section_name": "Relevant Facts (BM25)",
+                        "content_text": content_text,
+                        "drug_name": plan.drug,
+                        "is_aggregated": True,
+                        "path_provenance": "BM25"
+                    }
+                    
+                    result.sections = [synthetic_section]
+                    result.path_used = RetrievalPath.BM25_FACTSPAN
+                    result.total_results = len(valid_rows)
+                    logger.info(f"Path D (BM25) returned {len(valid_rows)} fact spans")
+                else:
+                    logger.info("Path D (BM25) returned 0 results")
+                    
+            except Exception as e:
+                logger.error(f"Path D (BM25) failed: {e}")
+                
+        return result
+
+    async def _path_e_global_scan(
+        self,
+        plan: RetrievalPlan,
+        result: RetrievalResult
+    ) -> RetrievalResult:
+        """
+        Path E: Global FactSpan Scan (Safety Net).
+        Retrieves top matches using substring search if full-text fails.
+        """
+        logger.info("Routing to Path E: Global FactSpan Scan")
+        
+        async with get_session() as session:
+            try:
+                # Use first 5 search phrases for ILIKE check to avoid query explosion
+                phrases = plan.search_phrases[:5]
+                if not phrases:
+                    return result
+                
+                filters = [FactSpan.sentence_text.ilike(f"%{p}%") for p in phrases]
+                
+                stmt = (
+                    select(FactSpan)
+                    .where(
+                        FactSpan.drug_name == plan.drug,
+                        or_(*filters)
+                    )
+                    .limit(50)  # Cap at 50 spans
+                )
+                
+                db_result = await session.execute(stmt)
+                spans = db_result.scalars().all()
+                
+                if spans:
+                    spans_content = []
+                    valid_spans = []
+                    for span in spans:
+                        # FILTER: Skip TOC-like spans using strict regex
+                        if self._is_junk_section(span.sentence_text):
+                            continue
+                        spans_content.append(f"[{span.section_enum}] {span.sentence_text}")
+                        valid_spans.append(span)
+                    
+                    if not valid_spans:
+                        logger.info("Path E (Global Scan) returned results but all were filtered as junk.")
+                        return result
+                    
+                    content_text = "\n\n".join(spans_content)
+                    
+                    synthetic_section = {
+                        "section_name": "Extended Search Results",
+                        "content_text": content_text,
+                        "drug_name": plan.drug,
+                        "is_aggregated": True,
+                        "path_provenance": "Global Scan"
+                    }
+                    
+                    result.sections = [synthetic_section]
+                    result.path_used = RetrievalPath.GLOBAL_FACTSPAN_SCAN
+                    result.total_results = len(valid_spans)
+                    logger.info(f"Path E (Global Scan) returned {len(valid_spans)} spans")
+                else:
+                    logger.info("Path E (Global Scan) returned 0 results")
+                    
+            except Exception as e:
+                logger.error(f"Path E (Global Scan) failed: {e}")
+                
         return result
     
     def _section_to_dict(self, section: MonographSection) -> Dict[str, Any]:

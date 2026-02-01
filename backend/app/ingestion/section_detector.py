@@ -230,6 +230,7 @@ class SectionDetector:
                 api_version="2024-08-01-preview",
                 azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT")
             )
+            self.deployment_name = os.getenv("AZURE_OPENAI_CHAT_DEPLOYMENT", "gpt-4o")
         else:
             self.client = None
     
@@ -470,7 +471,7 @@ Output ONLY the enum. No explanation."""
         
         try:
             response = self.client.chat.completions.create(
-                model="gpt-4o-mini",
+                model=self.deployment_name,
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0,
                 max_tokens=10

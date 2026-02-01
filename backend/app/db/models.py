@@ -36,7 +36,8 @@ class SectionMapping(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     
     # Original header (lowercase, cleaned)
-    original_header: str = Field(unique=True, index=True, max_length=512)
+    # Original header (lowercase, cleaned)
+    original_header: str = Field(sa_column=Column(Text, unique=True, index=True))
     
     # Normalized section name (snake_case, for SQL queries)
     normalized_name: str = Field(index=True, max_length=255)
@@ -90,9 +91,11 @@ class MonographSection(SQLModel, table=True):
     
     # Section identification
     # DYNAMIC: stores exact header from PDF (cleaned/lowercased)
-    section_name: str = Field(index=True, max_length=512)
+    # Section identification
+    # DYNAMIC: stores exact header from PDF (cleaned/lowercased)
+    section_name: str = Field(sa_column=Column(Text, index=True))
     # Original header as it appeared in PDF (preserves case)
-    original_header: Optional[str] = Field(default=None, max_length=512)
+    original_header: Optional[str] = Field(default=None, sa_column=Column(Text))
     
     # Content
     content_text: str = Field(sa_column=Column(Text))
@@ -119,9 +122,6 @@ class MonographSection(SQLModel, table=True):
     
     # Table-level constraints
     __table_args__ = (
-        # Prevent duplicate sections for same document
-        UniqueConstraint('document_hash', 'section_name', 'page_start', 
-                        name='uq_document_section'),
         # Indexes for fast lookups
         Index('ix_drug_section', 'drug_name', 'section_name'),
         Index('ix_document_lookup', 'document_hash'),

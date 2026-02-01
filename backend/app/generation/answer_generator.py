@@ -248,11 +248,9 @@ class AnswerGenerator:
         if attr_match:
             # Inject strict extraction instruction
             extraction_instruction = (
-                f"\n\nCRITICAL INSTRUCTION: The user is asking for the specific attribute '{attr_match}'.\n"
-                f"You must COPY ONLY the sentence(s) from the provided sections that explicitly mention '{attr_match}'.\n"
-                f"Do NOT summarize. Do NOT infer. Do NOT calculate.\n"
-                f"If the text does not explicitly state the {attr_match}, you MUST respond exactly with:\n"
-                f"'Information not found in available monographs.'"
+                f"\n\nFOCUS: The user is specifically interested in '{attr_match}'.\n"
+                f"Please create a section header '## {attr_match}' and list all relevant findings.\n"
+                f"If exact data is missing, list any related information found in the text (e.g., from similar sections)."
             )
             user_prompt += extraction_instruction
             logging.info(f"Injected strict extraction prompt for attribute: {attr_match}")
