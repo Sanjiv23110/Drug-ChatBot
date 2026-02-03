@@ -28,6 +28,7 @@ from app.ingestion.embedder import AzureEmbedder  # Reuse existing embedder
 from app.db.fact_span_model import FactSpan
 from app.retrieval.attribute_aggregator import AttributeAggregator, CandidateSentence
 from app.retrieval.query_planner import QueryPlanner, RetrievalPlan
+from app.retrieval.cross_encoder_reranker import CrossEncoderReranker  # NEW: Precision Layer
 from sqlalchemy import func, desc
 
 logger = logging.getLogger(__name__)
@@ -105,6 +106,7 @@ class RetrievalEngine:
         
         self.intent_classifier = IntentClassifier()
         self.planner = QueryPlanner()
+        self.reranker = CrossEncoderReranker()  # Initialize Reranker Layer
         
         # Initialize embedder for vector fallback
         if enable_vector_fallback:
@@ -781,6 +783,7 @@ class RetrievalEngine:
                 
                 # BM25 Ranking Query
                 ts_query = func.plainto_tsquery('english', query_str)
+
                 stmt = (
                     select(FactSpan, func.ts_rank(FactSpan.search_vector, ts_query).label('rank'))
                     .where(
@@ -788,7 +791,7 @@ class RetrievalEngine:
                         FactSpan.search_vector.op('@@')(ts_query)
                     )
                     .order_by(desc('rank'))
-                    .limit(20)
+                    .limit(60)  # High recall fetch (formerly 20)
                 )
                 
                 db_result = await session.execute(stmt)
@@ -799,7 +802,17 @@ class RetrievalEngine:
                     spans_content = []
                     valid_rows = []
                     
-                    for span, rank in rows:
+                    # 1. Unpack FactSpans
+                    all_spans = [r[0] for r in rows]
+                    
+                    # 2. Rerank (Precision Step)
+                    reranked_spans = self.reranker.rerank_fact_spans(
+                        query=result.original_query,
+                        candidates=all_spans,
+                        top_k=15  # Keep top 15 most relevant
+                    )
+                    
+                    for span in reranked_spans:
                         # FILTER: Skip TOC-like spans using strict regex
                         if self._is_junk_section(span.sentence_text):
                             continue
@@ -813,11 +826,11 @@ class RetrievalEngine:
                     content_text = "\n\n".join(spans_content)
                     
                     synthetic_section = {
-                        "section_name": "Relevant Facts (BM25)",
+                        "section_name": "Relevant Facts (BM25 + Reranked)",
                         "content_text": content_text,
                         "drug_name": plan.drug,
                         "is_aggregated": True,
-                        "path_provenance": "BM25"
+                        "path_provenance": "BM25+Rerank"
                     }
                     
                     result.sections = [synthetic_section]

@@ -142,3 +142,62 @@ backups/
 *.cert
 secrets/
 credentials/
+
+# ==========================================
+# Ad-hoc Scripts & Debugging
+# ==========================================
+debug_*
+check_*.py
+analyze_*.py
+simple_check.py
+health_check.py
+clean_db.py
+reset_db.py
+restore_backup.py
+verify_fix.py
+view_sections.py
+populate_drug_names.py
+extract_drug_names.py
+find_gravol.py
+research_issue.py
+batch_ingest.py
+
+# ==========================================
+# Test Outputs & Artifacts
+# ==========================================
+*_output.txt
+*_results.txt
+*_results.json
+api_test_results.txt
+axid_test_results.json
+ingest_log.txt
+full_ingestion_output.txt
+research_output.txt
+upsert_test_output.txt
+
+# ==========================================
+# Temporary Test Scripts (Root)
+# ==========================================
+test_all_solutions.py
+test_axid_comprehensive.py
+test_e2e_hybrid.py
+test_evidence_validator.py
+test_expansion.py
+test_fuzzy.py
+test_guardrail_e2e.py
+test_hybrid_extraction.py
+test_ingestion_minimal.py
+test_no_evidence_responses.py
+test_or_query_sql.py
+test_real_endpoint.py
+test_regex_extraction.py
+test_section_integration.py
+test_solution_2a.py
+
+# ==========================================
+# Misc
+# ==========================================
+brutal_system_audit.md
+day1_progress.md
+CHANGES_SINCE_V1.md
+
