@@ -1,0 +1,53 @@
+=== SEARCHING FOR ADVERSE REACTIONS TEXT FOR RENESE ===
+
+
+[LOINC: 42229-5 | Section: SPL UNCLASSIFIED SECTION]
+Text: ò anorexia
+ò gastric irritation
+ò nausea
+ò vomiting
+ò cramping
+ò diarrhea
+ò constipation
+ò jaundice (intrahepatic cholestatic jaundice)
+ò pancreatitis
+--------------------------------------------------------------------------------
+
+[LOINC: 42229-5 | Section: SPL UNCLASSIFIED SECTION]
+Text: These hazards include fetal or neonatal jaundice, thrombocytopenia, and possibly other adverse reactions which have occurred in the adult.
+--------------------------------------------------------------------------------
+
+[LOINC: 42232-9 | Section: UNCLASSIFIED]
+Text: Serum and urine electrolyte determinations are particularly important when the patient is vomiting excessively or receiving parenteral fluids.
+--------------------------------------------------------------------------------
+
+[LOINC: 42229-5 | Section: SPL UNCLASSIFIED SECTION]
+Text: ò hyperglycemia
+ò glycosuria
+ò hyperuricemia
+ò muscle spasm
+ò weakness
+ò restlessness
+Whenever adverse reactions are moderate or severe, thiazide dosage should be reduced or therapy withdrawn.
+--------------------------------------------------------------------------------
+
+=== ALL RENESE SECTION TEXTS (first 200 chars) ===
+
+SPL UNCLASSIFIED SECTION:
+  The mechanism of action results in an interference with the renal tubular mechanism of electrolyte reabsorption.
+
+UNCLASSIFIED:
+  Thiazide drugs may increase the responsiveness to tubocurarine.
+
+SPL UNCLASSIFIED SECTION:
+  ò purpura
+ò photosensitivity
+ò rash
+ò urticaria
+ò necrotizing angiitis (vasculitis) (cutaneous vasculitis)
+
+UNCLASSIFIED:
+  The 2 mg tablets also contain: Yellow 6; Yellow 10.
+
+SPL UNCLASSIFIED SECTION:
+  Diuretics do not prevent development of toxemia of pregnancy, and there is no satisfactory evidence that they are useful in the treatment of developed toxemia.

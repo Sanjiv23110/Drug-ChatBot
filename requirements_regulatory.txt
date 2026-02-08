@@ -1,0 +1,42 @@
+# Regulatory-Grade Pharmaceutical QA Chatbot
+# Requirements file for all dependencies
+
+# Core dependencies
+lxml>=4.9.0  # XML parsing (C-based, namespace-aware)
+html2text>=2020.1.16  # HTML to Markdown conversion
+
+# Vector database
+qdrant-client>=1.7.0  # Qdrant vector database client
+
+# Embeddings and ML
+sentence-transformers>=2.2.0  # Dense and cross-encoder models
+rank-bm25>=0.2.2  # Sparse BM25 embeddings
+transformers>=4.30.0  # HuggingFace transformers
+torch>=2.0.0  # PyTorch (required for transformers)
+
+# LLM integration
+openai>=1.0.0  # Azure OpenAI client
+
+# Validation
+rapidfuzz>=3.0.0  # Fast fuzzy string matching for validation
+
+# RxNorm/RxClass integration
+requests>=2.28.0  # HTTP client for RxNorm API
+
+# Evaluation
+ragas>=0.1.0  # RAG evaluation metrics
+
+# Utilities
+numpy>=1.24.0  # Numerical operations
+pandas>=2.0.0  # Data manipulation (optional, for analysis)
+
+# Development and testing
+pytest>=7.0.0  # Testing framework
+pytest-cov>=4.0.0  # Code coverage
+
+# Logging and monitoring
+python-json-logger>=2.0.0  # Structured logging
+
+# Optional: NER for drug name extraction
+# scispacy>=0.5.0  # Biomedical NER
+# en-core-sci-sm @ https://s3-us-west-2.amazonaws.com/ai2-s2-scispacy/releases/v0.5.0/en_core_sci_sm-0.5.0.tar.gz
