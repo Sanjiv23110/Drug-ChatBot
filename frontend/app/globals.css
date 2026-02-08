@@ -1,0 +1,37 @@
+@import "tailwindcss";
+
+:root {
+  --background: #0B1120;
+  --foreground: #F8FAFC;
+  --primary: #3B82F6;
+  --secondary: #64748B;
+  --accent: #0F172A;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  overflow: hidden; /* Prevent body scroll, handle in chat container */
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
