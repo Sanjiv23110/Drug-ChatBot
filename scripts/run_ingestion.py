@@ -13,6 +13,9 @@ from normalization.rxnorm_integration import DrugNormalizer
 from retrieval.hybrid_retriever import DenseEmbedder, SparseEmbedder
 from vector_db.hierarchical_qdrant import HierarchicalQdrantManager
 from qdrant_client.models import SparseVector
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Configure logging
 logging.basicConfig(
@@ -28,8 +31,10 @@ logger = logging.getLogger(__name__)
 # Configuration
 DATA_DIR = r"C:\G\solomindUS\data\xml" # User specified subdirectory for XMLs
 XSLT_PATH = r"C:\G\solomindUS\data\spl.xsl"
-QDRANT_HOST = "localhost"
-QDRANT_PORT = 6333
+QDRANT_HOST = os.getenv("QDRANT_HOST", "127.0.0.1")
+QDRANT_PORT = int(os.getenv("QDRANT_PORT", 6333))
+QDRANT_URL = os.getenv("QDRANT_URL")
+QDRANT_API_KEY = os.getenv("QDRANT_API_KEY")
 
 def main():
     logger.info("Starting ingestion process...")
@@ -65,7 +70,12 @@ def main():
         sparse_embedder = SparseEmbedder(corpus=None) # No corpus needed for document embedding (uses hashing)
         
         # Vector DB
-        qm = HierarchicalQdrantManager(host=QDRANT_HOST, port=QDRANT_PORT)
+        qm = HierarchicalQdrantManager(
+            host=QDRANT_HOST, 
+            port=QDRANT_PORT,
+            url=QDRANT_URL,
+            api_key=QDRANT_API_KEY
+        )
         # Recreate collections for a fresh start? Let's make it optional or idempotent.
         # For this script, we'll ensure they exist.
         qm.create_collections(dense_vector_size=768, recreate=True)  # Force recreation for testing

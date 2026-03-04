@@ -9,7 +9,7 @@ services:
       - "6333:6333"  # REST API
       - "6334:6334"  # gRPC
     volumes:
-      - ./qdrant_storage:/qdrant/storage
+      - qdrant_data:/qdrant/storage
       - ./qdrant_snapshots:/qdrant/snapshots
     environment:
       - QDRANT__SERVICE__GRPC_PORT=6334
@@ -36,7 +36,5 @@ services:
   #   restart: unless-stopped
 
 volumes:
-  qdrant_storage:
-    driver: local
-  qdrant_snapshots:
+  qdrant_data:
     driver: local

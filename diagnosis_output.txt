@@ -1,0 +1,263 @@
+======================================================================
+STEP 1: SectionClassifier - What LOINC code does each query get?
+======================================================================
+  Query: 'how to treat overdosage of dantrium?'
+  LOINC: 34088-5
+  section_specific would be: True
+
+  Query: 'how to treat overdose of dantrium?'
+  LOINC: 34088-5
+  section_specific would be: True
+
+======================================================================
+STEP 2: What chunks exist in Qdrant for Dantrium?
+======================================================================
+  Total Dantrium chunks: 164
+
+  ADVERSE REACTIONS (LOINC: 34084-4): 19 chunks
+    [0] Drug: Dantrium. Section: ADVERSE REACTIONS. Urogenital: Increased urinary freque
+    [1] Drug: Dantrium. Section: ADVERSE REACTIONS. Psychiatric: Mental depression, ment
+    [2] Drug: Dantrium. Section: ADVERSE REACTIONS. Other less frequent side effects, li
+    [3] Drug: Dantrium. Section: ADVERSE REACTIONS. Neurologic: Speech disturbance, seiz
+    [4] Drug: Dantrium. Section: ADVERSE REACTIONS. Dantrium capsules are not indicated 
+    [5] Drug: Dantrium. Section: ADVERSE REACTIONS. Hypersensitivity: Pleural effusion w
+    [6] Drug: Dantrium. Section: ADVERSE REACTIONS. If diarrhea recurs upon readministra
+    [7] Drug: Dantrium. Section: ADVERSE REACTIONS. Hematologic: Aplastic anemia, anemia
+    [8] Drug: Dantrium. Section: ADVERSE REACTIONS. The most frequently occurring side e
+    [9] Drug: Dantrium. Section: ADVERSE REACTIONS. Special Senses: Excessive tearing.
+    [10] Drug: Dantrium. Section: ADVERSE REACTIONS. Other: Chills and fever.
+    [11] Drug: Dantrium. Section: ADVERSE REACTIONS. Respiratory: Feeling of suffocation,
+    [12] Drug: Dantrium. Section: ADVERSE REACTIONS. These are generally transient, occur
+    [13] Drug: Dantrium. Section: ADVERSE REACTIONS. Cardiovascular: Tachycardia, erratic
+    [14] Drug: Dantrium. Section: ADVERSE REACTIONS. Hepatobiliary: Hepatitis (see WARNIN
+    [15] Drug: Dantrium. Section: ADVERSE REACTIONS. Musculoskeletal: Myalgia, backache.
+    [16] Drug: Dantrium. Section: ADVERSE REACTIONS. Integumentary: Abnormal hair growth,
+    [17] Drug: Dantrium. Section: ADVERSE REACTIONS. The published literature has include
+    [18] Drug: Dantrium. Section: ADVERSE REACTIONS. Diarrhea may be severe and may neces
+
+  BOXED WARNING (LOINC: 34066-1): 10 chunks
+    [0] Drug: Dantrium. Section: BOXED WARNING. The risk of hepatic injury appears to be
+    [1] Drug: Dantrium. Section: BOXED WARNING. If no observable benefit is derived from
+    [2] Drug: Dantrium. Section: BOXED WARNING. Symptomatic hepatitis (fatal and non-fat
+    [3] Drug: Dantrium. Section: BOXED WARNING. Dantrium should be used only in conjunct
+    [4] Drug: Dantrium. Section: BOXED WARNING. The lowest possible effective dose for t
+    [5] Drug: Dantrium. Section: BOXED WARNING. Dantrium (dantrolene sodium) has a poten
+    [6] Drug: Dantrium. Section: BOXED WARNING. Liver dysfunction as evidenced by blood 
+    [7] Drug: Dantrium. Section: BOXED WARNING. Overt hepatitis has occurred at varying 
+    [8] Drug: Dantrium. Section: BOXED WARNING. The incidence reported in patients takin
+    [9] Drug: Dantrium. Section: BOXED WARNING. Even sporadic short courses of these hig
+
+  CLINICAL PHARMACOLOGY (LOINC: 34090-1): 17 chunks
+    [0] Drug: Dantrium. Section: CLINICAL PHARMACOLOGY. A central nervous system effect 
+    [1] Drug: Dantrium. Section: CLINICAL PHARMACOLOGY. Specific metabolic pathways in t
+    [2] Drug: Dantrium. Section: CLINICAL PHARMACOLOGY. The mean biologic half-life of D
+    [3] Drug: Dantrium. Section: CLINICAL PHARMACOLOGY. Since Dantrium is probably metab
+    [4] Drug: Dantrium. Section: CLINICAL PHARMACOLOGY. Although Dantrium does not appea
+    [5] Drug: Dantrium. Section: CLINICAL PHARMACOLOGY. In addition to the parent compou
+    [6] Drug: Dantrium. Section: CLINICAL PHARMACOLOGY. The duration and intensity of sk
+    [7] Drug: Dantrium. Section: CLINICAL PHARMACOLOGY. This effect appears to be more p
+    [8] Drug: Dantrium. Section: CLINICAL PHARMACOLOGY. Limited clinical experience with
+    [9] Drug: Dantrium. Section: CLINICAL PHARMACOLOGY. In skeletal muscle, Dantrium dis
+    [10] Drug: Dantrium. Section: CLINICAL PHARMACOLOGY. Metabolic patterns are similar i
+    [11] Drug: Dantrium. Section: CLINICAL PHARMACOLOGY. In isolated nerve-muscle prepara
+    [12] Drug: Dantrium. Section: CLINICAL PHARMACOLOGY. The absorption of Dantrium after
+    [13] Drug: Dantrium. Section: CLINICAL PHARMACOLOGY. Clinical experience in the manag
+    [14] Drug: Dantrium. Section: CLINICAL PHARMACOLOGY. The prophylactic administration 
+    [15] Drug: Dantrium. Section: CLINICAL PHARMACOLOGY. However, neither phenobarbital n
+    [16] Drug: Dantrium. Section: CLINICAL PHARMACOLOGY. Known differences between human 
+
+  CONTRAINDICATIONS (LOINC: 34070-3): 2 chunks
+    [0] Drug: Dantrium. Section: CONTRAINDICATIONS. Dantrium is contraindicated where sp
+    [1] Drug: Dantrium. Section: CONTRAINDICATIONS. Active hepatic disease, such as hepa
+
+  DESCRIPTION (LOINC: 34089-3): 5 chunks
+    [0] Drug: Dantrium. Section: DESCRIPTION. The chemical formula of Dantrium (dantrole
+    [1] Drug: Dantrium. Section: DESCRIPTION. The anhydrous salt has a molecular weight 
+    [2] Drug: Dantrium. Section: DESCRIPTION. The structural formula for the hydrated sa
+    [3] Drug: Dantrium. Section: DESCRIPTION. The hydrated salt contains approximately 1
+    [4] Drug: Dantrium. Section: DESCRIPTION. It is an orange powder, slightly soluble i
+
+  DOSAGE AND ADMINISTRATION (LOINC: 34068-7): 6 chunks
+    [0] Drug: Dantrium. Section: DOSAGE AND ADMINISTRATION. For Use in Chronic Spasticit
+    [1] Drug: Dantrium. Section: DOSAGE AND ADMINISTRATION. It is important to establish
+    [2] Drug: Dantrium. Section: DOSAGE AND ADMINISTRATION. A decrease in spasticity suf
+    [3] Drug: Dantrium. Section: DOSAGE AND ADMINISTRATION. Dosage should be increased u
+    [4] Drug: Dantrium. Section: DOSAGE AND ADMINISTRATION. Refer to INDICATIONS AND USA
+    [5] Drug: Dantrium. Section: DOSAGE AND ADMINISTRATION. No further increase in dosag
+
+  DRUG ABUSE AND DEPENDENCE (LOINC: 42227-9): 1 chunks
+    [0] Drug: Dantrium. Section: DRUG ABUSE AND DEPENDENCE. Drug abuse and dependency po
+
+  DRUG INTERACTIONS (LOINC: 34073-7): 7 chunks
+    [0] Drug: Dantrium. Section: DRUG INTERACTIONS. The combination of therapeutic doses
+    [1] Drug: Dantrium. Section: DRUG INTERACTIONS. Hepatotoxicity has occurred more oft
+    [2] Drug: Dantrium. Section: DRUG INTERACTIONS. Administration of Dantrium may poten
+    [3] Drug: Dantrium. Section: DRUG INTERACTIONS. Until the relevance of these finding
+    [4] Drug: Dantrium. Section: DRUG INTERACTIONS. Cardiovascular collapse in patients 
+    [5] Drug: Dantrium. Section: DRUG INTERACTIONS. While a definite drug interaction wi
+    [6] Drug: Dantrium. Section: DRUG INTERACTIONS. Drug Interactions: Drowsiness may oc
+
+  For Malignant Hyperthermia: (LOINC: 42229-5): 8 chunks
+    [0] Drug: Dantrium. Section: For Malignant Hyperthermia:. Doses higher than 100 mg f
+    [1] Drug: Dantrium. Section: For Malignant Hyperthermia:. Some patients will not res
+    [2] Drug: Dantrium. Section: For Malignant Hyperthermia:. Each dosage level should b
+    [3] Drug: Dantrium. Section: For Malignant Hyperthermia:. If no further benefit is o
+    [4] Drug: Dantrium. Section: For Malignant Hyperthermia:. Preoperatively: Administer
+    [5] Drug: Dantrium. Section: For Malignant Hyperthermia:. Pediatric Patients: The fo
+    [6] Drug: Dantrium. Section: For Malignant Hyperthermia:. Therapy with a dose four t
+    [7] Drug: Dantrium. Section: For Malignant Hyperthermia:. This dosage will usually b
+
+  HOW SUPPLIED (LOINC: 34069-5): 2 chunks
+    [0] Drug: Dantrium. Section: HOW SUPPLIED. Dantrium (dantrolene sodium) is available
+    [1] Drug: Dantrium. Section: HOW SUPPLIED. Address medical inquiries to Procter & Ga
+
+  INDICATIONS AND USAGE (LOINC: 34067-9): 9 chunks
+    [0] Drug: Dantrium. Section: INDICATIONS AND USAGE. Brief withdrawal of Dantrium for
+    [1] Drug: Dantrium. Section: INDICATIONS AND USAGE. In such instances, information r
+    [2] Drug: Dantrium. Section: INDICATIONS AND USAGE. Such patients must have presumab
+    [3] Drug: Dantrium. Section: INDICATIONS AND USAGE. Dantrium is not indicated in the
+    [4] Drug: Dantrium. Section: INDICATIONS AND USAGE. It is of particular benefit to t
+    [5] Drug: Dantrium. Section: INDICATIONS AND USAGE. Occasionally, subtle but meaning
+    [6] Drug: Dantrium. Section: INDICATIONS AND USAGE. A decision to continue the admin
+    [7] Drug: Dantrium. Section: INDICATIONS AND USAGE. If improvement occurs, it will o
+    [8] Drug: Dantrium. Section: INDICATIONS AND USAGE. In Chronic Spasticity:  Dantrium
+
+  OVERDOSE (LOINC: 34088-5): 6 chunks
+    [0] Drug: Dantrium. Section: OVERDOSE. Intravenous fluids should be administered in 
+    [1] Drug: Dantrium. Section: OVERDOSE. To date, no experience has been reported with
+    [2] Drug: Dantrium. Section: OVERDOSE. For acute overdose, general supportive measur
+    [3] Drug: Dantrium. Section: OVERDOSE. Electrocardiographic monitoring should be ins
+    [4] Drug: Dantrium. Section: OVERDOSE. An adequate airway should be maintained and a
+    [5] Drug: Dantrium. Section: OVERDOSE. Symptoms which may occur in case of overdose 
+
+  PRECAUTIONS (LOINC: 42232-9): 2 chunks
+    [0] Drug: Dantrium. Section: PRECAUTIONS. It should be used with caution in patients
+    [1] Drug: Dantrium. Section: PRECAUTIONS. Dantrium should be used with caution in pa
+
+  SPL UNCLASSIFIED SECTION (LOINC: 42229-5): 31 chunks
+    [0] Drug: Dantrium. Section: SPL UNCLASSIFIED SECTION. Therapy with a dose four time
+    [1] Drug: Dantrium. Section: SPL UNCLASSIFIED SECTION. A decrease in spasticity suff
+    [2] Drug: Dantrium. Section: SPL UNCLASSIFIED SECTION. In Chronic Spasticity:  Dantr
+    [3] Drug: Dantrium. Section: SPL UNCLASSIFIED SECTION. If no further benefit is obse
+    [4] Drug: Dantrium. Section: SPL UNCLASSIFIED SECTION. Currently accepted clinical p
+    [5] Drug: Dantrium. Section: SPL UNCLASSIFIED SECTION. Dosage should be increased un
+    [6] Drug: Dantrium. Section: SPL UNCLASSIFIED SECTION. In Malignant Hyperthermia: Or
+    [7] Drug: Dantrium. Section: SPL UNCLASSIFIED SECTION. No further increase in dosage
+    [8] Drug: Dantrium. Section: SPL UNCLASSIFIED SECTION. Post Crisis Follow-up: Oral D
+    [9] Drug: Dantrium. Section: SPL UNCLASSIFIED SECTION. This dosage will usually be a
+    [10] Drug: Dantrium. Section: SPL UNCLASSIFIED SECTION. Occasionally, subtle but mean
+    [11] Drug: Dantrium. Section: SPL UNCLASSIFIED SECTION. Refer to INDICATIONS AND USAG
+    [12] Drug: Dantrium. Section: SPL UNCLASSIFIED SECTION. Doses higher than 100 mg four
+    [13] Drug: Dantrium. Section: SPL UNCLASSIFIED SECTION. In view of the potential for 
+    [14] Drug: Dantrium. Section: SPL UNCLASSIFIED SECTION. It is important to establish 
+    [15] Drug: Dantrium. Section: SPL UNCLASSIFIED SECTION. Brief withdrawal of Dantrium 
+    [16] Drug: Dantrium. Section: SPL UNCLASSIFIED SECTION. A decision to continue the ad
+    [17] Drug: Dantrium. Section: SPL UNCLASSIFIED SECTION. Inactive Ingredients: Each ca
+    [18] Drug: Dantrium. Section: SPL UNCLASSIFIED SECTION. It is of particular benefit t
+    [19] Drug: Dantrium. Section: SPL UNCLASSIFIED SECTION. Oral Dantrium should be admin
+    [20] Drug: Dantrium. Section: SPL UNCLASSIFIED SECTION. The lowest dose compatible wi
+    [21] Drug: Dantrium. Section: SPL UNCLASSIFIED SECTION. For Use in Chronic Spasticity
+    [22] Drug: Dantrium. Section: SPL UNCLASSIFIED SECTION. In such instances, informatio
+    [23] Drug: Dantrium. Section: SPL UNCLASSIFIED SECTION. Dantrium is not indicated in 
+    [24] Drug: Dantrium. Section: SPL UNCLASSIFIED SECTION. Usual Dosage: It is important
+    [25] Drug: Dantrium. Section: SPL UNCLASSIFIED SECTION. Such patients must have presu
+    [26] Drug: Dantrium. Section: SPL UNCLASSIFIED SECTION. Some patients will not respon
+    [27] Drug: Dantrium. Section: SPL UNCLASSIFIED SECTION. Each dosage level should be m
+    [28] Drug: Dantrium. Section: SPL UNCLASSIFIED SECTION. Preoperatively: Administer 4 
+    [29] Drug: Dantrium. Section: SPL UNCLASSIFIED SECTION. Adults: The following gradual
+    [30] Drug: Dantrium. Section: SPL UNCLASSIFIED SECTION. If improvement occurs, it wil
+
+  UNCLASSIFIED (LOINC: 34076-0): 3 chunks
+    [0] Drug: Dantrium. Section: UNCLASSIFIED. Caution should be exercised in the concom
+    [1] Drug: Dantrium. Section: UNCLASSIFIED. Dantrium might possibly evoke a photosens
+    [2] Drug: Dantrium. Section: UNCLASSIFIED. Information for Patients: Patients should
+
+  UNCLASSIFIED (LOINC: 34079-4): 4 chunks
+    [0] Drug: Dantrium. Section: UNCLASSIFIED. Dantrolene readily crossed the placenta w
+    [1] Drug: Dantrium. Section: UNCLASSIFIED. No neonatal respiratory and neuromuscular
+    [2] Drug: Dantrium. Section: UNCLASSIFIED. Labor and Delivery: In one non-randomized
+    [3] Drug: Dantrium. Section: UNCLASSIFIED. More data, at higher doses, are needed be
+
+  UNCLASSIFIED (LOINC: 34080-2): 1 chunks
+    [0] Drug: Dantrium. Section: UNCLASSIFIED. Nursing Mothers:  Dantrium should not be 
+
+  UNCLASSIFIED (LOINC: 34081-0): 2 chunks
+    [0] Drug: Dantrium. Section: UNCLASSIFIED. Usage in Pediatric Patients: The long-ter
+    [1] Drug: Dantrium. Section: UNCLASSIFIED. Because of the possibility that adverse e
+
+  UNCLASSIFIED (LOINC: 34083-6): 11 chunks
+    [0] Drug: Dantrium. Section: UNCLASSIFIED. Chronic studies in rats, dogs, and monkey
+    [1] Drug: Dantrium. Section: UNCLASSIFIED. In a 30-month study at the same dose leve
+    [2] Drug: Dantrium. Section: UNCLASSIFIED. Female rats at the highest dose level sho
+    [3] Drug: Dantrium. Section: UNCLASSIFIED. Carcinogenicity in humans cannot be fully
+    [4] Drug: Dantrium. Section: UNCLASSIFIED. At the highest dose level, there was an i
+    [5] Drug: Dantrium. Section: UNCLASSIFIED. Dantrolene sodium has produced positive r
+    [6] Drug: Dantrium. Section: UNCLASSIFIED. The only drug-related effect seen in a 30
+    [7] Drug: Dantrium. Section: UNCLASSIFIED. A 24-month study in HaM/ICR mice revealed
+    [8] Drug: Dantrium. Section: UNCLASSIFIED. Carcinogenesis, Mutagenesis, Impairment o
+    [9] Drug: Dantrium. Section: UNCLASSIFIED. Typhimurium bacterial mutagenesis assay i
+    [10] Drug: Dantrium. Section: UNCLASSIFIED. Sprague-Dawley female rats fed dantrolene
+
+  UNCLASSIFIED (LOINC: 42228-7): 3 chunks
+    [0] Drug: Dantrium. Section: UNCLASSIFIED. Pregnancy: Pregnancy Category C: Dantrium
+    [1] Drug: Dantrium. Section: UNCLASSIFIED. Dantrium capsules should be used during p
+    [2] Drug: Dantrium. Section: UNCLASSIFIED. There are no adequate and well-controlled
+
+  WARNINGS (LOINC: 34071-1): 15 chunks
+    [0] Drug: Dantrium. Section: WARNINGS. At the start of Dantrium therapy, it is desir
+    [1] Drug: Dantrium. Section: WARNINGS. It is important to recognize that fatal and n
+    [2] Drug: Dantrium. Section: WARNINGS. Only where benefits of the drug have been of 
+    [3] Drug: Dantrium. Section: WARNINGS. If such reinstitution of therapy is done, it 
+    [4] Drug: Dantrium. Section: WARNINGS. If baseline liver abnormalities exist and are
+    [5] Drug: Dantrium. Section: WARNINGS. The patient should be hospitalized and the dr
+    [6] Drug: Dantrium. Section: WARNINGS. Liver function studies (e.g., SGOT or SGPT) s
+    [7] Drug: Dantrium. Section: WARNINGS. Laboratory monitoring should be frequent and 
+    [8] Drug: Dantrium. Section: WARNINGS. If such studies reveal abnormal values, thera
+    [9] Drug: Dantrium. Section: WARNINGS. Dantrium should be used with particular cauti
+    [10] Drug: Dantrium. Section: WARNINGS. Some patients have reacted with unmistakable 
+    [11] Drug: Dantrium. Section: WARNINGS. If symptoms compatible with hepatitis, accomp
+    [12] Drug: Dantrium. Section: WARNINGS. Some patients have revealed a return to norma
+    [13] Drug: Dantrium. Section: WARNINGS. If caused by Dantrium and detected early, the
+    [14] Drug: Dantrium. Section: WARNINGS. Dantrium therapy has been reinstituted in a f
+
+======================================================================
+STEP 3: What does Qdrant return with loinc_code=34088-5 filter?
+======================================================================
+  Chunks with drug_name='Dantrium' AND loinc_code='34088-5': 6
+    - Drug: Dantrium. Section: OVERDOSE. Intravenous fluids should be administered in fairly large quantit
+    - Drug: Dantrium. Section: OVERDOSE. To date, no experience has been reported with dialysis and its va
+    - Drug: Dantrium. Section: OVERDOSE. For acute overdose, general supportive measures should be employe
+    - Drug: Dantrium. Section: OVERDOSE. Electrocardiographic monitoring should be instituted, and the pat
+    - Drug: Dantrium. Section: OVERDOSE. An adequate airway should be maintained and artificial resuscitat
+    - Drug: Dantrium. Section: OVERDOSE. Symptoms which may occur in case of overdose include, but are not
+
+======================================================================
+STEP 4: What loinc_code does the OVERDOSE section actually have?
+======================================================================
+  Chunks with loinc_section containing 'OVERDOSE'/'OVERDOSAGE': 6
+    loinc_code=34088-5, loinc_section=OVERDOSE: Drug: Dantrium. Section: OVERDOSE. Intravenous fluids should be administered in 
+    loinc_code=34088-5, loinc_section=OVERDOSE: Drug: Dantrium. Section: OVERDOSE. To date, no experience has been reported with
+    loinc_code=34088-5, loinc_section=OVERDOSE: Drug: Dantrium. Section: OVERDOSE. For acute overdose, general supportive measur
+    loinc_code=34088-5, loinc_section=OVERDOSE: Drug: Dantrium. Section: OVERDOSE. Electrocardiographic monitoring should be ins
+    loinc_code=34088-5, loinc_section=OVERDOSE: Drug: Dantrium. Section: OVERDOSE. An adequate airway should be maintained and a
+    loinc_code=34088-5, loinc_section=OVERDOSE: Drug: Dantrium. Section: OVERDOSE. Symptoms which may occur in case of overdose 
+
+======================================================================
+STEP 5: What does hybrid_search return for each query?
+======================================================================
+  Dantrium RxCUI: 3104
+  Query: 'how to treat overdosage of dantrium?'
+    filter_conditions: {'rxcui': '3104', 'loinc_code': '34088-5'}
+    Strict filter results: 6
+    Fallback (rxcui only) results: 50
+    Fallback results with loinc_code=34088-5: 1
+
+  Query: 'how to treat overdose of dantrium?'
+    filter_conditions: {'rxcui': '3104', 'loinc_code': '34088-5'}
+    Strict filter results: 6
+    Fallback (rxcui only) results: 50
+    Fallback results with loinc_code=34088-5: 1
+
+======================================================================
+DIAGNOSIS COMPLETE
+======================================================================

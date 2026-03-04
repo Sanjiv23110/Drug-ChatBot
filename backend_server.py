@@ -64,7 +64,16 @@ async def startup_event():
             # Note: Verify model paths/names exist. Using validation logic from main.
             dense_embedder = DenseEmbedder("pritamdeka/S-PubMedBert-MS-MARCO")
             reranker = CrossEncoderReranker("cross-encoder/ms-marco-MiniLM-L-12-v2")
-            vector_db = QdrantManager(host="localhost", port=6333, collection_name="spl_children")
+            print("Connecting to Qdrant Cloud...")
+            vector_db = QdrantManager(collection_name="spl_children")
+            
+            # Fast fail check
+            try:
+                vector_db.client.get_collections()
+                print("[OK] Qdrant connection verified.")
+            except Exception as e:
+                print(f"[FAIL] Qdrant connection FAILED: {e}")
+                raise e
             
             retriever = HybridRetriever(
                 dense_embedder=dense_embedder,

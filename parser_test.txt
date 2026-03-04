@@ -1,0 +1,15 @@
+INFO:ingestion.spl_xml_parser:Parsed Renese: 10 sections extracted
+Drug: Renese
+Set ID: ABD6ECF0-DC8E-41DE-89F2-1E36ED9D6535
+Sections: 10
+  [0] LOINC=34089-3 Path=34089-3 > DESCRIPTION Subs=0
+  [1] LOINC=42229-5 Path=42229-5 > ACTION Subs=0
+  [2] LOINC=34067-9 Path=34067-9 > INDICATIONS Subs=1
+       Sub[0] Path=34067-9 > INDICATIONS > Usage in Pregnancy
+  [3] LOINC=34070-3 Path=34070-3 > CONTRAINDICATIONS Subs=0
+  [4] LOINC=34071-1 Path=34071-1 > WARNINGS Subs=2
+       Sub[0] Path=34071-1 > WARNINGS > Usage in Pregnancy
+       Sub[1] Path=34071-1 > WARNINGS > Nursing Mothers
+  [5] LOINC=42232-9 Path=42232-9 > PRECAUTIONS Subs=1
+       Sub[0] Path=42232-9 > PRECAUTIONS > Pediatric Use
+[OK] No duplicates: 10 unique top-level sections

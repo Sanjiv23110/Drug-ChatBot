@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "C:\G\solomindUS\tests\diagnose_overdosage_v2.py", line 21, in <module>
+    retriever = HybridRetriever()
+                ^^^^^^^^^^^^^^^^^
+TypeError: HybridRetriever.__init__() missing 4 required positional arguments: 'dense_embedder', 'sparse_embedder', 'reranker', and 'vector_db_manager'

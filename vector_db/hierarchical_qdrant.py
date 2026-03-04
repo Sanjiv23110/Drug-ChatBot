@@ -40,8 +40,6 @@ class HierarchicalQdrantManager:
     
     def __init__(
         self,
-        host: str = "localhost",
-        port: int = 6333,
         child_collection: str = "spl_children",
         parent_collection: str = "spl_parents"
     ):
@@ -49,12 +47,14 @@ class HierarchicalQdrantManager:
         Initialize Qdrant client with HIERARCHICAL collections
         
         Args:
-            host: Qdrant server host
-            port: Qdrant server port
             child_collection: Collection for child chunks (SEARCH)
             parent_collection: Collection for parent chunks (DISPLAY)
         """
-        self.client = QdrantClient(host=host, port=port)
+        import os
+        self.client = QdrantClient(
+            url=os.environ["QDRANT_URL"],
+            api_key=os.environ["QDRANT_API_KEY"]
+        )
         self.child_collection = child_collection
         self.parent_collection = parent_collection
         

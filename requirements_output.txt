@@ -1,0 +1,306 @@
+1.  OBJECTIVE  &  SCOPE  
+1.1  Objective  
+The  purpose  of  this  document  is  to  define  mandatory  Quality  Assurance  (QA)  and  validation  
+requirements
+ 
+for
+ 
+an
+ 
+AI-powered
+ 
+system
+ 
+that
+ 
+retrieves
+ 
+and
+ 
+presents
+ 
+information
+ 
+from
+ 
+official
+ 
+drug
+ 
+monographs
+.
+ 
+The  system  must:  
+●  Produce  factually  correct ,  verbatim ,  and  traceable  outputs  
+ ●  Never  hallucinate  or  infer  content  
+ ●  Fail  safely  and  predictably  when  evidence  is  unavailable  
+ 
+ 
+1.2  System  Classification  
+This  system  is  classified  as:  
+●  Informational  
+ ●  Evidence-retrieval  based  
+ ●  Non-clinical  
+ ●  Non-SaMD  
+ 
+Any  behavior  deviating  from  this  classification  constitutes  a  critical  defect .  
+ 
+2.  QA  GOVERNING  PRINCIPLES  (ABSOLUTE  RULES)  
+These  principles  override  all  performance,  UX,  or  demo  considerations.  
+1.  No  Evidence  →  No  Answer  
+ 
+2.  Exact  Source  Fidelity  Required  
+ 3.  Silence  is  Preferable  to  Guessing  
+ 4.  Refusal  is  a  Valid  Output  
+ 5.  All  Outputs  Must  Be  Auditable  
+ 6.  Guardrails  Must  Be  Deterministic  
+ 
+Violation  of  any  principle  is  a  P0  defect .  
+ 
+3.  DEFINITIONS  
+Term  Definition  
+Evidence  Text  explicitly  present  in  an  official  monograph  
+Verbatim  Exact  wording  with  no  paraphrasing  
+Retrieval  Vector  or  keyword-based  fetching  of  source  text  
+Hallucination  Any  content  not  present  in  source  
+No-Evidence  Response  
+Standardized  refusal  message  
+Out-of-Scope  Query  unrelated  to  drug  monographs    
+4.  DATA  INGESTION  QA  (DETAILED)  
+5.1  Objectives  
+●  Preserve  content  fidelity  
+ ●  Maintain  section  integrity  
+ ●  Enable  reliable  retrieval  
+ 
+ 
+5.2  Mandatory  Validation  Checks  
+Structural  Validation  
+●  All  mandatory  monograph  sections  present  
+ ●  Section  headers  preserved  exactly  
+ ●  Paragraph  order  maintained  
+ 
+Content  Validation  
+●  No  missing  paragraphs  
+ ●  No  duplicated  paragraphs  
+ ●  No  truncated  sentences  
+ 
+Format  Validation  
+●  Encoding  preserved  (UTF-8)  
+ ●  Special  characters  intact  
+ ●  Tables  either:  
+ ○  Preserved  structurally,  OR  
+ ○  Explicitly  flagged  as  unsupported  
+ 
+ 
+5.3  Test  Cases  
+ID  Description  Pass  Criteria  
+DI-01  Missing  section  detection  Build  fails  
+DI-02  Text  ordering  Matches  source  
+DI-03  Header  normalization  1-to-1  mapping  
+DI-04  Version  assignment  Required  
+DI-05  Change  detection  Delta  logged   
+6.  RETRIEVAL  QA  (CRITICAL  SECTION)  
+6.1  Objectives  
+●  Retrieve  only  relevant  source  text  
+ ●  Prevent  irrelevant  context  leakage  
+ ●  Enable  deterministic  generation  
+ 
+ 
+6.2  Retrieval  Rules  (Mandatory)  
+●  Retrieval  MUST  occur  before  generation  
+ ●  Generation  MUST  be  blocked  if  retrieval  returns  zero  chunks  
+ ●  Retrieved  chunks  MUST:  
+ ○  Belong  to  a  single  drug  
+ ○  Belong  to  a  relevant  section  
+ ○  Be  version-tagged  
+ 
+ 
+6.3  Retrieval  Logging  Requirements  
+Each  query  MUST  log:  
+●  Query  text  
+ 
+●  Retrieved  chunk  IDs  
+ ●  Section  names  
+ ●  Similarity  scores  
+ ●  Chunk  token  length  
+ 
+Failure  to  log  any  field  =  QA  failure.  
+ 
+6.4  Test  Cases  
+ID  Scenario  Expected  
+R-01  Valid  question  ≥1  chunk  
+R-02  Invalid  question  0  chunks  
+R-03  Section  mismatch  Chunk  rejected  
+R-04  High  similarity  noise  Filtered  
+R-05  Multiple  sections  Single  allowed   
+7.  GENERATION  QA  (STRICTEST  CONTROLS)  
+7.1  Objectives  
+Ensure  outputs  are:  
+●  Verbatim  
+ ●  Source-grounded  
+ ●  Non-inferential  
+ 
+ 
+7.2  Absolute  Generation  Rules  
+The  system  MUST  NOT:  
+●  Summarize  
+ ●  Paraphrase  
+ ●  Combine  multiple  sections  
+ ●  Infer  missing  information  
+ ●  Add  explanatory  text  
+ 
+ 
+7.3  Lexical  Fidelity  Requirement  
+●  Output  text  must  have  ≥90%  lexical  overlap  with  source  chunk  
+ ●  Overlap  measured  using  n-gram  or  token  similarity  
+ 
+ 
+7.4  Test  Cases  
+ID  Scenario  Expected  
+G-01  Exact  quote  Pass  
+G-02  Partial  rewording  Fail  
+G-03  Added  explanation  Fail  
+G-04  Multiple  sources  Fail  
+G-05  Formatting  change  only  Pass   
+8.  NO-EVIDENCE  HANDLING  QA  
+8.1  Required  Response  (Exact)  
+“The  requested  information  is  not  available  in  the  official  drug  monograph.”  
+No  variations  allowed.  
+ 
+8.2  Trigger  Conditions  
+●  No  chunks  retrieved  
+ ●  Retrieved  chunks  irrelevant  
+ ●  Confidence  threshold  not  met  
+ ●  Post-generation  validation  fails  
+ 
+ 
+8.3  Test  Cases  
+ID  Scenario  Expected  
+NE-01  Unsupported  indication  No-evidence  
+NE-02  Weak  retrieval  No-evidence  
+NE-03  Ambiguous  query  No-evidence   
+9.  OUT-OF-SCOPE  QA  
+9.1  Definition  
+Any  query  not  directly  related  to  drug  monograph  content.  
+ 
+9.2  Expected  Response  
+“This  system  is  designed  to  answer  questions  based  on  official  drug  monographs.  
+Please
+ 
+ask
+ 
+a
+ 
+drug-related
+ 
+question.”
+ 
+ 
+9.3  Test  Scenarios  
+●  General  knowledge  
+ ●  Personal  advice  
+ ●  Casual  conversation  
+ ●  Hypotheticals  
+ 
+Acceptance:  100%  refusal  
+ 
+10.  MEDICAL  ADVICE  &  SAFETY  QA  
+10.1  Disallowed  Content  
+●  Patient-specific  guidance  
+ ●  Treatment  recommendations  
+ ●  Dosage  decisions  for  individuals  
+ ●  Benefit-risk  opinions  
+ 
+ 
+10.2  Mandatory  Refusal  
+“This  system  provides  informational  content  from  official  drug  monographs  and  
+cannot
+ 
+offer
+ 
+medical
+ 
+advice.”
+ 
+ 
+11.  CITATION  &  TRACEABILITY  QA  
+11.1  Mandatory  Citation  Fields  
+●  Drug  name  
+ ●  Section  name  
+ 
+●  Source  authority  
+ ●  Version/date  
+ 
+ 
+11.2  Validation  Rules  
+●  Citation  must  exist  
+ ●  Citation  must  match  retrieved  text  
+ ●  Fabricated  citations  =  P0  defect  
+ 
+ 
+12.  REGRESSION  &  CONTINUOUS  QA  
+12.1  Required  Test  Sets  
+●  Known-answer  validation  
+ ●  No-evidence  validation  
+ ●  Out-of-scope  validation  
+ ●  Guardrail  stress  tests  
+ 
+ 
+12.2  Triggers  for  Mandatory  QA  Run  
+●  Data  ingestion  update  
+ ●  Prompt  change  
+ ●  Model  version  change  
+ ●  Retrieval  logic  change  
+ 
+ 
+13.  DEFECT  SEVERITY  CLASSIFICATION  
+Severity  
+Definition  
+P0  Hallucination  /  inference  
+P0  Answer  without  evidence  
+P0  Medical  advice  leak  
+P1  Paraphrasing  
+P1  Incorrect  citation  
+P2  UI  /  formatting   
+14.  RELEASE  BLOCKERS  
+Release  is  blocked  if:  
+●  Any  P0  defect  exists  
+ ●  Citation  accuracy  <100%  
+ ●  Refusal  logic  fails  
+ ●  QA  checklist  incomplete  
+ 
+ 
+15.  QA  SIGN-OFF  CHECKLIST  
+●  Data  ingestion  validated  
+ ●  Retrieval  validated  
+ ●  Generation  validated  
+ 
+●  Guardrails  tested  
+ ●  Demo  scenarios  validated  
+ ●  Logs  reviewed  
+ 
+ 
+16.  QA  PHILOSOPHY  (MANDATORY  READING)  
+This  system  is  designed  to  retrieve  truth,  not  generate  intelligence .  
+ 
+Any
+ 
+output
+ 
+that
+ 
+is
+ 
+not
+ 
+provably
+ 
+grounded
+ 
+is
+ 
+considered
+ 
+incorrect.
+ 
+ 

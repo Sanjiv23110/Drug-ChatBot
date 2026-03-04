@@ -1,0 +1,19 @@
+=== ALL RENESE CHUNKS ===
+Total Renese chunks: 49
+
+=== RENESE LOINC DISTRIBUTION ===
+  34067-9: 3 chunks
+  34068-7: 3 chunks
+  34069-5: 1 chunks
+  34070-3: 1 chunks
+  34071-1: 8 chunks
+  34089-3: 4 chunks
+  42229-5: 9 chunks
+  42232-9: 20 chunks
+
+=== CHECKING LOINC 34084-4 (ADVERSE REACTIONS) ===
+Renese + LOINC 34084-4 chunks: 0
+NO CHUNKS FOUND! Checking why...
+
+=== CHECKING RXCUI FOR RENESE ===
+RxCUIs in DB for Renese: {'224931'}

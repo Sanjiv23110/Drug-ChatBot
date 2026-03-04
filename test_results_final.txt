@@ -1,0 +1,25 @@
+============================= test session starts =============================
+platform win32 -- Python 3.11.9, pytest-7.4.3, pluggy-1.0.0 -- C:\ProgramData\anaconda3\python.exe
+cachedir: .pytest_cache
+rootdir: C:\G\solomindUS
+plugins: anyio-3.7.1, Faker-40.1.2, langsmith-0.6.2
+collecting ... collected 16 items
+
+tests/test_hardening.py::test_dedup_registry_basic PASSED                [  6%]
+tests/test_hardening.py::test_dedup_registry_different_drugs PASSED      [ 12%]
+tests/test_hardening.py::test_dedup_registry_different_text PASSED       [ 18%]
+tests/test_hardening.py::test_dedup_registry_reset PASSED                [ 25%]
+tests/test_hardening.py::test_fallback_never_drops_drug_filter PASSED    [ 31%]
+tests/test_hardening.py::test_no_unfiltered_global_search PASSED         [ 37%]
+tests/test_hardening.py::test_section_strict_mode_config_exists PASSED   [ 43%]
+tests/test_hardening.py::test_xml_parser_no_recursive_findall PASSED     [ 50%]
+tests/test_hardening.py::test_spl_section_has_section_path PASSED        [ 56%]
+tests/test_hardening.py::test_child_chunk_has_xml_hash PASSED            [ 62%]
+tests/test_hardening.py::test_child_chunk_has_section_path PASSED        [ 68%]
+tests/test_hardening.py::test_child_chunk_has_set_id PASSED              [ 75%]
+tests/test_hardening.py::test_verbatim_check_passes PASSED               [ 81%]
+tests/test_hardening.py::test_verbatim_check_falls_back PASSED           [ 87%]
+tests/test_hardening.py::test_rerank_scope_respects_max PASSED           [ 93%]
+tests/test_hardening.py::test_orchestrator_uses_drug_name_filter PASSED  [100%]
+
+============================= 16 passed in 1.11s ==============================

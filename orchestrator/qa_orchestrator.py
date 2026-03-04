@@ -7,6 +7,9 @@ from typing import Dict, List, Optional, Tuple
 import logging
 from datetime import datetime
 import json
+from orchestrator.entity_validator import EntityValidator
+from orchestrator.hierarchical_conflict_resolver import HierarchicalConflictResolver
+from orchestrator.hierarchical_conflict_resolver import HierarchicalConflictResolver
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -259,10 +262,17 @@ class SectionClassifier:
         "dosing": "34068-7",
         "administration": "34068-7",
         "indications": "34067-9",
+        "indications and usage": "34067-9",
+        "indication": "34067-9",
+        "therapeutic use": "34067-9",
         "uses": "34067-9",
         "overdose": "34088-5",
         "laboratory tests": "34075-2",
-        "mechanism": "43678-2",
+        # NOTE: fact-level keywords (half-life, generic name, absorption, etc.) are
+        # intentionally NOT here. They are handled by SECTION_INTENT_MAP for Tier 2
+        # rerank-scope narrowing. Adding them here causes the section guard to filter
+        # out all parents whose loinc_code != the mapped LOINC (which rarely exists as
+        # a standalone section), returning 0 results.
         
         # Complete FDA LOINC Coverage (121 codes)
         "abuse": "34086-9",
@@ -399,8 +409,13 @@ class SectionClassifier:
         """
         query_lower = query.lower()
         
-        for keyword, loinc in self.SECTION_MAPPING.items():
+        # Sort keywords by length (descending) to prioritize specific matches
+        # e.g., match "overdosage" (10 chars) before "dosage" (6 chars)
+        sorted_keywords = sorted(self.SECTION_MAPPING.keys(), key=len, reverse=True)
+        
+        for keyword in sorted_keywords:
             if keyword in query_lower:
+                loinc = self.SECTION_MAPPING[keyword]
                 logger.info(f"Mapped '{keyword}' → LOINC {loinc}")
                 return loinc
         
@@ -436,7 +451,11 @@ class RegulatoryQAOrchestrator:
         self.intent_classifier = IntentClassifier(drug_normalizer)
         self.section_classifier = SectionClassifier()
         
-        logger.info("Initialized RegulatoryQAOrchestrator")
+        # Initialize new production modules
+        self.entity_validator = EntityValidator(retriever.vector_db)
+        self.conflict_resolver = HierarchicalConflictResolver(similarity_threshold=95.0)
+        
+        logger.info("Initialized RegulatoryQAOrchestrator with EntityValidator and ConflictResolver")
     
     def query(
         self,
@@ -501,62 +520,80 @@ class RegulatoryQAOrchestrator:
         return result
     
     def _handle_product_specific(self, query: str) -> Dict:
-        """Handle product-specific query"""
-        
-        # Extract drug name (simple approach - can be improved with NER)
-        drug_name = self._extract_drug_name(query)
-        
-        if not drug_name:
+        """Handle product-specific query — DRUG NAME FIRST."""
+
+        # Step 1: Entity validation — identifies the drug name from the query
+        validation_result = self.entity_validator.validate(query)
+
+        if not validation_result["valid"]:
             return self._create_refusal_response(
                 query=query,
-                reason="drug_not_found",
-                refusal_text="Could not identify drug name in query."
+                reason="no_drug_entity",
+                refusal_text=validation_result["reason"]
             )
-        
-        # Normalize drug name to RxCUI
-        drug_info = self.normalizer.normalize_drug_name(drug_name)
-        
-        if not drug_info:
-            return self._create_refusal_response(
-                query=query,
-                reason="drug_not_found",
-                refusal_text=f"No FDA-approved labeling found for '{drug_name}'."
-            )
-        
-        rxcui = drug_info['rxcui']
-        
-        # Classify section
+
+        # Use the drug name the entity validator already confirmed — do NOT re-extract.
+        # _extract_drug_name() parses the whole query independently and returns wrong
+        # tokens for queries like "mechanism of action of renese" → "mechanism of action".
+        confirmed_drug_name = validation_result['drug_name']
+        logger.info(f"Drug-name-first: confirmed drug='{confirmed_drug_name}'")
+
+        # Step 2: RxNorm enrichment (optional — does NOT gate retrieval)
+        rxcui = None
+        drug_info = self.normalizer.normalize_drug_name(confirmed_drug_name)
+        if drug_info:
+            rxcui = drug_info.get('rxcui')
+
+        # Step 3: Detect section intent
         loinc_code = self.section_classifier.classify(query)
-        
-        if not loinc_code:
-            # If no specific section, retrieve from all sections
-            filter_conditions = {"rxcui": rxcui}
-        else:
-            filter_conditions = {
-                "rxcui": rxcui,
-                "loinc_code": loinc_code
-            }
-        
-        # Retrieve chunks
+        target_loinc = loinc_code  # None if no section detected
+
+        # Step 4: Build filter — DRUG NAME is the unconditional primary key.
+        # rxcui added as secondary hint only when reliably resolved.
+        filter_conditions = {"drug_name": confirmed_drug_name}
+        if rxcui:
+            filter_conditions["rxcui"] = rxcui
+
+        logger.info(f"Qdrant filter: {filter_conditions} | target_loinc={target_loinc}")
+
+        # Step 5: Retrieve (drug-locked, section tiers applied inside retriever)
         retrieved_chunks, retrieval_metadata = self.retriever.retrieve(
             query=query,
             filter_conditions=filter_conditions,
-            retrieval_limit=50,
-            rerank_top_k=15
+            retrieval_limit=75,
+            rerank_top_k=15,
+            target_loinc=target_loinc
         )
-        
+
         if not retrieved_chunks:
             section_name = SectionClassifier.SECTION_MAPPING.get(loinc_code, "requested section")
             return self._create_refusal_response(
                 query=query,
                 reason="section_not_found",
-                refusal_text=f"The {section_name} section was not found for {drug_name}."
+                refusal_text=f"The {section_name} section was not found for {confirmed_drug_name}."
             )
-        
-        # Generate answer
-        result = self.generator.generate_answer(query, retrieved_chunks)
-        
+
+        # DEBUG: Trace retrieval
+        print(f"DEBUG: Detected LOINC: {loinc_code}")
+        print(f"DEBUG: Filter conditions: {filter_conditions}")
+        print(f"DEBUG: Retrieved chunk count: {len(retrieved_chunks)}")
+
+        # Hierarchical conflict resolution
+        filtered_chunks = self.conflict_resolver.resolve(retrieved_chunks)
+
+        # Generate answer — verbatim extraction if section was detected
+        is_section_specific = loinc_code is not None
+        result = self.generator.generate_answer(
+            query, filtered_chunks,
+            section_specific=is_section_specific,
+            target_loinc_code=loinc_code
+        )
+
         return result
+
+
+    
+
     
     def _handle_class_based(self, query: str) -> Dict:
         """Handle class-based query (e.g., 'ACE inhibitors')"""

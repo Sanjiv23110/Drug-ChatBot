@@ -32,19 +32,19 @@ class QdrantManager:
     
     def __init__(
         self,
-        host: str = "localhost",
-        port: int = 6333,
         collection_name: str = "spl_chunks"
     ):
         """
         Initialize Qdrant client
         
         Args:
-            host: Qdrant server host
-            port: Qdrant server port
             collection_name: Name of collection to use
         """
-        self.client = QdrantClient(host=host, port=port)
+        import os
+        self.client = QdrantClient(
+            url=os.environ["QDRANT_URL"],
+            api_key=os.environ["QDRANT_API_KEY"]
+        )
         self.collection_name = collection_name
         
         logger.info(f"Connected to Qdrant at {host}:{port}")
@@ -195,9 +195,11 @@ class QdrantManager:
                 formatted_results.append({
                     "chunk_id": payload.get('child_id'),
                     "semantic_text": payload.get('sentence_text', ''),
-                    "raw_text": payload.get('sentence_text', ''),  # Children don't have raw_text
+                    # raw_text set to sentence_text for reranker scoring only.
+                    # The retriever will replace this with the full parent paragraph.
+                    "raw_text": payload.get('sentence_text', ''),
                     "metadata": {
-                        "parent_id": payload.get('parent_id'),
+                        "parent_id": payload.get('parent_id'),  # CRITICAL: used for parent fetch
                         "drug_name": payload.get('drug_name'),
                         "rxcui": payload.get('rxcui'),
                         "loinc_code": payload.get('loinc_code'),
@@ -268,7 +270,68 @@ class QdrantManager:
             }
         
         return None
-    
+
+    def get_parents_by_ids(self, parent_ids: List[str]) -> List[Dict]:
+        """
+        Retrieve full parent paragraph chunks from spl_parents by parent_id strings.
+
+        This is the SOURCE OF TRUTH lookup. Children are search pointers;
+        parents hold the verbatim FDA label text that is displayed to the user.
+
+        Dynamically resolves any list of parent_ids — no hardcoding.
+        Scales to 20k+ drugs because it queries spl_parents with a filter,
+        not a fixed list.
+
+        Args:
+            parent_ids: List of parent_id strings (e.g. "LITHANE_v1_34068-7_sec_002_para_000")
+
+        Returns:
+            List of parent dicts with full raw_text (verbatim paragraph)
+        """
+        if not parent_ids:
+            return []
+
+        try:
+            from qdrant_client.models import Filter, FieldCondition, MatchAny
+
+            results, _ = self.client.scroll(
+                collection_name="spl_parents",
+                scroll_filter=Filter(
+                    must=[
+                        FieldCondition(
+                            key="parent_id",
+                            match=MatchAny(any=parent_ids)
+                        )
+                    ]
+                ),
+                limit=len(parent_ids) + 10,  # +10 buffer for safety
+                with_payload=True,
+                with_vectors=False
+            )
+
+            parents = []
+            for r in results:
+                p = r.payload
+                parents.append({
+                    "parent_id": p.get("parent_id"),
+                    "raw_text": p.get("raw_text", ""),     # VERBATIM SOURCE OF TRUTH
+                    "drug_name": p.get("drug_name"),
+                    "rxcui": p.get("rxcui"),
+                    "loinc_code": p.get("loinc_code"),
+                    "loinc_section": p.get("loinc_section"),
+                    "set_id": p.get("set_id"),
+                    "root_id": p.get("root_id"),
+                    "version": p.get("version"),
+                    "effective_date": p.get("effective_date"),
+                })
+
+            logger.info(f"get_parents_by_ids: fetched {len(parents)}/{len(parent_ids)} parents from spl_parents")
+            return parents
+
+        except Exception as e:
+            logger.error(f"get_parents_by_ids failed: {e}")
+            return []
+
     def count_chunks(self, filter_conditions: Optional[Dict] = None) -> int:
         """Count chunks matching filter"""
         query_filter = None

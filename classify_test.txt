@@ -1,0 +1,19 @@
+WARNING:orchestrator.qa_orchestrator:Could not map query to specific section
+WARNING:orchestrator.qa_orchestrator:Could not map query to specific section
+INFO:orchestrator.qa_orchestrator:Mapped 'indication' \u2192 LOINC 34067-9
+WARNING:orchestrator.qa_orchestrator:Could not map query to specific section
+INFO:orchestrator.qa_orchestrator:Mapped 'adverse reactions' \u2192 LOINC 34084-4
+INFO:orchestrator.qa_orchestrator:Mapped 'mechanism of action' \u2192 LOINC 43679-0
+INFO:orchestrator.qa_orchestrator:Mapped 'clinical pharmacology' \u2192 LOINC 34090-1
+Syntax OK: retrieval/hybrid_retriever.py
+Syntax OK: orchestrator/qa_orchestrator.py
+
+[FAIL] "what is the generic name of dantrium" -> None (expected 34089-3)
+[FAIL] "whats the generic name of the dantrium" -> None (expected 34089-3)
+[PASS] "indication and usage of dantrium" -> 34067-9 (expected 34067-9)
+[FAIL] "whats elimination half-life of dantrium" -> None (expected 43682-4)
+[PASS] "adverse reactions of dantrium" -> 34084-4 (expected 34084-4)
+[FAIL] "mechanism of action of renese" -> 43679-0 (expected 43678-2)
+[PASS] "clinical pharmacology of dantrium" -> 34090-1 (expected 34090-1)
+
+SOME FAILED

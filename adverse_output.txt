@@ -1,0 +1,31 @@
+=== SEARCHING FOR ADVERSE REACTIONS TEXT FOR RENESE ===
+
+
+[LOINC: 42232-9 | Section: UNCLASSIFIED]
+Text: Warning signs, irrespective of cause, are: dryness of mouth, thirst, weakness, lethargy, drowsiness, restlessness, muscle pains or cramps, muscular fatigue, hypotension, oliguria, tachycardia, and gastrointestinal disturbances such as nausea and vomiting.
+--------------------------------------------------------------------------------
+
+[LOINC: 42229-5 | Section: SPL UNCLASSIFIED SECTION]
+Text: These hazards include fetal or neonatal jaundice, thrombocytopenia, and possibly other adverse reactions which have occurred in the adult.
+--------------------------------------------------------------------------------
+
+[LOINC: 42232-9 | Section: UNCLASSIFIED]
+Text: Serum and urine electrolyte determinations are particularly important when the patient is vomiting excessively or receiving parenteral fluids.
+--------------------------------------------------------------------------------
+
+=== ALL RENESE SECTION TEXTS (first 200 chars) ===
+
+SPL UNCLASSIFIED SECTION:
+  In these cases, a short course of diuretics may provide relief and may be appropriate.
+
+UNCLASSIFIED:
+  Dilutional  hyponatremia may occur in edematous patients in hot weather; appropriate therapy is water restriction, rather than administration of salt except in rare instances when the hyponatremia is 
+
+UNCLASSIFIED:
+  Thiazides may decrease arterial responsiveness to norepinephrine.
+
+WARNINGS:
+  Cumulative effects of the drug may develop in patients with impaired renal function.
+
+SPL UNCLASSIFIED SECTION:
+  In rare instances, this edema may cause extreme discomfort which is not relieved by rest.

@@ -36,6 +36,12 @@ CRITICAL RULES:
 3. Output format: A JSON object with "indices" (list of integers)
 4. If no relevant sentences exist, output: {"indices": [], "reason": "not_found"}
 
+SPECIFIC INSTRUCTIONS FOR "TREATMENT" / "MANAGEMENT" / "OVERDOSE":
+- Include ALL supportive measures (e.g. "airway maintenance", "lavage")
+- Include ALL monitoring instructions (e.g. "ECG monitoring", "vital signs")
+- Include RELEVANT UNKNOWNS or WARNINGS (e.g. "dialysis value unknown")
+- ERR ON THE SIDE OF INCLUSION. Completeness is critical for patient safety.
+
 OUTPUT FORMAT:
 {"indices": [0, 1, 2]}
 
@@ -109,18 +115,198 @@ class ConstrainedExtractor:
         self,
         query: str,
         retrieved_chunks: List[Dict],
-        max_tokens: int = 500  # Reduced since we only need indices
+        max_tokens: int = 500,
+        section_specific: bool = False,
+        target_loinc_code: Optional[str] = None
     ) -> Tuple[str, Dict]:
         """
-        Identify relevant sentences and return raw chunk text
+        Identify relevant sentences and return raw chunk text.
         
         Args:
             query: User question
             retrieved_chunks: List of chunk dicts with 'raw_text' and 'metadata'
             max_tokens: Max tokens in response
+            section_specific: If True, bypass LLM and return ALL chunks verbatim.
+                              Used when retrieval already filtered to the correct section.
+            target_loinc_code: LOINC code of the target section. Used to filter
+                               wrong-section chunks from retrieval fallback.
             
         Returns:
             (answer_text, extraction_metadata)
+        """
+        # SECTION-SPECIFIC BYPASS: Skip LLM, return ALL chunks as bullet points
+        if section_specific:
+            # GUARANTEE: This path involves NO OpenAI API calls.
+            # It uses purely deterministic Python string manipulation.
+            return self._extract_all_verbatim(query, retrieved_chunks, target_loinc_code)
+        
+        # GENERAL QUERY: Use LLM to identify relevant sentence indices
+        return self._extract_via_llm(query, retrieved_chunks, max_tokens)
+    
+    def _detect_query_shape(self, query: str) -> str:
+        """
+        Classify query into FACT, MANAGEMENT, or LIST.
+        Pure Python — no LLM. Returns one of:
+          'FACT'       → return minimal matching phrase
+          'MANAGEMENT' → return full paragraph verbatim
+          'LIST'       → return full paragraph verbatim
+        """
+        q = query.lower()
+
+        # LIST signals
+        list_kw = ["what are", "list ", "adverse reaction", "adverse effect",
+                   "side effect", "contraindication", "warnings", "precautions"]
+        if any(kw in q for kw in list_kw):
+            return "LIST"
+
+        # MANAGEMENT signals
+        mgmt_kw = ["how to", "how do", "treat", "treatment", "management",
+                   "overdose", "overdosage", "should be", "monitoring",
+                   "administer", "procedure", "protocol"]
+        if any(kw in q for kw in mgmt_kw):
+            return "MANAGEMENT"
+
+        # FACT signals (short-answer expected)
+        fact_kw = ["what is", "generic name", "brand name", "strength",
+                   "route of", "manufacturer", "ndc", "dosage form",
+                   "chemical name", "molecular"]
+        # Only classify as FACT if no management-style language is present
+        mgmt_exclusions = ["how", "treat", "management", "monitoring", "precaution"]
+        if any(kw in q for kw in fact_kw) and not any(ex in q for ex in mgmt_exclusions):
+            return "FACT"
+
+        # Default: treat as MANAGEMENT (return full paragraph — safe for clinical use)
+        return "MANAGEMENT"
+
+    def _extract_fact_span(self, query: str, full_text: str) -> str:
+        """
+        For FACT queries: extract the shortest verbatim span that answers the query.
+        Uses keyword proximity search — no LLM, no paraphrasing.
+        Falls back to full_text if no tight span is found.
+        """
+        import re
+
+        q_lower = query.lower()
+        text_lower = full_text.lower()
+
+        # Build candidate anchor terms from query (exclude stopwords & the drug name)
+        stopwords = {
+            "what", "is", "the", "of", "for", "a", "an", "its", "are",
+            "how", "does", "do", "my", "to", "in", "this", "that", "with"
+        }
+        query_tokens = [
+            t.strip("?.,;:") for t in q_lower.split()
+            if t.strip("?.,;:") not in stopwords and len(t) > 2
+        ]
+
+        # Find the sentence in full_text that contains the most query tokens
+        sentences = re.split(r'(?<=[.!?])\s+', full_text)
+        best_sentence = ""
+        best_hits = 0
+
+        for sent in sentences:
+            s_lower = sent.lower()
+            hits = sum(1 for tok in query_tokens if tok in s_lower)
+            if hits > best_hits:
+                best_hits = hits
+                best_sentence = sent
+
+        return best_sentence.strip() if best_sentence else full_text
+
+    def _extract_all_verbatim(
+        self,
+        query: str,
+        retrieved_chunks: List[Dict],
+        target_loinc_code: Optional[str] = None
+    ) -> Tuple[str, Dict]:
+        """
+        Shape-aware deterministic extraction. No LLM.
+
+        The retriever now delivers exactly ONE best-parent chunk whose
+        raw_text is a fully reconstructed verbatim paragraph.
+
+        Shape routing:
+          FACT       → minimal phrase from full paragraph
+          MANAGEMENT → full paragraph verbatim
+          LIST       → full paragraph verbatim
+        """
+        # Optional LOINC filter (safety net for fallback paths)
+        if target_loinc_code:
+            section_chunks = [
+                c for c in retrieved_chunks
+                if c.get('metadata', {}).get('loinc_code') == target_loinc_code
+            ]
+            if section_chunks:
+                logger.info(
+                    f"Section filter: {len(section_chunks)}/{len(retrieved_chunks)} "
+                    f"chunks match LOINC {target_loinc_code}"
+                )
+                retrieved_chunks = section_chunks
+            else:
+                logger.warning(
+                    f"No chunks match LOINC {target_loinc_code}, "
+                    f"using all {len(retrieved_chunks)} chunks"
+                )
+
+        if not retrieved_chunks:
+            return "Evidence not found in source document.", {
+                "extraction_mode": "section_verbatim",
+                "reason": "no_chunks"
+            }
+
+        # The retriever returns exactly 1 reconstructed paragraph.
+        # If multiple chunks survive (fallback edge-case), use the highest-scored one.
+        best_chunk = max(
+            retrieved_chunks,
+            key=lambda c: c.get("rerank_score", 0.0)
+        )
+        full_text = self._strip_chunk_prefix(best_chunk.get("raw_text", ""))
+
+        if not full_text:
+            return "Evidence not found in source document.", {
+                "extraction_mode": "section_verbatim",
+                "reason": "empty_text"
+            }
+
+        # Detect query shape and apply shape-specific extraction
+        shape = self._detect_query_shape(query)
+        logger.info(f"Query shape: {shape} | query='{query[:60]}'")
+
+        if shape == "FACT":
+            answer_text = self._extract_fact_span(query, full_text)
+            extraction_mode = "fact_span"
+        else:
+            # MANAGEMENT or LIST → return full reconstructed paragraph
+            answer_text = full_text
+            extraction_mode = "full_paragraph"
+
+        # Source attribution
+        first_meta = best_chunk.get('metadata', {})
+        section_name = first_meta.get('loinc_section', 'Unknown')
+        answer_text += f"\n\n[Source: {section_name}]"
+
+        logger.info(
+            f"Section-specific verbatim extraction: shape={shape} "
+            f"chars={len(answer_text)} (no LLM)"
+        )
+
+        return answer_text, {
+            "extraction_mode": extraction_mode,
+            "query_shape":     shape,
+            "section":         section_name,
+            "target_loinc":    target_loinc_code,
+            "llm_used":        False
+        }
+    
+    def _extract_via_llm(
+        self,
+        query: str,
+        retrieved_chunks: List[Dict],
+        max_tokens: int = 500
+    ) -> Tuple[str, Dict]:
+        """
+        LLM-based extraction: ask GPT to identify relevant sentence indices.
+        Used for general/ambiguous queries where no section was detected.
         """
         # Build context with numbered sentences
         context_parts = []
@@ -144,8 +330,7 @@ Answer:"""
         
         # Call LLM
         try:
-            # DEBUG: Print prompt to see what LLM sees
-            logger.info(f"--- EXTRACTOR PROMPT ---\n{user_prompt}\n------------------------")
+            logger.info(f"LLM extraction for general query: {query}")
             
             response = self.client.chat.completions.create(
                 model=self.model_name,
@@ -153,9 +338,9 @@ Answer:"""
                     {"role": "system", "content": RUNTIME_SYSTEM_PROMPT},
                     {"role": "user", "content": user_prompt}
                 ],
-                temperature=0.0,  # Deterministic
+                temperature=0.0,
                 max_tokens=max_tokens,
-                top_p=0.1  # Minimal sampling
+                top_p=0.1
             )
             
             llm_output = response.choices[0].message.content.strip()
@@ -171,6 +356,7 @@ Answer:"""
                     reason = result.get("reason", "not_found")
                     logger.info(f"No relevant sentences found: {reason}")
                     return "Evidence not found in source document.", {
+                        "extraction_mode": "llm",
                         "model": self.model_name,
                         "indices": [],
                         "reason": reason
@@ -178,40 +364,48 @@ Answer:"""
                 
                 # Extract raw text from identified chunks
                 extracted_texts = []
+                seen_text_fps: set = set()
                 for idx in indices:
                     if 0 <= idx < len(retrieved_chunks):
                         raw_text = retrieved_chunks[idx]['raw_text']
-                        # Strip the system-added prefix "Drug: X. Section: Y. "
                         clean_text = self._strip_chunk_prefix(raw_text)
+                        # Deduplicate: two chunks can produce the same cleaned text
+                        # (e.g. same sentence under different parent contexts).
+                        # Collapse here so the same sentence never appears twice.
+                        fp = " ".join(clean_text.lower().split())[:200]
+                        if fp in seen_text_fps:
+                            logger.debug(
+                                f"Extractor dedup: dropped duplicate idx={idx}: {clean_text[:60]}..."
+                            )
+                            continue
+                        seen_text_fps.add(fp)
                         extracted_texts.append(clean_text)
+
                 
-                # Format answer based on number of sentences
                 answer_text = self._format_answer(extracted_texts)
                 
-                # Get section info from first chunk
+                # Source attribution
                 first_chunk_meta = retrieved_chunks[indices[0]]['metadata']
                 section_name = first_chunk_meta.get('loinc_section', 'Unknown')
-                
-                # Add clean source attribution
                 answer_text += f"\n\n[Source: {section_name}]"
                 
-                # Extract metadata
                 extraction_metadata = {
+                    "extraction_mode": "llm",
                     "model": self.model_name,
                     "indices": indices,
                     "num_sentences_extracted": len(indices),
                     "total_chunks_available": len(retrieved_chunks),
                     "prompt_tokens": response.usage.prompt_tokens,
                     "completion_tokens": response.usage.completion_tokens,
-                    "finish_reason": response.choices[0].finish_reason
+                    "finish_reason": response.choices[0].finish_reason,
+                    "llm_used": True
                 }
                 
-                logger.info(f"Extracted {len(indices)} sentences: {indices}")
+                logger.info(f"LLM extracted {len(indices)} sentences: {indices}")
                 return answer_text, extraction_metadata
                 
             except json.JSONDecodeError as je:
                 logger.error(f"Failed to parse LLM JSON output: {llm_output}")
-                # Fallback: return first chunk if JSON parsing fails
                 return retrieved_chunks[0]['raw_text'], {"error": "json_parse_failed", "raw_output": llm_output}
             
         except Exception as e:
@@ -233,6 +427,9 @@ Answer:"""
         Format extracted sentences for better readability.
         - Single sentence: return as-is
         - Multiple sentences: format as bulleted list
+        
+        NOTE: This method uses ONLY Python string manipulation.
+        NO LLM or external API is called here.
         """
         if len(sentences) == 0:
             return ""
@@ -364,10 +561,18 @@ class RegulatoryQAGenerator:
     def generate_answer(
         self,
         query: str,
-        retrieved_chunks: List[Dict]
+        retrieved_chunks: List[Dict],
+        section_specific: bool = False,
+        target_loinc_code: Optional[str] = None
     ) -> Dict:
         """
-        Generate answer using pure extractive method (no validation needed)
+        Generate answer using pure extractive method.
+        
+        Args:
+            query: User question
+            retrieved_chunks: Chunks from retrieval pipeline
+            section_specific: If True, bypass LLM and return all chunks verbatim.
+            target_loinc_code: LOINC code to filter chunks by section.
         
         Returns:
             {
@@ -384,10 +589,12 @@ class RegulatoryQAGenerator:
                 "metadata": {}
             }
         
-        # Extract answer (returns raw chunks by index)
+        # Extract answer
         answer_text, extraction_metadata = self.extractor.extract(
             query=query,
-            retrieved_chunks=retrieved_chunks
+            retrieved_chunks=retrieved_chunks,
+            section_specific=section_specific,
+            target_loinc_code=target_loinc_code
         )
         
         # Check if extraction failed

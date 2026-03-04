@@ -1,0 +1,23 @@
+=== SYNTAX CHECK: All Modified Files ===
+  [OK] ingestion/spl_xml_parser.py
+  [OK] ingestion/hierarchical_chunking.py
+  [OK] ingestion/dedup_registry.py
+  [OK] config/retrieval_policy.py
+  [OK] vector_db/hierarchical_qdrant.py
+  [OK] generation/constrained_extractor.py
+
+=== IMPORT CHECK: New Modules ===
+  [OK] dedup_registry.HashDeduplicator
+  [OK] retrieval_policy: SECTION_STRICT_MODE=True, MAX_RERANK_SCOPE=100
+
+=== IMPORT CHECK: SPL Parser ===
+  [OK] SPLSection.section_path works: 34084-4 > TEST
+
+=== IMPORT CHECK: Hierarchical Chunking ===
+  [OK] ChildChunk: xml_hash=hash123, set_id=SET-1, section_path=path
+  [OK] ParentChunk: section_path=path, paragraph_index=2
+
+=== DEDUP INTEGRATION TEST ===
+  [OK] Dedup flow works: {'total_unique': 2, 'total_duplicates_skipped': 1}
+
+RESULT: ALL CHECKS PASSED

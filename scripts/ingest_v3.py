@@ -43,12 +43,10 @@ FAILED_FILES_LOG = "ingestion_failures.log"
 
 # Qdrant Config
 load_dotenv()
-QDRANT_HOST = os.getenv("QDRANT_HOST", "127.0.0.1")
-QDRANT_PORT = int(os.getenv("QDRANT_PORT", 6333))
 
 def get_already_ingested_files(qm: HierarchicalQdrantManager) -> Set[str]:
     try:
-        client = QdrantClient(host=QDRANT_HOST, port=QDRANT_PORT)
+        client = QdrantClient(url=os.environ["QDRANT_URL"], api_key=os.environ["QDRANT_API_KEY"])
         result = client.scroll(
             collection_name="spl_parents",
             limit=10000,
@@ -95,7 +93,7 @@ def main():
         embedder = DenseEmbedder("pritamdeka/S-PubMedBert-MS-MARCO")
         sparse_embedder = SparseEmbedder(corpus=None)
         
-        qm = HierarchicalQdrantManager(host=QDRANT_HOST, port=QDRANT_PORT)
+        qm = HierarchicalQdrantManager()
         try:
             qm.create_collections(dense_vector_size=768, recreate=False)
         except Exception as e:

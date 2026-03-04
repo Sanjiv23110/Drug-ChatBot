@@ -1,0 +1,40 @@
+=== COUNTING LOINC CODES IN DATABASE ===
+
+LOINC Code Distribution:
+  34067-9: 14 chunks
+  34068-7: 7 chunks
+  34069-5: 2 chunks
+  34070-3: 3 chunks
+  34071-1: 15 chunks
+  34072-9: 6 chunks
+  34073-7: 9 chunks
+  34075-2: 2 chunks
+  34076-0: 4 chunks
+  34077-8: 7 chunks
+  34078-6: 3 chunks
+  34080-2: 3 chunks
+  34081-0: 1 chunks
+  34082-8: 5 chunks
+  34083-6: 2 chunks
+  34084-4: 2 chunks
+  34088-5: 7 chunks
+  34089-3: 10 chunks
+  34090-1: 7 chunks
+  42228-7: 7 chunks
+  42229-5: 24 chunks
+  42232-9: 26 chunks
+
+=== SAMPLE RXCUI VALUES ===
+  Drug: Tolinase | RxCUI: 220338
+  Drug: Renese | RxCUI: 224931
+
+=== SAMPLE SENTENCE TEXT ===
+
+[42229-5 - SPL UNCLASSIFIED SECTION]
+  The dosage of TOLINASE should be adjusted weekly (or more often in the group previously requiring  more than 40 units of insulin)....
+
+[42229-5 - SPL UNCLASSIFIED SECTION]
+  In these cases, a short course of diuretics may provide relief and may be appropriate....
+
+[42232-9 - UNCLASSIFIED]
+  Dilutional  hyponatremia may occur in edematous patients in hot weather; appropriate therapy is water restriction, rather than administration of salt except in rare instances when the hyponatremia is ...

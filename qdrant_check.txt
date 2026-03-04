@@ -1,0 +1,17 @@
+spl_children: 367 points
+spl_parents: 71 points
+
+Child sample:
+  drug_name: Tolinase
+  rxcui: 220338
+  loinc_code: 34067-9
+  set_id: AAE8B7A4-742A-4BEC-A283-31B9408EE1AA
+  xml_hash: 037de46690d704cca05e...
+  section_path: 34067-9 > INDICATIONS AND USAGE
+  paragraph_index: 0
+  sentence_index: 4
+
+Parent sample:
+  drug_name: Tolinase
+  section_path: 34089-3 > DESCRIPTION
+  paragraph_index: 0

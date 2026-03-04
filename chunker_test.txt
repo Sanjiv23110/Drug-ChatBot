@@ -1,0 +1,4 @@
+  File "<string>", line 32
+    print(f'  [{\
+          ^
+SyntaxError: unterminated string literal (detected at line 32)

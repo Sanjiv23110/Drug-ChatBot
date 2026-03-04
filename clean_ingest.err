@@ -1,0 +1,276 @@
+2026-02-08 18:18:14,911 - === STEP 1: CLEAR DATABASE ===
+2026-02-08 18:18:15,576 - HTTP Request: GET http://127.0.0.1:6333 "HTTP/1.1 200 OK"
+2026-02-08 18:18:15,585 - HTTP Request: GET http://127.0.0.1:6333/collections/spl_chunks "HTTP/1.1 404 Not Found"
+2026-02-08 18:18:15,585 - \u2139 Collection 'spl_chunks' not found or already deleted: Unexpected Response: 404 (Not Found)
+Raw response content:
+b'{"status":{"error":"Not found: Collection `spl_chunks` doesn\'t exist!"},"time":7.86e-6}'
+2026-02-08 18:18:15,607 - HTTP Request: GET http://127.0.0.1:6333/collections/spl_parents "HTTP/1.1 200 OK"
+2026-02-08 18:18:17,728 - HTTP Request: DELETE http://127.0.0.1:6333/collections/spl_parents "HTTP/1.1 200 OK"
+2026-02-08 18:18:17,729 - \u2714 Deleted collection 'spl_parents'. Records before: 420
+2026-02-08 18:18:17,753 - HTTP Request: GET http://127.0.0.1:6333/collections/spl_children "HTTP/1.1 200 OK"
+2026-02-08 18:18:20,947 - HTTP Request: DELETE http://127.0.0.1:6333/collections/spl_children "HTTP/1.1 200 OK"
+2026-02-08 18:18:20,947 - \u2714 Deleted collection 'spl_children'. Records before: 914
+2026-02-08 18:18:20,947 - 
+=== STEP 2: PRE-INGESTION SANITY CHECK ===
+2026-02-08 18:18:20,947 - \u2714 Found 9 XML documents to process.
+2026-02-08 18:18:20,948 -   - 02FF6501-CCCC-4F7D-9988-856D4E169B0E (1).xml
+2026-02-08 18:18:20,948 -   - 09BAFC2D-1893-4618-86DC-E9403407CD41 (1).xml
+2026-02-08 18:18:20,948 -   - 146f7be7-5cd4-4279-a482-794d0cd554e1 (1).xml
+2026-02-08 18:18:20,948 -   - 42BED965-4B8F-4471-BCC9-091F87238653 (1).xml
+2026-02-08 18:18:20,948 -   - 9C4F12E5-5E69-44D4-81A5-BD72C375EEF5 (1).xml
+2026-02-08 18:18:20,948 - 
+=== STEP 3: RUN ROBUST INGESTION ===
+2026-02-08 18:18:20,948 - Importing ingestion module...
+2026-02-08 18:18:23,868 - Executing main ingestion logic...
+2026-02-08 18:18:23,868 - ================================================================================
+2026-02-08 18:18:23,868 - ROBUST INGESTION PIPELINE - STARTING
+2026-02-08 18:18:23,868 - ================================================================================
+2026-02-08 18:18:23,868 - Initializing components...
+2026-02-08 18:18:23,880 - Loaded FDA XSLT stylesheet: C:\G\solomindUS\data\spl.xsl
+2026-02-08 18:18:23,880 - TablePreserver initialized successfully
+2026-02-08 18:18:23,880 - Initialized RxNorm client
+2026-02-08 18:18:23,880 - Initialized RxClass client
+2026-02-08 18:18:23,880 - Loading embedding model...
+2026-02-08 18:18:23,880 - Loading dense embedding model: pritamdeka/S-PubMedBert-MS-MARCO
+2026-02-08 18:18:23,881 - Load pretrained SentenceTransformer: pritamdeka/S-PubMedBert-MS-MARCO
+C:\G\solomindUS\venv_regulatory\Lib\site-packages\huggingface_hub\file_download.py:1132: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+2026-02-08 18:18:26,881 - Use pytorch device_name: cpu
+2026-02-08 18:18:26,882 - Model loaded. Embedding dimension: 768
+2026-02-08 18:18:27,401 - HTTP Request: GET http://127.0.0.1:6333 "HTTP/1.1 200 OK"
+2026-02-08 18:18:27,405 - Connected to Qdrant at 127.0.0.1:6333
+2026-02-08 18:18:27,406 - Child collection: spl_children
+2026-02-08 18:18:27,406 - Parent collection: spl_parents
+2026-02-08 18:18:28,086 - HTTP Request: PUT http://127.0.0.1:6333/collections/spl_children "HTTP/1.1 200 OK"
+2026-02-08 18:18:28,087 - Created child collection: spl_children
+2026-02-08 18:18:28,580 - HTTP Request: PUT http://127.0.0.1:6333/collections/spl_parents "HTTP/1.1 200 OK"
+2026-02-08 18:18:28,580 - Created parent collection: spl_parents
+2026-02-08 18:18:29,948 - HTTP Request: PUT http://127.0.0.1:6333/collections/spl_children/index?wait=true "HTTP/1.1 200 OK"
+2026-02-08 18:18:29,949 - Created child index on drug_name
+2026-02-08 18:18:31,253 - HTTP Request: PUT http://127.0.0.1:6333/collections/spl_children/index?wait=true "HTTP/1.1 200 OK"
+2026-02-08 18:18:31,253 - Created child index on rxcui
+2026-02-08 18:18:32,670 - HTTP Request: PUT http://127.0.0.1:6333/collections/spl_children/index?wait=true "HTTP/1.1 200 OK"
+2026-02-08 18:18:32,671 - Created child index on loinc_code
+2026-02-08 18:18:34,030 - HTTP Request: PUT http://127.0.0.1:6333/collections/spl_children/index?wait=true "HTTP/1.1 200 OK"
+2026-02-08 18:18:34,031 - Created child index on loinc_section
+2026-02-08 18:18:35,320 - HTTP Request: PUT http://127.0.0.1:6333/collections/spl_children/index?wait=true "HTTP/1.1 200 OK"
+2026-02-08 18:18:35,321 - Created child index on parent_id
+2026-02-08 18:18:36,567 - HTTP Request: PUT http://127.0.0.1:6333/collections/spl_parents/index?wait=true "HTTP/1.1 200 OK"
+2026-02-08 18:18:36,567 - Created parent index on parent_id
+2026-02-08 18:18:37,779 - HTTP Request: PUT http://127.0.0.1:6333/collections/spl_parents/index?wait=true "HTTP/1.1 200 OK"
+2026-02-08 18:18:37,779 - Created parent index on drug_name
+2026-02-08 18:18:38,979 - HTTP Request: PUT http://127.0.0.1:6333/collections/spl_parents/index?wait=true "HTTP/1.1 200 OK"
+2026-02-08 18:18:38,979 - Created parent index on set_id
+2026-02-08 18:18:38,979 - Collections verified/created
+2026-02-08 18:18:38,979 - Checking for already ingested files...
+2026-02-08 18:18:39,445 - HTTP Request: GET http://127.0.0.1:6333 "HTTP/1.1 200 OK"
+2026-02-08 18:18:39,464 - HTTP Request: POST http://127.0.0.1:6333/collections/spl_parents/points/scroll "HTTP/1.1 200 OK"
+2026-02-08 18:18:39,465 - Found 0 unique documents already in Qdrant
+2026-02-08 18:18:39,465 - Found 0 ingested items.
+2026-02-08 18:18:39,466 - Starting file processing loop...
+2026-02-08 18:18:39,466 - Found 9 XML files in C:\G\solomindUS\data\xml
+2026-02-08 18:18:39,466 - 
+[1/9] Processing: 02FF6501-CCCC-4F7D-9988-856D4E169B0E (1).xml
+2026-02-08 18:18:40,340 - Parsed Hypaque Sodium: 86 sections extracted
+2026-02-08 18:18:40,342 -   \u2192 Parsed 86 sections. Drug: Hypaque Sodium
+2026-02-08 18:18:40,344 -   \u2192 Generated 215 parents, 489 children
+2026-02-08 18:18:43,384 - No exact RxCUI found for 'Hypaque Sodium', trying approximate...
+2026-02-08 18:18:43,663 - Resolved 'Hypaque Sodium' via approximate match \u2192 RxCUI: 217661
+2026-02-08 18:18:45,020 - Retrieved 0 classes for RxCUI 217661
+2026-02-08 18:18:45,020 -   \u2192 RxCUI: 217661
+2026-02-08 18:18:45,020 -   \u2192 Generating embeddings for 489 chunks...
+2026-02-08 18:19:03,275 - HTTP Request: PUT http://127.0.0.1:6333/collections/spl_children/points?wait=true "HTTP/1.1 404 Not Found"
+2026-02-08 18:19:03,276 - Upsert attempt 1 failed: Unexpected Response: 404 (Not Found)
+Raw response content:
+b'{"status":{"error":"Not found: Collection `spl_children` doesn\'t exist!"},"time":0.00020047}'. Retrying...
+2026-02-08 18:19:03,556 - HTTP Request: PUT http://127.0.0.1:6333/collections/spl_children/points?wait=true "HTTP/1.1 404 Not Found"
+2026-02-08 18:19:03,556 - Upsert attempt 2 failed: Unexpected Response: 404 (Not Found)
+Raw response content:
+b'{"status":{"error":"Not found: Collection `spl_children` doesn\'t exist!"},"time":0.000182385}'. Retrying...
+2026-02-08 18:19:03,873 - HTTP Request: PUT http://127.0.0.1:6333/collections/spl_children/points?wait=true "HTTP/1.1 404 Not Found"
+2026-02-08 18:19:03,874 -   \u2717 FAILED: 02FF6501-CCCC-4F7D-9988-856D4E169B0E (1).xml
+2026-02-08 18:19:03,874 -     Error: Unexpected Response: 404 (Not Found)
+Raw response content:
+b'{"status":{"error":"Not found: Collection `spl_children` doesn\'t exist!"},"time":0.000165231}'
+Traceback (most recent call last):
+  File "C:\G\solomindUS\scripts\robust_ingestion.py", line 211, in main
+    retry_upsert(
+  File "C:\G\solomindUS\scripts\robust_ingestion.py", line 87, in retry_upsert
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\G\solomindUS\vector_db\hierarchical_qdrant.py", line 193, in upsert_children
+    self.client.upsert(
+  File "C:\G\solomindUS\venv_regulatory\Lib\site-packages\qdrant_client\qdrant_client.py", line 938, in upsert
+    return self._client.upsert(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\G\solomindUS\venv_regulatory\Lib\site-packages\qdrant_client\qdrant_remote.py", line 1121, in upsert
+    http_result = self.openapi_client.points_api.upsert_points(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\G\solomindUS\venv_regulatory\Lib\site-packages\qdrant_client\http\api\points_api.py", line 994, in upsert_points
+    return self._build_for_upsert_points(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\G\solomindUS\venv_regulatory\Lib\site-packages\qdrant_client\http\api\points_api.py", line 515, in _build_for_upsert_points
+    return self.api_client.request(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\G\solomindUS\venv_regulatory\Lib\site-packages\qdrant_client\http\api_client.py", line 95, in request
+    return self.send(request, type_)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\G\solomindUS\venv_regulatory\Lib\site-packages\qdrant_client\http\api_client.py", line 130, in send
+    raise UnexpectedResponse.for_response(response)
+qdrant_client.http.exceptions.UnexpectedResponse: Unexpected Response: 404 (Not Found)
+Raw response content:
+b'{"status":{"error":"Not found: Collection `spl_children` doesn\'t exist!"},"time":0.000165231}'
+2026-02-08 18:19:04,020 - 
+[2/9] Processing: 09BAFC2D-1893-4618-86DC-E9403407CD41 (1).xml
+2026-02-08 18:19:04,195 - Parsed Halotestin: 33 sections extracted
+2026-02-08 18:19:04,195 -   \u2192 Parsed 33 sections. Drug: Halotestin
+2026-02-08 18:19:04,196 -   \u2192 Generated 73 parents, 122 children
+2026-02-08 18:19:04,456 - No exact RxCUI found for 'Halotestin', trying approximate...
+2026-02-08 18:19:04,718 - Resolved 'Halotestin' via approximate match \u2192 RxCUI: 217484
+2026-02-08 18:19:05,004 - Retrieved 0 classes for RxCUI 217484
+2026-02-08 18:19:05,004 -   \u2192 RxCUI: 217484
+2026-02-08 18:19:05,004 -   \u2192 Generating embeddings for 122 chunks...
+2026-02-08 18:19:09,086 - HTTP Request: PUT http://127.0.0.1:6333/collections/spl_children/points?wait=true "HTTP/1.1 404 Not Found"
+2026-02-08 18:19:09,087 - Upsert attempt 1 failed: Unexpected Response: 404 (Not Found)
+Raw response content:
+b'{"status":{"error":"Not found: Collection `spl_children` doesn\'t exist!"},"time":0.000044415}'. Retrying...
+2026-02-08 18:19:09,154 - HTTP Request: PUT http://127.0.0.1:6333/collections/spl_children/points?wait=true "HTTP/1.1 404 Not Found"
+2026-02-08 18:19:09,155 - Upsert attempt 2 failed: Unexpected Response: 404 (Not Found)
+Raw response content:
+b'{"status":{"error":"Not found: Collection `spl_children` doesn\'t exist!"},"time":0.000043878}'. Retrying...
+2026-02-08 18:19:09,239 - HTTP Request: PUT http://127.0.0.1:6333/collections/spl_children/points?wait=true "HTTP/1.1 404 Not Found"
+2026-02-08 18:19:09,239 -   \u2717 FAILED: 09BAFC2D-1893-4618-86DC-E9403407CD41 (1).xml
+2026-02-08 18:19:09,239 -     Error: Unexpected Response: 404 (Not Found)
+Raw response content:
+b'{"status":{"error":"Not found: Collection `spl_children` doesn\'t exist!"},"time":0.000043308}'
+Traceback (most recent call last):
+  File "C:\G\solomindUS\scripts\robust_ingestion.py", line 211, in main
+    retry_upsert(
+  File "C:\G\solomindUS\scripts\robust_ingestion.py", line 87, in retry_upsert
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\G\solomindUS\vector_db\hierarchical_qdrant.py", line 193, in upsert_children
+    self.client.upsert(
+  File "C:\G\solomindUS\venv_regulatory\Lib\site-packages\qdrant_client\qdrant_client.py", line 938, in upsert
+    return self._client.upsert(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\G\solomindUS\venv_regulatory\Lib\site-packages\qdrant_client\qdrant_remote.py", line 1121, in upsert
+    http_result = self.openapi_client.points_api.upsert_points(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\G\solomindUS\venv_regulatory\Lib\site-packages\qdrant_client\http\api\points_api.py", line 994, in upsert_points
+    return self._build_for_upsert_points(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\G\solomindUS\venv_regulatory\Lib\site-packages\qdrant_client\http\api\points_api.py", line 515, in _build_for_upsert_points
+    return self.api_client.request(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\G\solomindUS\venv_regulatory\Lib\site-packages\qdrant_client\http\api_client.py", line 95, in request
+    return self.send(request, type_)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\G\solomindUS\venv_regulatory\Lib\site-packages\qdrant_client\http\api_client.py", line 130, in send
+    raise UnexpectedResponse.for_response(response)
+qdrant_client.http.exceptions.UnexpectedResponse: Unexpected Response: 404 (Not Found)
+Raw response content:
+b'{"status":{"error":"Not found: Collection `spl_children` doesn\'t exist!"},"time":0.000043308}'
+2026-02-08 18:19:09,324 - 
+[3/9] Processing: 146f7be7-5cd4-4279-a482-794d0cd554e1 (1).xml
+2026-02-08 18:19:09,526 - Parsed Dantrium: 29 sections extracted
+2026-02-08 18:19:09,526 -   \u2192 Parsed 29 sections. Drug: Dantrium
+2026-02-08 18:19:09,528 -   \u2192 Generated 86 parents, 180 children
+2026-02-08 18:19:09,793 - Resolved 'Dantrium' \u2192 RxCUI: 3104
+2026-02-08 18:19:10,079 - Retrieved 41 classes for RxCUI 3104
+2026-02-08 18:19:10,079 -   \u2192 RxCUI: 3104
+2026-02-08 18:19:10,079 -   \u2192 Generating embeddings for 180 chunks...
+2026-02-08 18:19:17,711 - HTTP Request: PUT http://127.0.0.1:6333/collections/spl_children/points?wait=true "HTTP/1.1 404 Not Found"
+2026-02-08 18:19:17,711 - Upsert attempt 1 failed: Unexpected Response: 404 (Not Found)
+Raw response content:
+b'{"status":{"error":"Not found: Collection `spl_children` doesn\'t exist!"},"time":0.000057941}'. Retrying...
+2026-02-08 18:19:17,846 - HTTP Request: PUT http://127.0.0.1:6333/collections/spl_children/points?wait=true "HTTP/1.1 404 Not Found"
+2026-02-08 18:19:17,847 - Upsert attempt 2 failed: Unexpected Response: 404 (Not Found)
+Raw response content:
+b'{"status":{"error":"Not found: Collection `spl_children` doesn\'t exist!"},"time":0.000090968}'. Retrying...
+2026-02-08 18:19:17,959 - HTTP Request: PUT http://127.0.0.1:6333/collections/spl_children/points?wait=true "HTTP/1.1 404 Not Found"
+2026-02-08 18:19:17,960 -   \u2717 FAILED: 146f7be7-5cd4-4279-a482-794d0cd554e1 (1).xml
+2026-02-08 18:19:17,960 -     Error: Unexpected Response: 404 (Not Found)
+Raw response content:
+b'{"status":{"error":"Not found: Collection `spl_children` doesn\'t exist!"},"time":0.000059202}'
+Traceback (most recent call last):
+  File "C:\G\solomindUS\scripts\robust_ingestion.py", line 211, in main
+    retry_upsert(
+  File "C:\G\solomindUS\scripts\robust_ingestion.py", line 87, in retry_upsert
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\G\solomindUS\vector_db\hierarchical_qdrant.py", line 193, in upsert_children
+    self.client.upsert(
+  File "C:\G\solomindUS\venv_regulatory\Lib\site-packages\qdrant_client\qdrant_client.py", line 938, in upsert
+    return self._client.upsert(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\G\solomindUS\venv_regulatory\Lib\site-packages\qdrant_client\qdrant_remote.py", line 1121, in upsert
+    http_result = self.openapi_client.points_api.upsert_points(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\G\solomindUS\venv_regulatory\Lib\site-packages\qdrant_client\http\api\points_api.py", line 994, in upsert_points
+    return self._build_for_upsert_points(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\G\solomindUS\venv_regulatory\Lib\site-packages\qdrant_client\http\api\points_api.py", line 515, in _build_for_upsert_points
+    return self.api_client.request(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\G\solomindUS\venv_regulatory\Lib\site-packages\qdrant_client\http\api_client.py", line 95, in request
+    return self.send(request, type_)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\G\solomindUS\venv_regulatory\Lib\site-packages\qdrant_client\http\api_client.py", line 130, in send
+    raise UnexpectedResponse.for_response(response)
+qdrant_client.http.exceptions.UnexpectedResponse: Unexpected Response: 404 (Not Found)
+Raw response content:
+b'{"status":{"error":"Not found: Collection `spl_children` doesn\'t exist!"},"time":0.000059202}'
+2026-02-08 18:19:18,048 - 
+[4/9] Processing: 42BED965-4B8F-4471-BCC9-091F87238653 (1).xml
+2026-02-08 18:19:18,141 - Parsed Lithane: 20 sections extracted
+2026-02-08 18:19:18,141 -   \u2192 Parsed 20 sections. Drug: Lithane
+2026-02-08 18:19:18,141 -   \u2192 Generated 46 parents, 123 children
+2026-02-08 18:19:18,399 - No exact RxCUI found for 'Lithane', trying approximate...
+2026-02-08 18:19:18,659 - Resolved 'Lithane' via approximate match \u2192 RxCUI: 203322
+2026-02-08 18:19:18,960 - Retrieved 0 classes for RxCUI 203322
+2026-02-08 18:19:18,960 -   \u2192 RxCUI: 203322
+2026-02-08 18:19:18,960 -   \u2192 Generating embeddings for 123 chunks...
+2026-02-08 18:19:24,166 - HTTP Request: PUT http://127.0.0.1:6333/collections/spl_children/points?wait=true "HTTP/1.1 404 Not Found"
+2026-02-08 18:19:24,167 - Upsert attempt 1 failed: Unexpected Response: 404 (Not Found)
+Raw response content:
+b'{"status":{"error":"Not found: Collection `spl_children` doesn\'t exist!"},"time":0.000055584}'. Retrying...
+2026-02-08 18:19:24,249 - HTTP Request: PUT http://127.0.0.1:6333/collections/spl_children/points?wait=true "HTTP/1.1 404 Not Found"
+2026-02-08 18:19:24,251 - Upsert attempt 2 failed: Unexpected Response: 404 (Not Found)
+Raw response content:
+b'{"status":{"error":"Not found: Collection `spl_children` doesn\'t exist!"},"time":0.000054312}'. Retrying...
+2026-02-08 18:19:24,337 - HTTP Request: PUT http://127.0.0.1:6333/collections/spl_children/points?wait=true "HTTP/1.1 404 Not Found"
+2026-02-08 18:19:24,338 -   \u2717 FAILED: 42BED965-4B8F-4471-BCC9-091F87238653 (1).xml
+2026-02-08 18:19:24,338 -     Error: Unexpected Response: 404 (Not Found)
+Raw response content:
+b'{"status":{"error":"Not found: Collection `spl_children` doesn\'t exist!"},"time":0.000044346}'
+Traceback (most recent call last):
+  File "C:\G\solomindUS\scripts\robust_ingestion.py", line 211, in main
+    retry_upsert(
+  File "C:\G\solomindUS\scripts\robust_ingestion.py", line 87, in retry_upsert
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\G\solomindUS\vector_db\hierarchical_qdrant.py", line 193, in upsert_children
+    self.client.upsert(
+  File "C:\G\solomindUS\venv_regulatory\Lib\site-packages\qdrant_client\qdrant_client.py", line 938, in upsert
+    return self._client.upsert(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\G\solomindUS\venv_regulatory\Lib\site-packages\qdrant_client\qdrant_remote.py", line 1121, in upsert
+    http_result = self.openapi_client.points_api.upsert_points(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\G\solomindUS\venv_regulatory\Lib\site-packages\qdrant_client\http\api\points_api.py", line 994, in upsert_points
+    return self._build_for_upsert_points(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\G\solomindUS\venv_regulatory\Lib\site-packages\qdrant_client\http\api\points_api.py", line 515, in _build_for_upsert_points
+    return self.api_client.request(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\G\solomindUS\venv_regulatory\Lib\site-packages\qdrant_client\http\api_client.py", line 95, in request
+    return self.send(request, type_)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\G\solomindUS\venv_regulatory\Lib\site-packages\qdrant_client\http\api_client.py", line 130, in send
+    raise UnexpectedResponse.for_response(response)
+qdrant_client.http.exceptions.UnexpectedResponse: Unexpected Response: 404 (Not Found)
+Raw response content:
+b'{"status":{"error":"Not found: Collection `spl_children` doesn\'t exist!"},"time":0.000044346}'
+2026-02-08 18:19:24,428 - 
+[5/9] Processing: 9C4F12E5-5E69-44D4-81A5-BD72C375EEF5 (1).xml

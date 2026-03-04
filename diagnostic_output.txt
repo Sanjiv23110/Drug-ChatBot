@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+================================================================================
+  File "C:\G\solomindUS\test_pipeline.py", line 16, in <module>
+    print("DIAGNOSTIC: Testing Parsing \u2192 Chunking Pipeline")
+  File "C:\ProgramData\anaconda3\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2192' in position 28: character maps to <undefined>
