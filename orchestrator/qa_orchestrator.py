@@ -448,7 +448,9 @@ class RegulatoryQAOrchestrator:
         self.generator = generator
         self.audit_log_path = audit_log_path
         
-        self.intent_classifier = IntentClassifier(drug_normalizer)
+        import os
+        model_name = os.getenv("AZURE_OPENAI_CHAT_DEPLOYMENT", "gpt-4o")
+        self.intent_classifier = IntentClassifier(drug_normalizer, model_name=model_name)
         self.section_classifier = SectionClassifier()
         
         # Initialize new production modules
@@ -543,6 +545,17 @@ class RegulatoryQAOrchestrator:
         drug_info = self.normalizer.normalize_drug_name(confirmed_drug_name)
         if drug_info:
             rxcui = drug_info.get('rxcui')
+
+        # Step 2.5: Handle Noun-Only Queries
+        # If the user simply types "Thompson Antacid" with no question, the LLM will fail to extract an answer.
+        import re
+        q_words = set(w for w in re.findall(r'\b\w+\b', query.lower()) if len(w) > 1)
+        d_words = set(w for w in re.findall(r'\b\w+\b', confirmed_drug_name.lower()) if len(w) > 1)
+        
+        # If every word the user typed is just part of the drug's title, it's not a question. Expand it natively.
+        if q_words and q_words.issubset(d_words):
+            logger.info(f"Query '{query}' detected as raw noun. Expanding to ask for indications.")
+            query = f"What is the intended use, indications, and purpose for {confirmed_drug_name}?"
 
         # Step 3: Detect section intent
         loinc_code = self.section_classifier.classify(query)
