@@ -1,3 +1,13 @@
+---
+title: Solomind
+emoji: ⚕️
+colorFrom: blue
+colorTo: green
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
 # Solomind.ai Regulatory QA Chatbot - Technical Architecture
 
 This document provides an exhaustive, implementation-accurate technical overview of the Solomind.ai chatbot architecture, based strictly on the current codebase.
