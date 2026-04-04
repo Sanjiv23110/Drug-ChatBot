@@ -58,7 +58,7 @@ class HierarchicalQdrantManager:
         self.child_collection = child_collection
         self.parent_collection = parent_collection
         
-        logger.info(f"Connected to Qdrant at {host}:{port}")
+        logger.info(f"Connected to Qdrant Cloud")
         logger.info(f"Child collection: {child_collection}")
         logger.info(f"Parent collection: {parent_collection}")
     

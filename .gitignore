@@ -62,3 +62,7 @@ test_results.txt
 debug_core.txt
 debug_imports.txt
 .pytest_cache/
+
+# Local Testing Scripts
+scripts/test_*.py
+scripts/list_cloud_drugs.py

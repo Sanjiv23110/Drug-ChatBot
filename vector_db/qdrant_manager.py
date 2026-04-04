@@ -47,7 +47,7 @@ class QdrantManager:
         )
         self.collection_name = collection_name
         
-        logger.info(f"Connected to Qdrant at {host}:{port}")
+        logger.info(f"Connected to Qdrant Cloud")
     
     def create_collection(
         self,

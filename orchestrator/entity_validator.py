@@ -102,6 +102,7 @@ class EntityValidator:
         
         query_lower = query.lower()
         
+        # Step A: Fast Exact Match
         # Match against known drug names (substring match, case-insensitive)
         for drug_lower, drug_original in self.drug_names.items():
             if drug_lower in query_lower:
@@ -110,6 +111,35 @@ class EntityValidator:
                     "drug_name": drug_original, # Return Correct Casing for Retrieval
                     "reason": None
                 }
+        
+        # Step B: Advanced Token Intersection Match
+        # Handles messy FDA labels (e.g. "DR SCHOLLS ... TOLNAFTATE ANTIFUNGAL")
+        import re
+        
+        def tokenize(text):
+            return set(w for w in re.findall(r'\b\w+\b', text.lower()) if len(w) > 1)
+            
+        q_tokens = tokenize(query)
+        best_candidates = []
+        
+        for drug_lower, drug_original in self.drug_names.items():
+            d_tokens = tokenize(drug_lower)
+            intersection = d_tokens.intersection(q_tokens)
+            score_len = len(intersection)
+            
+            # Require at least 1 meaningful token to match
+            if score_len > 0:
+                # Key: (Number of matching tokens, -Total tokens in DB name)
+                # Sort descending: Max matches wins. If tied, shortest DB name wins.
+                best_candidates.append((score_len, -len(d_tokens), drug_original))
+        
+        if best_candidates:
+            best_candidates.sort(reverse=True)
+            return {
+                "valid": True,
+                "drug_name": best_candidates[0][2], # Correct casing
+                "reason": None
+            }
         
         # No explicit drug found
         return {
