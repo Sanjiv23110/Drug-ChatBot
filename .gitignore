@@ -53,16 +53,26 @@ models/
 .DS_Store
 Thumbs.db
 
-# Logs
+# Logs & Outputs
 *.log
-ingestion_failures.log
-parent_debug.txt
-test_results.txt
+*.err
+*.txt
+!requirements*.txt
 .system_generated/
-debug_core.txt
-debug_imports.txt
 .pytest_cache/
 
-# Local Testing Scripts
+# Local Testing & Diagnostic Scripts
 scripts/test_*.py
+scripts/check_*.py
+scripts/debug_*.py
+scripts/verify_*.py
+scripts/clean_and_ingest.py
 scripts/list_cloud_drugs.py
+debug_*.py
+test_*.py
+patch_*.py
+ingest_*.py
+!scripts/ingest_v3.py
+
+# Test Directory
+tests/
